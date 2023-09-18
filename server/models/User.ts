@@ -3,7 +3,14 @@ import bcrypt from "bcrypt";
 import getErrorMessage from "../utils/getErrorMsg";
 const { Schema } = mongoose;
 
-const UserSchema = new Schema({
+interface UserDoc extends Document {
+    email: string;
+    password: string;
+    isModified: (pw: string) => Promise<boolean>;
+    matchPassword: (pw: string) => Promise<boolean>;
+}
+
+const UserSchema = new Schema<UserDoc>({
     email: {
         type: String,
         required: true,
@@ -15,7 +22,7 @@ const UserSchema = new Schema({
     },
 });
 
-UserSchema.pre("save", async function (next) {
+UserSchema.pre<UserDoc>("save", async function (next) {
     try {
         // check method of registration
         const user = this;
@@ -28,11 +35,22 @@ UserSchema.pre("save", async function (next) {
         this.password = hashedPassword;
         next();
     } catch (error) {
+        console.log(getErrorMessage(error));
         getErrorMessage(error);
         return next();
     }
 });
 
-const User = mongoose.model("user", UserSchema);
+UserSchema.methods.matchPassword = async function (password: any) {
+    try {
+        return await bcrypt.compare(password, this.password);
+    } catch (error) {
+        console.log(getErrorMessage(error));
 
-module.exports = User;
+        throw new Error(getErrorMessage(error));
+    }
+};
+
+const User = mongoose.model<UserDoc>("User", UserSchema);
+
+export default User;
