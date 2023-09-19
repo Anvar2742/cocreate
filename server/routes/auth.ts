@@ -8,10 +8,6 @@ const authRouters = Router();
 // Passport config
 passportConfig(passport);
 
-authRouters.post(
-    "/auth/signup",
-    passport.authenticate("local-signup", { session: false }),
-    signup
-);
+authRouters.post("/auth/signup", passport.authenticate("local-signup"), signup);
 
 export default authRouters;

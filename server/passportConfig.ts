@@ -1,9 +1,22 @@
+import UserDoc from "./interfaces/userInterface";
 import User from "./models/User";
 import passportLocal from "passport-local";
 
 const LocalStrategy = passportLocal.Strategy;
 
 const passportConfig = (passport: any) => {
+    // used to serialize the user for the session
+    passport.serializeUser(function (user: UserDoc, done: CallableFunction) {
+        done(null, { email: user.email });
+    });
+
+    // used to deserialize the user
+    passport.deserializeUser(function (id: string, done: CallableFunction) {
+        User.findById(id, function (err: any, user: UserDoc) {
+            done(err, user);
+        });
+    });
+
     passport.use(
         "local-signup",
         new LocalStrategy(

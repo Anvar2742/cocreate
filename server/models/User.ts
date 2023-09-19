@@ -1,14 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import getErrorMessage from "../utils/getErrorMsg";
+import UserDoc from "../interfaces/userInterface";
 const { Schema } = mongoose;
-
-interface UserDoc extends Document {
-    email: string;
-    password: string;
-    isModified: (pw: string) => Promise<boolean>;
-    matchPassword: (pw: string) => Promise<boolean>;
-}
 
 const UserSchema = new Schema<UserDoc>({
     email: {

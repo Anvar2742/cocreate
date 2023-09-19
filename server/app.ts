@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { connect } from "./db";
 import authRouters from "./routes/auth";
+import session from "express-session";
 
 const app = express();
 const port = 5000;
@@ -13,6 +14,14 @@ connect();
 app.get("/", (req: Request, res: Response) => {
     res.send("cool!");
 });
+
+app.use(
+    session({
+        secret: "your-secret-key",
+        resave: false,
+        saveUninitialized: true,
+    })
+);
 
 app.use(authRouters);
 
