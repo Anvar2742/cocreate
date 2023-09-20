@@ -1,11 +1,26 @@
 import { RequestHandler } from "express";
+import passport from "passport";
+import passportConfig from "../passportConfig";
+import UserDoc from "../interfaces/userInterface";
+
+// Passport config
+passportConfig(passport);
 
 export const signup: RequestHandler = (req, res, next) => {
-    const sessionData = req.session;
-    console.log(sessionData);
-        
-    // sign up
-    res.status(202).json({
-        user: req.user,
-    });
+    passport.authenticate(
+        "local-signup",
+        function (err: any, user: UserDoc, info: any) {
+            if (err) {
+                if (err.code === 11000) {
+                    return res
+                        .status(409)
+                        .json({ email: "User already exists" });
+                } else {
+                    return res.sendStatus(400);
+                }
+            }
+
+            return res.json(user);
+        }
+    )(req, res, next);
 };
