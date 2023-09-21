@@ -7,14 +7,21 @@ const LocalStrategy = passportLocal.Strategy;
 
 const passportConfig = (passport: any) => {
     // used to serialize the user for the session
-    passport.serializeUser(function (user: UserDoc, done: any) {
-        done(null, user._id);
+    passport.serializeUser(function (user: UserDoc, cb: CallableFunction) {
+        process.nextTick(function () {
+            console.log("serial");
+            
+            return cb(null, {
+                id: user._id,
+            });
+        });
     });
 
-    // used to deserialize the user
-    passport.deserializeUser(function (id: string, done: any) {
-        User.findById(id, function (err: any, user: any) {
-            done(err, user);
+    passport.deserializeUser(function (user: UserDoc, cb: CallableFunction) {
+        process.nextTick(function () {
+            console.log("desSerial: ", user);
+
+            return cb(null, user);
         });
     });
 
@@ -39,6 +46,8 @@ const passportConfig = (passport: any) => {
 
                     // Create a new user with the user data provided
                     const newUser = await User.create({ email, password });
+                    console.log(newUser);
+
                     return done(null, newUser);
                 } catch (err) {
                     return done(err);

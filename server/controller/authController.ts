@@ -24,3 +24,15 @@ export const signup: RequestHandler = (req, res, next) => {
         }
     )(req, res, next);
 };
+
+export const getUser: RequestHandler = (req, res, next) => {
+    const user = req.user;
+
+    try {
+        console.log("user: ", user );
+        
+        res.send(user);
+    } catch (error) {
+        console.log(error);
+    }
+};
