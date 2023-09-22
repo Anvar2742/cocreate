@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
 import { connect } from "./db";
-import authRouters from "./routes/auth";
-import session from "express-session";
-import flash from "connect-flash";
+import authRouter from "./routes/auth";
 import passport from "passport";
 import passportConfig from "./passportConfig";
+import dotenv from "dotenv";
+dotenv.config();
 
 // Passport config
 passportConfig(passport);
@@ -20,22 +20,7 @@ connect();
 app.get("/", (req: Request, res: Response) => {
     res.send("cool!");
 });
-app.use(flash());
-
-// Configure express-session middleware
-app.use(
-    session({
-        secret: "your-secret-key",
-        resave: false,
-        saveUninitialized: true,
-    })
-);
-
-app.use(passport.initialize());
-
-app.use(passport.session());
-
-app.use(authRouters);
+app.use(authRouter);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port} ⚡️`);

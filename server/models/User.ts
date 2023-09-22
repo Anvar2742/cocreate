@@ -14,6 +14,9 @@ const UserSchema = new Schema<UserDoc>({
         type: String,
         required: true,
     },
+    refreshToken: {
+        type: String,
+    },
 });
 
 UserSchema.pre<UserDoc>("save", async function (next) {

@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import mongoose from "mongoose";
 dotenv.config();
+import mongoose from "mongoose";
 mongoose.Promise = global.Promise;
 const dbUrl: string = process.env.MONGO_DB_URI || "";
 
