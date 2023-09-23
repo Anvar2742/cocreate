@@ -1,7 +1,5 @@
 import User from "./models/User";
-import passport, { PassportStatic } from "passport";
-import { Request } from "express";
-import UserDoc from "./interfaces/userInterface";
+import { PassportStatic } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import dotenv from "dotenv";
 dotenv.config();
@@ -9,22 +7,21 @@ dotenv.config();
 const passportConfig = (passport: PassportStatic) => {
     const opts = {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: process.env.REFRESH_TOKEN_SECRET,
+        secretOrKey: process.env.ACCESS_TOKEN_SECRET,
     };
 
     passport.use(
         new Strategy(opts, async (jwtPayload, done) => {
             try {
-                const user = await User.findById(jwtPayload.id);
+                const user = await User.findOne({ email: jwtPayload.email });
 
                 if (user) {
                     return done(null, user);
                 } else {
-                    return done(null, false);
+                    const customError = new Error("No user found");
+                    return done(customError, false);
                 }
             } catch (error) {
-                console.log(error);
-
                 return done(error, false);
             }
         })

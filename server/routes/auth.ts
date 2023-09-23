@@ -15,7 +15,11 @@ authRouter.get(
     "/protected-route",
     passport.authenticate("jwt", { session: false }),
     (req, res) => {
-        res.send("cooool?");
+        try {
+            res.send("cooool?");
+        } catch (error) {
+            res.send(error);
+        }
     }
 );
 
