@@ -15,7 +15,8 @@
     "mongoose": "^7.5.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -27,6 +28,7 @@
     "@types/node": "^20.6.2",
     "@types/passport-jwt": "^3.0.9",
     "@types/passport-local": "^1.0.35",
+    "@types/validator": "^13.11.1",
     "nodemon": "^3.0.1",
     "typescript": "^5.2.2"
   }

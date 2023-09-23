@@ -53,22 +53,68 @@ const handleEmptyErrors = (
     return errors;
 };
 
+// Error handling
+const handleErrors = (err: any) => {
+    // console.log(err);
+    const errors: { [key: string]: string | undefined } = {
+        email: "",
+        password: "",
+    };
+    // User already exists
+    if (err.code === 11000) {
+        errors.email = "User already exists, please log in.";
+        return errors;
+    }
+
+    // validation errors
+    if (err.message.includes("User validation failed")) {
+        const validationErrors = err.errors as {
+            [key: string]: { message: string; path?: string };
+        };
+        console.log(validationErrors);
+
+        Object.values(validationErrors).forEach(
+            ({
+                path,
+                properties,
+            }: {
+                path?: string;
+                properties?: { message: string };
+            }) => {
+                if (path) {
+                    errors[path] = properties?.message;
+                }
+            }
+        );
+    }
+
+    if (err.message.includes("not valid email")) {
+        errors.password = "Please enter a valid email";
+    }
+
+    if (err.message.includes("incorrect password")) {
+        errors.password = "Incorrect Password";
+    }
+
+    if (err.message.includes("No user with this email")) {
+        errors.email = "No user with this email";
+    }
+
+    return errors;
+};
+
 export const signup: RequestHandler = async (req, res) => {
     const { email, password, passwordRep } = req.body;
     try {
         const errors = handleEmptyErrors(email, password, passwordRep);
-        if (Object.keys(errors).length === 0)
+        if (Object.keys(errors).length === 0) {
             return res.status(400).json(errors);
+        }
 
         if (password !== passwordRep) {
             return res
                 .status(400)
                 .json({ passwordRep: "Passwords need to match" });
-        }
-
-        const user = await User.findOne({ email });
-        if (user) {
-            return res.status(409).json({ email: "User already exists" });
         }
 
         const newUser = await User.create({ email, password });
@@ -88,29 +134,22 @@ export const signup: RequestHandler = async (req, res) => {
 
         res.status(201).json({ accessToken });
     } catch (err) {
-        res.send(err);
+        const errors = handleErrors(err);
+        res.status(400).send(errors);
     }
 };
 
 export const login: RequestHandler = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.sendStatus(404);
-        }
+        const userInstance = new User();
+        const logedInUser = await userInstance.login(email, password);
 
-        const matchPassword = user.matchPassword(password);
+        const { refreshToken, accessToken } = createJWT(logedInUser);
 
-        if (!matchPassword) {
-            return res.sendStatus(401);
-        }
-
-        const { refreshToken, accessToken } = createJWT(user);
-
-        // Saving refreshToken with current user
-        user.refreshToken = refreshToken;
-        await user.save();
+        // Saving refreshToken with current loged in user
+        logedInUser.refreshToken = refreshToken;
+        await logedInUser.save();
 
         // Creates Secure Cookie with refresh token
         res.cookie("jwt", refreshToken, {
@@ -120,9 +159,10 @@ export const login: RequestHandler = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.status(201).json({ accessToken });
+        res.status(200).json({ accessToken });
     } catch (err) {
-        res.send(err);
+        const errors = handleErrors(err);
+        res.status(400).send(errors);
     }
 };
 

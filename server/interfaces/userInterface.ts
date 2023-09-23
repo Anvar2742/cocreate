@@ -4,7 +4,7 @@ interface UserDoc extends Document {
     password: string;
     refreshToken: string;
     isModified: (pw: string) => Promise<boolean>;
-    matchPassword: (pw: string) => Promise<boolean>;
+    login: (email: string, password: string) => Promise<any>;
 }
 
 export default UserDoc;
