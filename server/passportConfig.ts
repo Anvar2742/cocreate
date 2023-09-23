@@ -3,11 +3,13 @@ import passport, { PassportStatic } from "passport";
 import { Request } from "express";
 import UserDoc from "./interfaces/userInterface";
 import { Strategy, ExtractJwt } from "passport-jwt";
+import dotenv from "dotenv";
+dotenv.config();
 
 const passportConfig = (passport: PassportStatic) => {
     const opts = {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: "cool",
+        secretOrKey: process.env.REFRESH_TOKEN_SECRET,
     };
 
     passport.use(

@@ -19,6 +19,7 @@ const createJWT = (user: UserDoc) => {
         process.env.ACCESS_TOKEN_SECRET as string,
         { expiresIn: "10s" }
     );
+
     const refreshToken = jwt.sign(
         { id: user._id },
         process.env.REFRESH_TOKEN_SECRET as string,
@@ -41,7 +42,7 @@ export const signup: RequestHandler = async (req, res) => {
 
         // Saving refreshToken with current user
         console.log(refreshToken);
-        
+
         newUser.refreshToken = refreshToken;
         await newUser.save();
 
@@ -61,22 +62,62 @@ export const signup: RequestHandler = async (req, res) => {
 
 export const login: RequestHandler = async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.sendStatus(404);
+        }
 
-    if (!user) {
-        return res.sendStatus(404);
+        const matchPassword = user.matchPassword(password);
+
+        if (!matchPassword) {
+            return res.sendStatus(401);
+        }
+
+        const { refreshToken, accessToken } = createJWT(user);
+
+        // Saving refreshToken with current user
+        user.refreshToken = refreshToken;
+        await user.save();
+
+        // Creates Secure Cookie with refresh token
+        res.cookie("jwt", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+
+        res.status(201).json({ accessToken });
+    } catch (err) {
+        res.send(err);
     }
+};
 
-    const isValid = await user.matchPassword(password);
-    console.log(isValid);
+export const refresh: RequestHandler = async (req, res) => {
+    const cookies = req.cookies;
+    const refreshToken = cookies?.jwt;
+    if (!refreshToken) return res.sendStatus(401);
 
-    if (!isValid) {
-        return res.status(401).json({ message: "Authentication failed" });
-    }
+    const user = await User.findOne({ refreshToken }).exec();
+    if (!user) return res.sendStatus(403); // Forbidden
 
-    // Create a JWT token
-    const payload = { id: user._id };
-    const token = jwt.sign(payload, "your-secret-key", { expiresIn: "1h" });
+    // evaluate jwt
+    jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET as string,
+        (err: any, decoded: any) => {
+            const userId = user._id.toString();
 
-    res.json({ token });
+            if (err || userId !== decoded.id) return res.sendStatus(403);
+            const accessToken = jwt.sign(
+                {
+                    id: user._id,
+                },
+                process.env.ACCESS_TOKEN_SECRET as string,
+                { expiresIn: "10s" }
+            );
+            res.json({ accessToken });
+        }
+    );
 };

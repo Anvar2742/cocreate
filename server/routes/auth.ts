@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, signup } from "../controller/authController";
+import { login, refresh, signup } from "../controller/authController";
 import passport from "passport";
 import passportConfig from "../passportConfig";
 
@@ -18,5 +18,8 @@ authRouter.get(
         res.send("cooool?");
     }
 );
+
+// refresh token to get new access tokens
+authRouter.get("/refresh", refresh);
 
 export default authRouter;

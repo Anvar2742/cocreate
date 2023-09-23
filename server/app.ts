@@ -4,6 +4,7 @@ import authRouter from "./routes/auth";
 import passport from "passport";
 import passportConfig from "./passportConfig";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 // Passport config
@@ -13,6 +14,7 @@ const app = express();
 const port = 5050;
 
 app.use(express.json());
+app.use(cookieParser());
 
 // connect to db
 connect();
