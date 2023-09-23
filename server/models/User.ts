@@ -42,7 +42,7 @@ UserSchema.pre<UserDoc>("save", async function (next) {
         this.password = hashedPassword;
         next();
     } catch (error) {
-        console.log(getErrorMessage(error));
+        // console.log(getErrorMessage(error));
         getErrorMessage(error);
         return next();
     }

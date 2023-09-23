@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, refresh, signup } from "../controller/authController";
+import { login, logout, refresh, signup } from "../controller/authController";
 import passport from "passport";
 import passportConfig from "../config/passportConfig";
 
@@ -9,6 +9,7 @@ passportConfig(passport);
 const authRouter = Router();
 authRouter.post("/signup", signup);
 authRouter.post("/login", login);
+authRouter.get("/logout", logout);
 
 // use passport.authenticate('jwt') to protect routes
 authRouter.get(
