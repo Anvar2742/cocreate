@@ -6,6 +6,8 @@ import passportConfig from "./config/passportConfig";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 dotenv.config();
+import sendEmail from "./utils/sendEmail";
+// sendEmail().catch(console.error);
 
 // Passport config
 passportConfig(passport);
