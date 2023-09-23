@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import passport from "passport";
-import passportConfig from "../passportConfig";
+import passportConfig from "../config/passportConfig";
 import User from "../models/User";
 import jwt, { Secret } from "jsonwebtoken";
 import UserDoc from "../interfaces/userInterface";
@@ -17,7 +17,7 @@ const createJWT = (user: UserDoc) => {
             email: user.email,
         },
         process.env.ACCESS_TOKEN_SECRET as string,
-        { expiresIn: "10s" }
+        { expiresIn: "15m" }
     );
 
     const refreshToken = jwt.sign(
@@ -71,7 +71,7 @@ const handleErrors = (err: any) => {
         const validationErrors = err.errors as {
             [key: string]: { message: string; path?: string };
         };
-        console.log(validationErrors);
+        // console.log(validationErrors);
 
         Object.values(validationErrors).forEach(
             ({

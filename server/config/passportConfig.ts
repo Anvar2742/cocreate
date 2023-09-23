@@ -1,4 +1,4 @@
-import User from "./models/User";
+import User from "../models/User";
 import { PassportStatic } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import dotenv from "dotenv";

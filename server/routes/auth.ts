@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login, refresh, signup } from "../controller/authController";
 import passport from "passport";
-import passportConfig from "../passportConfig";
+import passportConfig from "../config/passportConfig";
 
 // Passport config
 passportConfig(passport);
