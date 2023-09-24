@@ -4,12 +4,11 @@ export default {
     theme: {
         extend: {
             backgroundColor: {
-                primary: "#0075B0",
-                sec: "#F26870",
+                primary: "#6739FF",
+                sec: "#F9F7FF",
             },
             backgroundImage: {
-                blueOrange:
-                    "linear-gradient(to right, #f26870, #e9659e, #c871c7, #8d82e3, #1291eb)",
+                heroBg: "url('./img/hero.png')"
             },
             boxShadow: {
                 white: "0px 0px 5px 2px rgba(255,255,255,0.5)",

@@ -22,7 +22,7 @@ const Navbar = () => {
                             </ul>
                         </nav>
                     </div>
-                    <button className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-8 rounded-full font-semibold hover:shadow-white hover:bg-sec transition-all">
+                    <button className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-8 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all">
                         Sign Up
                     </button>
                 </div>
