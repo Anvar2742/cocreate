@@ -5,6 +5,7 @@ import passport from "passport";
 import passportConfig from "./config/passportConfig";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 dotenv.config();
 import sendEmail from "./utils/sendEmail";
 // sendEmail().catch(console.error);
@@ -19,6 +20,7 @@ const port = 5050;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 
 app.get("/", (req: Request, res: Response) => {
     res.send("cool!");
