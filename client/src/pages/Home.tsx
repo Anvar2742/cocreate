@@ -1,11 +1,18 @@
 import AuthModal from "../components/AuthModal";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Home = () => {
+    const [isAuthModal, setIsAuthModal] = useState(false);
+
+    const toggleAuthModal = () => {
+        setIsAuthModal((prev) => !prev);
+    };
+
     return (
         <>
-            <Navbar />
+            <Navbar toggleAuthModal={toggleAuthModal} />
             <section className="py-32 bg-heroBg bg-cover">
                 <div className="max-w-5xl mx-auto px-4">
                     <h1 className="text-3xl font-bold">Seak collaborators</h1>
@@ -20,8 +27,14 @@ const Home = () => {
                     </Link>
                 </div>
             </section>
-            <AuthModal />
-            <div className="w-screen h-screen bg-black backdrop-blur-sm bg-opacity-20 fixed top-0 left-0"></div>
+            {isAuthModal ? (
+                <>
+                    <AuthModal toggleAuthModal={toggleAuthModal} />
+                    <div className="w-screen h-screen bg-black backdrop-blur-sm bg-opacity-20 fixed top-0 left-0"></div>
+                </>
+            ) : (
+                ""
+            )}
         </>
     );
 };

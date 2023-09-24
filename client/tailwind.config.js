@@ -3,8 +3,9 @@ export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
         extend: {
-            textColor: {
+            colors: {
                 blueGray: "#334E68",
+                secRed: "#FF1783",
             },
             backgroundColor: {
                 primary: "#6739FF",
@@ -13,7 +14,7 @@ export default {
             },
             backgroundImage: {
                 heroBg: "url('./img/hero.png')",
-                test: "url(https://images.unsplash.com/photo-1544306094-e2dcf9479da3)"
+                test: "url(https://images.unsplash.com/photo-1544306094-e2dcf9479da3)",
             },
             boxShadow: {
                 white: "0px 0px 5px 2px rgba(255,255,255,0.5)",

@@ -1,4 +1,10 @@
-const Navbar = () => {
+import { MouseEventHandler } from "react";
+
+const Navbar = ({
+    toggleAuthModal,
+}: {
+    toggleAuthModal: MouseEventHandler<HTMLButtonElement>;
+}) => {
     return (
         <header className="py-4 bg-primary text-white">
             <div className="max-w-5xl px-4 m-auto flex justify-between items-center">
@@ -22,7 +28,10 @@ const Navbar = () => {
                             </ul>
                         </nav>
                     </div>
-                    <button className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-8 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all">
+                    <button
+                        className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-8 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
+                        onClick={toggleAuthModal}
+                    >
                         Sign Up
                     </button>
                 </div>

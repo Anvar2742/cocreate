@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
+import { CloseIcon } from "../assets/svgIcons";
 
-const AuthModal = () => {
+const AuthModal = ({
+    toggleAuthModal,
+}: {
+    toggleAuthModal: MouseEventHandler<HTMLButtonElement>;
+}) => {
     const [isSignup, setIsSignup] = useState(true);
 
     const toggleForm = () => {
@@ -9,7 +14,7 @@ const AuthModal = () => {
 
     return (
         <div
-            className={`text-white fixed top-1/2 -translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-primary py-8 flex items-center flex-col bg-cover z-10 rounded-2xl transition-all overflow-hidden ${
+            className={`text-white fixed top-1/2 -translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-primary pt-8 pb-12 flex items-center flex-col bg-cover z-10 rounded-2xl transition-all ${
                 isSignup ? " max-h-96  duration-500" : " max-h-64 duration-300"
             }`}
         >
@@ -60,7 +65,9 @@ const AuthModal = () => {
                 </div>
                 <div
                     className={`transition-all ${
-                        !isSignup ? "translate-y-8 opacity-0" : ""
+                        !isSignup
+                            ? "translate-y-8 opacity-0 pointer-events-none -z-10 select-none"
+                            : ""
                     }`}
                 >
                     <label htmlFor="password" className="block font-semibold">
@@ -74,6 +81,12 @@ const AuthModal = () => {
                     />
                 </div>
             </form>
+            <button
+                className="absolute -bottom-3 bg-secRed w-9 h-9 flex items-center justify-center rounded-full"
+                onClick={toggleAuthModal}
+            >
+                <CloseIcon className="w-6 h-6 stroke-white" />
+            </button>
         </div>
     );
 };
