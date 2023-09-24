@@ -1,3 +1,4 @@
+import AuthModal from "../components/AuthModal";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
@@ -19,6 +20,8 @@ const Home = () => {
                     </Link>
                 </div>
             </section>
+            <AuthModal />
+            <div className="w-screen h-screen bg-black backdrop-blur-sm bg-opacity-20 fixed top-0 left-0"></div>
         </>
     );
 };
