@@ -29,7 +29,10 @@ const Home = () => {
             </section>
             {isAuthModal ? (
                 <>
-                    <AuthModal toggleAuthModal={toggleAuthModal} />
+                    <AuthModal
+                        toggleAuthModal={toggleAuthModal}
+                        isAuthModal={isAuthModal}
+                    />
                     <div className="w-screen h-screen bg-black backdrop-blur-sm bg-opacity-20 fixed top-0 left-0"></div>
                 </>
             ) : (

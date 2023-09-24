@@ -7,11 +7,14 @@ import {
 } from "react";
 import { CloseIcon } from "../assets/svgIcons";
 import axios from "../api/axios";
+import useAuth from "./../hooks/useAuth";
 
 const AuthModal = ({
     toggleAuthModal,
+    isAuthModal,
 }: {
-    toggleAuthModal: MouseEventHandler<HTMLButtonElement>;
+    toggleAuthModal: CallableFunction;
+    isAuthModal: boolean;
 }) => {
     interface formData {
         [key: string]: string;
@@ -21,6 +24,8 @@ const AuthModal = ({
         password: "",
         passwordRep: "",
     };
+
+    const { setAuth } = useAuth();
 
     const [isSignup, setIsSignup] = useState(true);
     const [formData, setformData] = useState<formData>(initialFormData);
@@ -68,7 +73,13 @@ const AuthModal = ({
                     withCredentials: true,
                 }
             );
-            console.log(resp);
+
+            // console.log(resp);
+            if (resp.status === 200 || resp.status === 201) {
+                const accessToken = resp.data?.accessToken;
+                setAuth({ accessToken });
+                toggleAuthModal();
+            }
         } catch (err) {
             console.log(err);
         }
@@ -84,8 +95,8 @@ const AuthModal = ({
     };
 
     useEffect(() => {
-        // console.log(formData);
-    }, [formData]);
+        setformData(initialFormData);
+    }, [isAuthModal]);
 
     return (
         <div
@@ -196,7 +207,7 @@ const AuthModal = ({
             </form>
             <button
                 className="absolute -bottom-3 bg-secRed w-9 h-9 flex items-center justify-center rounded-full"
-                onClick={toggleAuthModal}
+                onClick={() => toggleAuthModal}
             >
                 <CloseIcon className="w-6 h-6 stroke-white" />
             </button>
