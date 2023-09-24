@@ -1,6 +1,7 @@
 import { MouseEventHandler } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { IconUser } from "@tabler/icons-react";
 
 const Navbar = ({
     toggleAuthModal,
@@ -8,6 +9,7 @@ const Navbar = ({
     toggleAuthModal: MouseEventHandler<HTMLButtonElement>;
 }) => {
     const { auth } = useAuth();
+    console.log(auth);
 
     return (
         <header className="py-4 bg-primary text-white">
@@ -34,10 +36,10 @@ const Navbar = ({
                     </div>
                     {auth?.accessToken ? (
                         <Link
-                            to="/discover"
-                            className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-8 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
+                            to="/profile"
+                            className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-3 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
                         >
-                            Discover
+                            <IconUser />
                         </Link>
                     ) : (
                         <button

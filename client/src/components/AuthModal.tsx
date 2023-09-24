@@ -1,13 +1,7 @@
-import {
-    MouseEventHandler,
-    useState,
-    useEffect,
-    ChangeEvent,
-    FormEvent,
-} from "react";
-import { CloseIcon } from "../assets/svgIcons";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import axios from "../api/axios";
 import useAuth from "./../hooks/useAuth";
+import { IconX } from "@tabler/icons-react";
 
 const AuthModal = ({
     toggleAuthModal,
@@ -207,9 +201,9 @@ const AuthModal = ({
             </form>
             <button
                 className="absolute -bottom-3 bg-secRed w-9 h-9 flex items-center justify-center rounded-full"
-                onClick={() => toggleAuthModal}
+                onClick={() => toggleAuthModal()}
             >
-                <CloseIcon className="w-6 h-6 stroke-white" />
+                <IconX color="white" />
             </button>
         </div>
     );
