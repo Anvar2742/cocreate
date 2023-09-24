@@ -26,8 +26,9 @@ const AuthModal = ({
     const [formData, setformData] = useState<formData>(initialFormData);
     const [formErrors, setformErrors] = useState(initialFormData);
 
-    const toggleForm = () => {
-        setIsSignup((prev) => !prev);
+    const toggleForm = (isSignupClick: boolean) => {
+        setIsSignup(isSignupClick);
+        setformErrors(initialFormData);
     };
 
     const handleErrors = (formData: formData) => {
@@ -92,7 +93,7 @@ const AuthModal = ({
         >
             <div className="flex justify-center bg-primary bg-opacity-60 backdrop-blur-sm text-white rounded-2xl mb-4">
                 <button
-                    onClick={toggleForm}
+                    onClick={() => toggleForm(true)}
                     className={`font-semibold py-2 px-8 border-2 rounded-2xl transition-all ${
                         isSignup
                             ? " bg-primary bg-opacity-100 border-primary"
@@ -102,7 +103,7 @@ const AuthModal = ({
                     Sign up
                 </button>
                 <button
-                    onClick={toggleForm}
+                    onClick={() => toggleForm(false)}
                     className={`font-semibold py-2 px-8 border-2 rounded-2xl transition-all ${
                         !isSignup
                             ? " bg-primary bg-opacity-100 border-primary"
@@ -113,10 +114,10 @@ const AuthModal = ({
                 </button>
             </div>
             <form
-                className="mt-4 w-full px-10 flex flex-col items-center gap-2"
+                className="mt-4 w-full px-10 flex flex-col items-center"
                 onSubmit={(e) => submitForm(e)}
             >
-                <div>
+                <div className="mb-2">
                     <label htmlFor="email" className="block font-semibold">
                         Email
                     </label>
@@ -129,8 +130,13 @@ const AuthModal = ({
                         onChange={handleFormData}
                         value={formData.email}
                     />
+                    {formErrors?.email ? (
+                        <p className="text-red-400 mt-2">{formErrors?.email}</p>
+                    ) : (
+                        ""
+                    )}
                 </div>
-                <div>
+                <div className="">
                     <label htmlFor="password" className="block font-semibold">
                         Password
                     </label>
@@ -143,12 +149,19 @@ const AuthModal = ({
                         onChange={handleFormData}
                         value={formData.password}
                     />
+                    {formErrors?.password ? (
+                        <p className="text-red-400 mt-2">
+                            {formErrors?.password}
+                        </p>
+                    ) : (
+                        ""
+                    )}
                 </div>
                 <div
                     className={`transition-all ${
                         !isSignup
-                            ? " opacity-0 pointer-events-none -z-10 select-none h-0"
-                            : "h-20"
+                            ? " opacity-0 pointer-events-none -z-10 select-none max-h-0"
+                            : " max-h-60 mt-2"
                     }`}
                 >
                     <label
@@ -166,10 +179,17 @@ const AuthModal = ({
                         onChange={handleFormData}
                         value={formData.passwordRep}
                     />
+                    {formErrors?.passwordRep ? (
+                        <p className="text-red-400 mt-2">
+                            {formErrors?.passwordRep}
+                        </p>
+                    ) : (
+                        ""
+                    )}
                 </div>
                 <button
                     type="submit"
-                    className="bg-primary text-white py-2 px-8 rounded-xl text-lg font-semibold"
+                    className="bg-primary text-white py-2 px-8 rounded-xl text-lg font-semibold mt-6"
                 >
                     Submit
                 </button>
