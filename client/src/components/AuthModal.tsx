@@ -14,16 +14,16 @@ const AuthModal = ({
 
     return (
         <div
-            className={`text-white fixed top-1/2 -translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-primary pt-8 pb-12 flex items-center flex-col bg-cover z-10 rounded-2xl transition-all ${
-                isSignup ? " max-h-96  duration-500" : " max-h-64 duration-300"
+            className={`text-blueGray fixed top-1/2 -translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center flex-col bg-cover z-10 rounded-2xl transition-all ${
+                isSignup ? " max-h-96  duration-500" : " max-h-72 duration-300"
             }`}
         >
-            <div className="flex justify-center bg-white bg-opacity-30 backdrop-blur-sm text-white rounded-2xl">
+            <div className="flex justify-center bg-primary bg-opacity-60 backdrop-blur-sm text-white rounded-2xl mb-4">
                 <button
                     onClick={toggleForm}
                     className={`font-semibold py-2 px-8 border-2 rounded-2xl transition-all ${
                         isSignup
-                            ? "border-white bg-white bg-opacity-50 text-gray-900"
+                            ? " bg-primary bg-opacity-100 border-primary"
                             : "border-transparent"
                     }`}
                 >
@@ -33,7 +33,7 @@ const AuthModal = ({
                     onClick={toggleForm}
                     className={`font-semibold py-2 px-8 border-2 rounded-2xl transition-all ${
                         !isSignup
-                            ? "border-white bg-white bg-opacity-50 text-gray-900"
+                            ? " bg-primary bg-opacity-100 border-primary"
                             : "border-transparent"
                     }`}
                 >
@@ -48,7 +48,7 @@ const AuthModal = ({
                     <input
                         type="text"
                         id="email"
-                        className="bg-input text-blueGray py-1 px-3 rounded-lg mt-1 w-full"
+                        className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
                         placeholder="Your email"
                     />
                 </div>
@@ -59,7 +59,7 @@ const AuthModal = ({
                     <input
                         type="password"
                         id="password"
-                        className="bg-input text-blueGray py-1 px-3 rounded-lg mt-1 w-full"
+                        className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
                         placeholder="Not 1234 please:)"
                     />
                 </div>
@@ -76,7 +76,7 @@ const AuthModal = ({
                     <input
                         type="password"
                         id="password"
-                        className="bg-input text-blueGray py-1 px-3 rounded-lg mt-1 w-full"
+                        className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
                         placeholder="Repeat the same password"
                     />
                 </div>

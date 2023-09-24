@@ -6,8 +6,6 @@ export default {
             colors: {
                 blueGray: "#334E68",
                 secRed: "#FF1783",
-            },
-            backgroundColor: {
                 primary: "#6739FF",
                 sec: "#F9F7FF",
                 input: "#F0F4F8",
