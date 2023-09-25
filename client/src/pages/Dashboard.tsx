@@ -15,7 +15,7 @@ const Dashboard = () => {
 
     return (
         <section className="py-10">
-            <div className="max-w-5xl px-4">
+            <div className="max-w-5xl px-4 mx-auto">
                 <h1 className="font-bold text-4xl">Your dashboard</h1>
                 {auth?.accessToken ? (
                     <button
