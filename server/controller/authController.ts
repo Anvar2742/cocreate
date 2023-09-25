@@ -3,7 +3,7 @@ import passport from "passport";
 import passportConfig from "../config/passportConfig";
 import User from "../models/User";
 import jwt, { Secret } from "jsonwebtoken";
-import UserDoc from "../interfaces/userInterface";
+import UserDoc from "../interfaces/interfaces";
 import dotenv from "dotenv";
 dotenv.config();
 

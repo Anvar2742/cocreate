@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import getErrorMessage from "../utils/getErrorMsg";
-import UserDoc from "../interfaces/userInterface";
+import { UserDoc } from "../interfaces/interfaces";
 import validator from "validator";
 const { Schema } = mongoose;
 
