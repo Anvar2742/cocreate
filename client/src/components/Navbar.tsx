@@ -1,45 +1,65 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { IconUser } from "@tabler/icons-react";
+import { IconMenu, IconUser, IconX } from "@tabler/icons-react";
 
 const Navbar = ({
     toggleAuthModal,
 }: {
     toggleAuthModal: MouseEventHandler<HTMLButtonElement>;
 }) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { auth } = useAuth();
+
+    const toggleMenu = () => {
+        setIsMenuOpen((prev) => !prev);
+    };
 
     return (
         <header className="py-4 bg-primary text-white">
             <div className="max-w-5xl px-4 m-auto flex justify-between items-center">
                 <a href="/" className="font-extrabold text-4xl text-white">
-                    CoCreate
+                    LoPsum
                 </a>
                 <div className="flex items-center gap-10">
-                    <div className="hidden sm:block">
+                    <div
+                        className={`hiddens sm:block fixed bottom-0 bg-primary w-1/2 p-7 h-4 z-20 flex items-center justify-between transition-all duration-300 ${
+                            isMenuOpen ? "right-0" : "-right-full opacity-0"
+                        }`}
+                    >
                         <nav>
                             <ul className="flex gap-4">
                                 <li>
-                                    <a href="#" className="">
-                                        Projects
-                                    </a>
+                                    <Link to="/courses">Lorem</Link>
                                 </li>
                                 <li>
-                                    <a href="#" className="">
-                                        Profiles
-                                    </a>
+                                    <Link to="/students">Ipsum</Link>
                                 </li>
                             </ul>
                         </nav>
+
+                        <button
+                            className=" bg-secRed w-9 h-9 flex items-center justify-center rounded-full"
+                            onClick={toggleMenu}
+                        >
+                            <IconX color="white" />
+                        </button>
                     </div>
                     {auth?.accessToken ? (
-                        <Link
-                            to="/dashboard"
-                            className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-3 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
-                        >
-                            <IconUser />
-                        </Link>
+                        <div className="flex gap-2">
+                            <Link
+                                to="/dashboard"
+                                className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-3 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
+                            >
+                                <IconUser />
+                            </Link>
+                            <button
+                                onClick={toggleMenu}
+                                className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-3 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
+                            >
+                                <IconMenu />
+                            </button>
+                        </div>
                     ) : (
                         <button
                             className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-8 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"

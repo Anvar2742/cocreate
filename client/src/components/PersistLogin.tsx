@@ -43,17 +43,15 @@ const PersistLogin = () => {
             <Navbar toggleAuthModal={toggleAuthModal} />
             <Outlet />
 
-            {isAuthModal ? (
-                <>
-                    <AuthModal
-                        toggleAuthModal={toggleAuthModal}
-                        isAuthModal={isAuthModal}
-                    />
-                    <div className="w-screen h-screen bg-black backdrop-blur-sm bg-opacity-20 fixed top-0 left-0"></div>
-                </>
-            ) : (
-                ""
-            )}
+            <AuthModal
+                toggleAuthModal={toggleAuthModal}
+                isAuthModal={isAuthModal}
+            />
+            <div
+                className={`w-screen h-screen backdrop-blur-sm bg-opacity-20 fixed left-0 transition-all duration-300 ${
+                    isAuthModal ? "bg-black top-0" : "bg-transparent -top-full"
+                }`}
+            ></div>
         </>
     );
 };

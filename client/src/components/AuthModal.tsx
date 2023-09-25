@@ -51,6 +51,12 @@ const AuthModal = ({
             return false;
         }
 
+        if (!(formData.password === formData.passwordRep) && isSignup) {
+            authErrors.passwordRep = "Passwords don't match";
+            setformErrors(authErrors);
+            return false;
+        }
+
         return true;
     };
 
@@ -68,7 +74,7 @@ const AuthModal = ({
                 }
             );
 
-            // console.log(resp);
+            console.log(resp);
             if (resp.status === 200 || resp.status === 201) {
                 const accessToken = resp.data?.accessToken;
                 setAuth({ accessToken });
@@ -80,6 +86,8 @@ const AuthModal = ({
     };
 
     const handleFormData = async (e: ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.name);
+        
         setformData((prevFormData) => {
             return {
                 ...prevFormData,
@@ -90,11 +98,18 @@ const AuthModal = ({
 
     useEffect(() => {
         setformData(initialFormData);
+        setformErrors(initialFormData);
     }, [isAuthModal]);
+
+    useEffect(() => {
+        console.log(formErrors);
+    }, [formErrors]);
 
     return (
         <div
-            className={`text-blueGray fixed top-1/2 -translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center flex-col bg-cover z-10 rounded-2xl transition-all`}
+            className={`text-blueGray fixed translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center flex-col bg-cover z-10 rounded-2xl transition-all duration-500 ${
+                isAuthModal ? "bottom-1/2" : "-bottom-full"
+            }`}
         >
             <div className="flex justify-center bg-primary bg-opacity-60 backdrop-blur-sm text-white rounded-2xl mb-4">
                 <button
@@ -127,7 +142,7 @@ const AuthModal = ({
                         Email
                     </label>
                     <input
-                        type="text"
+                        type="email"
                         id="email"
                         className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
                         placeholder="Your email"
@@ -179,7 +194,7 @@ const AuthModal = ({
                         type="password"
                         id="passwordRep"
                         className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
-                        placeholder="Repeat the same passwordRep"
+                        placeholder="Repeate password"
                         name="passwordRep"
                         onChange={handleFormData}
                         value={formData.passwordRep}
