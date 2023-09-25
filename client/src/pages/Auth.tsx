@@ -1,15 +1,11 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import axios from "../api/axios";
 import useAuth from "./../hooks/useAuth";
-import { IconX } from "@tabler/icons-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const AuthModal = ({
-    toggleAuthModal,
-    isAuthModal,
-}: {
-    toggleAuthModal: CallableFunction;
-    isAuthModal: boolean;
-}) => {
+const Auth = () => {
+    const location = useLocation();
+    const { auth } = useAuth();
     interface formData {
         [key: string]: string;
     }
@@ -18,6 +14,7 @@ const AuthModal = ({
         password: "",
         passwordRep: "",
     };
+    const navigate = useNavigate();
 
     const { setAuth } = useAuth();
 
@@ -78,7 +75,7 @@ const AuthModal = ({
             if (resp.status === 200 || resp.status === 201) {
                 const accessToken = resp.data?.accessToken;
                 setAuth({ accessToken });
-                toggleAuthModal();
+                navigate(location?.state?.from);
             }
         } catch (err) {
             console.log(err);
@@ -86,8 +83,8 @@ const AuthModal = ({
     };
 
     const handleFormData = async (e: ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.name);
-        
+        // console.log(e.target.name);
+
         setformData((prevFormData) => {
             return {
                 ...prevFormData,
@@ -96,21 +93,20 @@ const AuthModal = ({
         });
     };
 
-    useEffect(() => {
-        setformData(initialFormData);
-        setformErrors(initialFormData);
-    }, [isAuthModal]);
+    // useEffect(() => {
+    //     // console.log(formErrors);
+    // }, [formErrors]);
 
     useEffect(() => {
-        // console.log(formErrors);
-    }, [formErrors]);
+        console.log(auth);
+
+        if (auth?.accessToken) {
+            navigate(location?.state?.from);
+        }
+    }, [location?.pathname]);
 
     return (
-        <div
-            className={`text-blueGray fixed translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center flex-col bg-cover z-10 rounded-2xl transition-all duration-500 ${
-                isAuthModal ? "bottom-1/2" : "-bottom-full"
-            }`}
-        >
+        <div className="text-blueGray mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center justify-center flex-col bg-cover z-10 rounded-2xl transition-all duration-500 h-screen">
             <div className="flex justify-center bg-primary bg-opacity-60 backdrop-blur-sm text-white rounded-2xl mb-4">
                 <button
                     onClick={() => toggleForm(true)}
@@ -214,14 +210,8 @@ const AuthModal = ({
                     Submit
                 </button>
             </form>
-            <button
-                className="absolute -bottom-3 bg-secRed w-9 h-9 flex items-center justify-center rounded-full"
-                onClick={() => toggleAuthModal()}
-            >
-                <IconX color="white" />
-            </button>
         </div>
     );
 };
 
-export default AuthModal;
+export default Auth;

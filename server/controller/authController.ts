@@ -213,7 +213,7 @@ export const refresh: RequestHandler = async (req, res) => {
                 process.env.ACCESS_TOKEN_SECRET as string,
                 { expiresIn: "15m" }
             );
-            res.json({ accessToken });
+            return res.json({ accessToken });
         }
     );
 };

@@ -34,24 +34,29 @@ const PersistLogin = () => {
         auth?.accessToken && auth?.accessToken === false
             ? setIsLoading(false)
             : verifyRefreshToken();
-    }, [location.pathname]);
+    }, [location?.pathname]);
 
     if (isLoading) return <Loader />;
 
     return (
         <>
-            <Navbar toggleAuthModal={toggleAuthModal} />
+            {!(location?.pathname === "/auth") ? (
+                <Navbar toggleAuthModal={toggleAuthModal} />
+            ) : (
+                ""
+            )}
             <Outlet />
 
-            <AuthModal
-                toggleAuthModal={toggleAuthModal}
-                isAuthModal={isAuthModal}
-            />
-            <div
-                className={`w-screen h-screen backdrop-blur-sm bg-opacity-20 fixed left-0 transition-all duration-300 ${
-                    isAuthModal ? "bg-black top-0" : "bg-transparent -top-full"
-                }`}
-            ></div>
+            {!(location?.pathname === "/auth") ? (
+                <>
+                    <AuthModal
+                        toggleAuthModal={toggleAuthModal}
+                        isAuthModal={isAuthModal}
+                    />
+                </>
+            ) : (
+                ""
+            )}
         </>
     );
 };
