@@ -3,6 +3,7 @@ import { UserDoc } from "../interfaces/interfaces";
 import dotenv from "dotenv";
 import Course from "../models/Course";
 import slugify from "../utils/slugify";
+import User from "../models/User";
 dotenv.config();
 
 const handleErrors = (err: any) => {
@@ -84,5 +85,24 @@ export const getSingleCourse = async (req: Request, res: Response) => {
         res.status(200).send(course);
     } catch (error) {
         res.send(error);
+    }
+};
+
+export const giveAccessToCourse = async (req: Request, res: Response) => {
+    const { studentEmail: email, courseId } = req.body;
+    try {
+        const user = req.user as UserDoc;
+        if (!user || user.userType !== "tutor") {
+            return res.status(401).send("You're not a tutor:(");
+        }
+        if (!email) return res.status(400).send("Provide email");
+        const student = await User.findOne({ email });
+        if (!student) return res.status(404).send("No student with this email");
+        if (!courseId) return res.status(400).send("No course ID");
+        student.courses.push(courseId);
+        await student.save();
+        res.status(204).send("Data saved successfully");
+    } catch (error) {
+        console.log(error);
     }
 };

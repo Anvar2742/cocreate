@@ -31,7 +31,7 @@ const UserSchema = new Schema<UserDoc>({
         type: String,
     },
     courses: {
-        type: Array,
+        type: [String],
     },
 });
 

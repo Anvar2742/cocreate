@@ -18,13 +18,10 @@ export const onboard: RequestHandler = async (req, res) => {
 
         if (!user) return res.sendStatus(401);
         const currentUser = await User.findOne({ email });
-        if (currentUser) {
-            currentUser.userType = userType;
-            await currentUser.save();
-            res.status(204);
-        } else {
-            res.sendStatus(404);
-        }
+        if (!currentUser) return res.sendStatus(404);
+        currentUser.userType = userType;
+        await currentUser.save();
+        res.sendStatus(204);
     } catch (err) {
         res.status(400).send(err);
     }
