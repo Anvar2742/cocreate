@@ -34,7 +34,7 @@ const Courses = () => {
             setCoursesEls(() => {
                 return coursesArr.map((course) => {
                     return (
-                        <Link to={`/${course.slug}`} key={course._id} className="border-2 border-primary rounded-md bg-gray-100 py-2 px-4 block">
+                        <Link to={`/courses/${course.slug}`} key={course._id} className="border-2 border-primary rounded-md bg-gray-100 py-2 px-4 block">
                             <h3 className="font-bold text-2xl">{course.title}</h3>
                             <p>{course.description}</p>
                         </Link>
