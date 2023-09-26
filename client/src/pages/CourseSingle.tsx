@@ -29,11 +29,13 @@ const CourseSingle = () => {
     }, [location?.pathname]);
 
     return (
-        <div>
-            {isLoading ? "loading..." : ""}
-            <h1>{course?.title}</h1>
-            <p>{course?.description}</p>
-        </div>
+        <section className="pt-6">
+            <div className="max-w-5xl px-4 m-auto">
+                {isLoading ? "loading..." : ""}
+                <h1 className="font-bold text-5xl mb-3">{course?.title}</h1>
+                <p>{course?.description}</p>
+            </div>
+        </section>
     );
 };
 
