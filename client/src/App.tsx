@@ -6,6 +6,7 @@ import Courses from "./pages/Courses";
 import RequireAuth from "./components/RequireAuth";
 import Auth from "./pages/Auth";
 import CourseSingle from "./pages/CourseSingle";
+import LessonSingle from "./pages/LessonSingle";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/courses/:slug" element={<CourseSingle />} />
+                    <Route path="/courses/:slug/:lessonSlug" element={<LessonSingle />} />
                 </Route>
             </Route>
         </Routes>

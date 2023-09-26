@@ -1,6 +1,6 @@
 import { axiosInstance } from "../api/axios";
 import useAuth from "../hooks/useAuth";
-import Lesson from "./Lesson";
+import Lesson from "../components/LessonEditor";
 
 const Dashboard = () => {
     const { auth, setAuth } = useAuth();

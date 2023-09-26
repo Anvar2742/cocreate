@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Link } from "react-router-dom";
-import { LessonDoc } from "../interfaces/interfaces";
+import { CourseDoc, LessonDoc } from "../interfaces/interfaces";
 
-const Lessons = ({ courseId }: { courseId: string }) => {
+const Lessons = ({ course }: { course: CourseDoc | null }) => {
     const [lessonsArr, setLessonsArr] = useState<LessonDoc[]>([]);
     const [lessonsEls, setLessonsEls] = useState<JSX.Element[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const courseId = course?._id;
 
     const getLessons = async () => {
         try {
@@ -23,8 +24,10 @@ const Lessons = ({ courseId }: { courseId: string }) => {
     const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
-        getLessons();
-    }, []);
+        if (courseId) {
+            getLessons();
+        }
+    }, [course]);
 
     useEffect(() => {
         if (lessonsArr.length) {
@@ -32,7 +35,7 @@ const Lessons = ({ courseId }: { courseId: string }) => {
                 return lessonsArr.map((lesson) => {
                     return (
                         <Link
-                            to={`/lessons/${lesson.slug}`}
+                            to={`/courses/${course?.slug}/${lesson.slug}`}
                             key={lesson._id}
                             className="border-2 border-primary rounded-md bg-gray-100 py-2 px-4 block"
                         >

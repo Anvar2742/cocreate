@@ -1,22 +1,22 @@
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
-import { CourseDoc } from "../interfaces/interfaces";
-import Lessons from "./Lessons";
+import { LessonDoc } from "../interfaces/interfaces";
+import LessonEditor from "../components/LessonEditor";
 
-const CourseSingle = () => {
-    const { slug } = useParams();
+const LessonSingle = () => {
+    const { lessonSlug: slug } = useParams();
     const axiosPrivate = useAxiosPrivate();
-    const [course, setCourse] = useState<CourseDoc | null>(null);
+    const [lesson, setLesson] = useState<LessonDoc | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const getSingleCourse = async () => {
+    const getSingleLesson = async () => {
         try {
-            const resp = await axiosPrivate.post("/course", { slug });
+            const resp = await axiosPrivate.post("/lesson", { slug });
             console.log(resp);
 
             if (resp.status === 200) {
-                setCourse(resp.data);
+                setLesson(resp.data);
                 setIsLoading(false);
             }
         } catch (error) {
@@ -26,7 +26,7 @@ const CourseSingle = () => {
     };
 
     useEffect(() => {
-        getSingleCourse();
+        getSingleLesson();
     }, [location?.pathname]);
 
     return (
@@ -38,16 +38,16 @@ const CourseSingle = () => {
                     <>
                         <div className="mb-4">
                             <h1 className="font-bold text-5xl mb-3">
-                                {course?.title}
+                                {lesson?.title}
                             </h1>
-                            <p>{course?.description}</p>
+                            <p>{lesson?.description}</p>
                         </div>
-                        <Lessons course={course} />
                     </>
                 )}
+                <LessonEditor />
             </div>
         </section>
     );
 };
 
-export default CourseSingle;
+export default LessonSingle;
