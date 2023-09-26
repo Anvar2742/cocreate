@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 dotenv.config();
 import sendEmail from "./utils/sendEmail";
+import lessonRouter from "./routes/lessonRouter";
 // sendEmail().catch(console.error);
 
 // Passport config
@@ -30,6 +31,7 @@ app.get("/", (req: Request, res: Response) => {
 // Routes
 app.use(authRouter);
 app.use(courseRouter);
+app.use(lessonRouter);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port} ✨`);
