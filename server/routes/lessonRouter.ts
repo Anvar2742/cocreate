@@ -4,6 +4,7 @@ import {
     createLesson,
     getLessons,
     getSingleLesson,
+    updateLesson,
 } from "../controller/lessonController";
 
 const lessonRouter = Router();
@@ -24,6 +25,12 @@ lessonRouter.post(
     "/lesson",
     passport.authenticate("jwt", { session: false }),
     getSingleLesson
+);
+
+lessonRouter.put(
+    "/lesson",
+    passport.authenticate("jwt", { session: false }),
+    updateLesson
 );
 
 export default lessonRouter;

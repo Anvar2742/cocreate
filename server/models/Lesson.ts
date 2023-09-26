@@ -18,6 +18,9 @@ const LessonSchema = new Schema<LessonDoc>({
         type: String,
         unique: true,
     },
+    content: {
+        type: String,
+    },
 });
 
 const Lesson = mongoose.model("lesson", LessonSchema);

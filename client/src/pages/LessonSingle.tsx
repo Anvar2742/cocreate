@@ -5,10 +5,10 @@ import { LessonDoc } from "../interfaces/interfaces";
 import LessonEditor from "../components/LessonEditor";
 
 const LessonSingle = () => {
-    const { lessonSlug: slug } = useParams();
-    const axiosPrivate = useAxiosPrivate();
     const [lesson, setLesson] = useState<LessonDoc | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const axiosPrivate = useAxiosPrivate();
+    const { lessonSlug: slug } = useParams();
 
     const getSingleLesson = async () => {
         try {
@@ -25,18 +25,34 @@ const LessonSingle = () => {
         }
     };
 
+    const updateLesson = async (content: string) => {
+        try {
+            const resp = await axiosPrivate.put("/lesson", {
+                slug,
+                content,
+            });
+            console.log(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const updateContent = (content: string) => {
+        updateLesson(content);
+    };
+
     useEffect(() => {
         getSingleLesson();
     }, [location?.pathname]);
 
     return (
-        <section className="pt-6">
-            <div className="max-w-5xl px-4 m-auto">
+        <section className="py-20">
+            <div className="max-w-5xl px-4 m-auto overflow-y-hidden">
                 {isLoading ? (
                     "loading..."
                 ) : (
                     <>
-                        <div className="mb-4">
+                        <div className="mb-10">
                             <h1 className="font-bold text-5xl mb-3">
                                 {lesson?.title}
                             </h1>
@@ -44,7 +60,18 @@ const LessonSingle = () => {
                         </div>
                     </>
                 )}
-                <LessonEditor />
+                <div
+                    className={`transition-all duration-500 ${
+                        isLoading
+                            ? "opacity-0 translate-y-full"
+                            : "opacity-100 translate-y-0"
+                    }`}
+                >
+                    <LessonEditor
+                        updateContent={updateContent}
+                        initialContent={lesson?.content}
+                    />
+                </div>
             </div>
         </section>
     );

@@ -44,7 +44,7 @@ export const createLesson = async (req: Request, res: Response) => {
     const { title, description, courseId } = req.body;
     try {
         const slug = slugify(title);
-        
+
         const newLesson = await Lesson.create({
             title,
             description,
@@ -79,6 +79,22 @@ export const getSingleLesson = async (req: Request, res: Response) => {
         const lesson = await Lesson.findOne({ slug });
         if (!lesson) return res.sendStatus(404);
         res.status(200).send(lesson);
+    } catch (error) {
+        res.send(error);
+    }
+};
+
+export const updateLesson = async (req: Request, res: Response) => {
+    const { slug, content } = req.body;
+    try {
+        if (!slug) return res.sendStatus(400);
+        const lesson = await Lesson.findOne({ slug });
+        if (!lesson) return res.sendStatus(404);
+        if (!content) return res.sendStatus(400);
+        lesson.content = content;
+        await lesson.save();
+
+        res.status(204).send(lesson);
     } catch (error) {
         res.send(error);
     }

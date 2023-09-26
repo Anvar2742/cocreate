@@ -9,4 +9,5 @@ export interface LessonDoc {
     description: string;
     _id: string;
     slug: string;
+    content: string;
 }
