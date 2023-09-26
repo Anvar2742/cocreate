@@ -62,3 +62,15 @@ export const createCourse = async (req: Request, res: Response) => {
         res.send(errors);
     }
 };
+
+export const getCourses = async (req: Request, res: Response) => {
+    try {
+        const user = req.user as UserDoc;
+        const tutorId = user._id;
+        const courses = await Course.find({ tutorId });
+        if (!courses.length) return res.sendStatus(404);
+        res.status(200).send(courses);
+    } catch (error) {
+        res.send(error);
+    }
+};
