@@ -1,22 +1,22 @@
 import { Request, Response } from "express";
-import passport from "passport";
-import passportConfig from "../config/passportConfig";
-import User from "../models/User";
-import jwt, { Secret } from "jsonwebtoken";
 import { UserDoc } from "../interfaces/interfaces";
 import dotenv from "dotenv";
 import Course from "../models/Course";
 import slugify from "../utils/slugify";
 dotenv.config();
 
-// Passport config
-passportConfig(passport);
-
 const handleErrors = (err: any) => {
     const courseErrors: { [key: string]: string | undefined } = {
         title: "",
         description: "",
     };
+
+    // Course with that name already exists
+    if (err.code === 11000) {
+        courseErrors.title = "This title is already in use";
+        return courseErrors;
+    }
+
     if (err.message.includes("validation failed")) {
         const validationErrors = err.errors as {
             [key: string]: { message: string; path?: string };
