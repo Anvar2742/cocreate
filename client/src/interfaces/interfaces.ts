@@ -4,3 +4,9 @@ export interface CourseDoc {
     _id: string;
     slug: string;
 }
+export interface LessonDoc {
+    title: string;
+    description: string;
+    _id: string;
+    slug: string;
+}
