@@ -1,7 +1,8 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import axios from "../api/axios";
+import { axiosInstance } from "../api/axios";
 import useAuth from "./../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios, { AxiosError } from "axios";
 
 const Auth = () => {
     const location = useLocation();
@@ -19,12 +20,13 @@ const Auth = () => {
     const { setAuth } = useAuth();
 
     const [isSignup, setIsSignup] = useState(true);
-    const [formData, setformData] = useState<formData>(initialFormData);
-    const [formErrors, setformErrors] = useState(initialFormData);
+    const [formData, setFormData] = useState<formData>(initialFormData);
+    const [formErrors, setFormErrors] = useState(initialFormData);
+    const [generalErr, setGeneralErr] = useState("");
 
     const toggleForm = (isSignupClick: boolean) => {
         setIsSignup(isSignupClick);
-        setformErrors(initialFormData);
+        setFormErrors(initialFormData);
     };
 
     const handleErrors = (formData: formData) => {
@@ -32,25 +34,25 @@ const Auth = () => {
 
         if (!formData.email) {
             authErrors.email = "Please enter an email";
-            setformErrors(authErrors);
+            setFormErrors(authErrors);
             return false;
         }
 
         if (!formData.password) {
             authErrors.password = "Please enter a password";
-            setformErrors(authErrors);
+            setFormErrors(authErrors);
             return false;
         }
 
         if (!formData.passwordRep && isSignup) {
             authErrors.passwordRep = "Repeat your password please";
-            setformErrors(authErrors);
+            setFormErrors(authErrors);
             return false;
         }
 
         if (!(formData.password === formData.passwordRep) && isSignup) {
             authErrors.passwordRep = "Passwords don't match";
-            setformErrors(authErrors);
+            setFormErrors(authErrors);
             return false;
         }
 
@@ -63,7 +65,7 @@ const Auth = () => {
             if (!handleErrors(formData)) {
                 return;
             }
-            const resp = await axios.post(
+            const resp = await axiosInstance.post(
                 isSignup ? "/signup" : "/login",
                 formData,
                 {
@@ -71,21 +73,27 @@ const Auth = () => {
                 }
             );
 
-            console.log(resp);
+            // console.log(resp);
             if (resp.status === 200 || resp.status === 201) {
                 const accessToken = resp.data?.accessToken;
                 setAuth({ accessToken });
                 navigate(location?.state?.from);
             }
-        } catch (err) {
-            console.log(err);
+        } catch (err: Error | AxiosError | any) {
+            if (axios.isAxiosError(err)) {
+                // Access to config, request, and response
+                setFormErrors(err.response?.data);
+            } else {
+                setGeneralErr("Server error");
+                console.log(err);
+            }
         }
     };
 
     const handleFormData = async (e: ChangeEvent<HTMLInputElement>) => {
         // console.log(e.target.name);
 
-        setformData((prevFormData) => {
+        setFormData((prevFormData) => {
             return {
                 ...prevFormData,
                 [e.target?.name]: e.target?.value,

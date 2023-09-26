@@ -1,4 +1,4 @@
-import axios from "../api/axios";
+import { axiosInstance } from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import Lesson from "./Lesson";
 
@@ -7,7 +7,9 @@ const Dashboard = () => {
 
     const handleLogout = async () => {
         try {
-            const resp = await axios.get("/logout", { withCredentials: true });
+            const resp = await axiosInstance.get("/logout", {
+                withCredentials: true,
+            });
             if (resp.status === 204) setAuth({});
         } catch (err) {
             console.log(err);
