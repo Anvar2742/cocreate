@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { connect } from "./config/db";
-import authRouter from "./routes/auth";
+import authRouter from "./routes/authRouter";
+import courseRouter from "./routes/courseRouter";
 import passport from "passport";
 import passportConfig from "./config/passportConfig";
 import dotenv from "dotenv";
@@ -25,7 +26,10 @@ app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 app.get("/", (req: Request, res: Response) => {
     res.send("cool!");
 });
+
+// Routes
 app.use(authRouter);
+app.use(courseRouter);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port} ✨`);

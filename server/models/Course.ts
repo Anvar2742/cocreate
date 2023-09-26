@@ -5,11 +5,11 @@ const { Schema } = mongoose;
 const CourseSchema = new Schema<CourseDoc>({
     title: {
         type: String,
-        required: [true, "Please enter title"],
+        required: [true, "Please a enter title"],
     },
     description: {
         type: String,
-        required: [true, "Please enter description"],
+        required: [true, "Please enter a description"],
     },
     tutorId: {
         type: String,
@@ -17,7 +17,6 @@ const CourseSchema = new Schema<CourseDoc>({
     },
     slug: {
         type: String,
-        required: true,
         unique: true,
     },
 });

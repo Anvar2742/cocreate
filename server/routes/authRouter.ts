@@ -6,7 +6,7 @@ import passportConfig from "../config/passportConfig";
 // Passport config
 passportConfig(passport);
 
-const authRouter = Router();
+export const authRouter = Router();
 authRouter.post("/signup", signup);
 authRouter.post("/login", login);
 authRouter.get("/logout", logout);
