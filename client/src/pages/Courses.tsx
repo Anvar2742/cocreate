@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Link, useLocation } from "react-router-dom";
+import { CourseDoc } from "../interfaces/interfaces";
 
 const Courses = () => {
-    interface CourseDoc {
-        title: string;
-        description: string;
-        _id: string;
-        slug: string;
-    }
-
     const location = useLocation();
     const [coursesArr, setCoursesArr] = useState<CourseDoc[]>([]);
     const [coursesEls, setCoursesEls] = useState<JSX.Element[]>([]);

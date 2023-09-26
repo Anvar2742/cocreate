@@ -74,3 +74,15 @@ export const getCourses = async (req: Request, res: Response) => {
         res.send(error);
     }
 };
+
+export const getSingleCourse = async (req: Request, res: Response) => {
+    const { slug } = req.body;
+    try {
+        if (!slug) return res.sendStatus(400);
+        const course = await Course.findOne({ slug });
+        if (!course) return res.sendStatus(404);
+        res.status(200).send(course);
+    } catch (error) {
+        res.send(error);
+    }
+};
