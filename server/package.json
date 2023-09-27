@@ -1,9 +1,7 @@
 {
     "scripts": {
         "dev": "nodemon app.ts",
-        "ts.check": "tsc --project tsconfig.json",
-        "add-build": "git add dist",
-        "test": "echo \"Error: no test specified\" && exit 1"
+		"build": "tsc"
     },
     "dependencies": {
         "bcrypt": "^5.1.1",
@@ -37,13 +35,6 @@
         "@types/passport-local": "^1.0.35",
         "@types/validator": "^13.11.1",
         "nodemon": "^3.0.1",
-        "pre-commit": "^1.2.2",
-        "rimraf": "^5.0.5",
         "typescript": "^5.2.2"
-    },
-    "pre-commit": [
-        "ts.check",
-        "build",
-        "add-build"
-    ]
+    }
 }
