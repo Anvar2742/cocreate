@@ -116,8 +116,8 @@ const AuthModal = ({
                 }`}
             ></div>
             <div
-                className={`text-blueGray fixed translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center flex-col bg-cover z-50 rounded-2xl transition-all duration-500 ${
-                    isAuthModal ? "bottom-1/2" : "-bottom-full"
+                className={`text-blueGray fixed translate-y-1/2 bottom-1/2 left-0 right-0 mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center flex-col bg-cover z-50 rounded-2xl transition-all duration-500 ${
+                    isAuthModal ? "block" : "hidden"
                 }`}
             >
                 <div className="flex justify-center bg-primary bg-opacity-60 backdrop-blur-sm text-white rounded-2xl mb-4">
