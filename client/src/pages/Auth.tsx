@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 
 const Auth = () => {
+    console.log(import.meta.env.VITE_SERVER_API_URL + "/refresh");
+    
     const location = useLocation();
     const { auth } = useAuth();
     interface formData {
