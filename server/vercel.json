@@ -1,0 +1,5 @@
+{
+    "version": 2,
+    "builds": [{ "src": "tsconfig.json", "use": "@now/static-build" }],
+    "routes": [{ "src": "/(.*)", "dest": "/$1" }]
+}
