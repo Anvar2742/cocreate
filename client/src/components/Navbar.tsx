@@ -19,7 +19,7 @@ const Navbar = ({
         <header className="py-4 bg-primary text-white">
             <div className="max-w-5xl px-4 m-auto flex justify-between items-center">
                 <Link to="/" className="font-extrabold text-4xl text-white">
-                    LoPsum
+                    Oxillia
                 </Link>
                 <div className="flex items-center gap-10">
                     <div
@@ -38,17 +38,17 @@ const Navbar = ({
                                             isActive ? "font-bold" : ""
                                         }
                                     >
-                                        Lorem
+                                        Courses
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
                                         to="/students"
                                         className={({ isActive }) =>
-                                            isActive ? "font-bold" : ""
+                                           `opacity-30 pointer-events-none ${isActive ? "font-bold" : ""}`
                                         }
                                     >
-                                        Ipsum
+                                        Students
                                     </NavLink>
                                 </li>
                             </ul>
