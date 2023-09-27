@@ -2,5 +2,5 @@
     "version": 2,
     "name": "nodejs-express",
     "builds": [{ "src": "dist/index.js", "use": "@vercel/node" }],
-    "routes": [{ "src": "dist/(.*)", "dest": "index.js" }]
+    "routes": [{ "src": "dist/(.*)", "dest": "dist/index.js" }]
 }
