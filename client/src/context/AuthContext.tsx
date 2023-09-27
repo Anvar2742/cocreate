@@ -13,7 +13,7 @@ interface IAuth {
 
 const AuthContext = createContext<IAuth>({
     auth: undefined,
-    setAuth: function (value: SetStateAction<{}>): void {
+    setAuth: function (_value: SetStateAction<{}>): void {
         throw new Error("Function not implemented.");
     },
 });

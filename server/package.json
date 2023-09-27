@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "dev": "nodemon app.ts",
+        "dev": "nodemon server.ts",
 		"build": "tsc"
     },
     "dependencies": {

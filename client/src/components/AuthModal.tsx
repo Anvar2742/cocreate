@@ -25,7 +25,7 @@ const AuthModal = ({
     const [isSignup, setIsSignup] = useState(true);
     const [formData, setFormData] = useState<formData>(initialFormData);
     const [formErrors, setFormErrors] = useState(initialFormData);
-    const [generalErr, setGeneralErr] = useState("");
+    const [_generalErr, setGeneralErr] = useState("");
 
     const toggleForm = (isSignupClick: boolean) => {
         setIsSignup(isSignupClick);
