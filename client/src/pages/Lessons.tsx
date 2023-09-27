@@ -53,6 +53,10 @@ const Lessons = ({ course }: { course: CourseDoc | null }) => {
     return (
         <div className="flex flex-col gap-2">
             {isLoading ? "Loading..." : lessonsEls}
+
+            <button className="bg-primary inline-block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all">
+                New Lesson
+            </button>
         </div>
     );
 };

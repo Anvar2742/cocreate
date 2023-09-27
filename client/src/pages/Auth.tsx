@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { axiosInstance } from "../api/axios";
 import useAuth from "./../hooks/useAuth";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 
 const Auth = () => {
@@ -91,8 +91,6 @@ const Auth = () => {
     };
 
     const handleFormData = async (e: ChangeEvent<HTMLInputElement>) => {
-        // console.log(e.target.name);
-
         setFormData((prevFormData) => {
             return {
                 ...prevFormData,
@@ -100,10 +98,6 @@ const Auth = () => {
             };
         });
     };
-
-    // useEffect(() => {
-    //     // console.log(formErrors);
-    // }, [formErrors]);
 
     useEffect(() => {
         console.log(auth);
@@ -138,7 +132,7 @@ const Auth = () => {
                 </button>
             </div>
             <form
-                className="mt-4 w-full px-10 flex flex-col items-center"
+                className="mt-4 w-full px-10 flex flex-col"
                 onSubmit={(e) => submitForm(e)}
             >
                 <div className="mb-2">
@@ -181,6 +175,16 @@ const Auth = () => {
                         ""
                     )}
                 </div>
+                <Link
+                    to="/password"
+                    className={`transition-all ${
+                        isSignup
+                            ? " opacity-0 pointer-events-none -z-10 select-none max-h-0"
+                            : " max-h-60 mt-2"
+                    }`}
+                >
+                    Forgot password?
+                </Link>
                 <div
                     className={`transition-all ${
                         !isSignup
@@ -218,6 +222,9 @@ const Auth = () => {
                     Submit
                 </button>
             </form>
+            <Link to="/" className="mt-10">
+                Home
+            </Link>
         </div>
     );
 };

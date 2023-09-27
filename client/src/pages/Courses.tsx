@@ -55,6 +55,9 @@ const Courses = () => {
                 <h1 className="font-bold text-5xl">Your courses</h1>
                 <div className="mt-8 gap-2 flex flex-col">
                     {isLoading ? "Loading..." : coursesEls}
+                    <button className="bg-primary inline-block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all">
+                        New Course
+                    </button>
                 </div>
             </div>
         </section>

@@ -70,13 +70,12 @@ export const getCourses = async (req: Request, res: Response) => {
         const userType = user.userType;
         const courseIds = user.courses;
         const userId = user._id;
-        let query: object = { userId };
+        let query: object = { tutorId: userId };
 
         if (userType === "student") {
             query = { _id: { $in: courseIds } };
         }
         const courses = await Course.find(query);
-        console.log(courses);
 
         if (!courses.length) return res.sendStatus(404);
         res.status(200).send(courses);

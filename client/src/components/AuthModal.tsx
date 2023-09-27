@@ -3,6 +3,7 @@ import { axiosInstance } from "../api/axios";
 import useAuth from "./../hooks/useAuth";
 import { IconX } from "@tabler/icons-react";
 import axios, { AxiosError } from "axios";
+import { Link } from "react-router-dom";
 
 const AuthModal = ({
     toggleAuthModal,
@@ -107,10 +108,6 @@ const AuthModal = ({
         setFormErrors(initialFormData);
     }, [isAuthModal]);
 
-    useEffect(() => {
-        // console.log(formErrors);
-    }, [formErrors]);
-
     return (
         <>
             <div
@@ -146,7 +143,7 @@ const AuthModal = ({
                     </button>
                 </div>
                 <form
-                    className="mt-4 w-full px-10 flex flex-col items-center"
+                    className="mt-4 w-full px-10 flex flex-col"
                     onSubmit={(e) => submitForm(e)}
                 >
                     <div className="mb-2">
@@ -194,6 +191,16 @@ const AuthModal = ({
                             ""
                         )}
                     </div>
+                    <Link
+                        to="/password"
+                        className={`transition-all ${
+                            isSignup
+                                ? " opacity-0 pointer-events-none -z-10 select-none max-h-0"
+                                : " max-h-60 mt-2"
+                        }`}
+                    >
+                        Forgot password?
+                    </Link>
                     <div
                         className={`transition-all ${
                             !isSignup
