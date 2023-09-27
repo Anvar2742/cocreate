@@ -16,7 +16,7 @@ courseRouter.get(
 );
 
 courseRouter.post(
-    "/create_course",
+    "/courses/create",
     passport.authenticate("jwt", { session: false }),
     createCourse
 );
@@ -28,7 +28,7 @@ courseRouter.post(
 );
 
 courseRouter.post(
-    "/access_course",
+    "/courses/access",
     passport.authenticate("jwt", { session: false }),
     giveAccessToCourse
 );
