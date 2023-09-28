@@ -85,6 +85,7 @@ const AuthModal = ({
             if (resp.status === 200 || resp.status === 201) {
                 const accessToken = resp.data?.accessToken;
                 setAuth({ accessToken });
+                toggleAuthModal();
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {

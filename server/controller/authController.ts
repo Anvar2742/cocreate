@@ -17,7 +17,7 @@ const createJWT = (user: UserDoc) => {
             email: user.email,
         },
         process.env.ACCESS_TOKEN_SECRET as string,
-        { expiresIn: "15m" }
+        { expiresIn: "10s" }
     );
 
     const refreshToken = jwt.sign(
@@ -195,11 +195,13 @@ export const logout: RequestHandler = async (req, res) => {
 export const refresh: RequestHandler = async (req, res) => {
     const cookies = req.cookies;
     const refreshToken = cookies?.jwt;
+    console.log(cookies);
+
     if (!refreshToken) return res.sendStatus(401);
 
     const user = await User.findOne({ refreshToken });
     console.log(user);
-    
+
     if (!user) return res.sendStatus(403); // Forbidden
 
     // evaluate jwt
@@ -213,7 +215,7 @@ export const refresh: RequestHandler = async (req, res) => {
                     email: user.email,
                 },
                 process.env.ACCESS_TOKEN_SECRET as string,
-                { expiresIn: "15m" }
+                { expiresIn: "10s" }
             );
             return res.json({ accessToken });
         }
