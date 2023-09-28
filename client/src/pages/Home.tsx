@@ -3,6 +3,8 @@ import useAuth from "../hooks/useAuth";
 
 const Home = () => {
     const { auth } = useAuth();
+    const allCookies = document.cookie;
+    alert(allCookies);
     return (
         <>
             <section className="py-32 bg-heroBg bg-cover">
