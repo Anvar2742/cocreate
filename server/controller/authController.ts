@@ -197,7 +197,9 @@ export const refresh: RequestHandler = async (req, res) => {
     const refreshToken = cookies?.jwt;
     if (!refreshToken) return res.sendStatus(401);
 
-    const user = await User.findOne({ refreshToken }).exec();
+    const user = await User.findOne({ refreshToken });
+    console.log(user);
+    
     if (!user) return res.sendStatus(403); // Forbidden
 
     // evaluate jwt

@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { axiosInstance } from "../api/axios";
 import useAuth from "./../hooks/useAuth";
-import { IconX } from "@tabler/icons-react";
+import { IconLoader, IconX } from "@tabler/icons-react";
 import axios, { AxiosError } from "axios";
 import { Link } from "react-router-dom";
 
@@ -23,10 +23,11 @@ const AuthModal = ({
 
     const { setAuth } = useAuth();
 
-    const [isSignup, setIsSignup] = useState(true);
+    const [isSignup, setIsSignup] = useState<boolean>(true);
+    const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [formData, setFormData] = useState<formData>(initialFormData);
-    const [formErrors, setFormErrors] = useState(initialFormData);
-    const [_generalErr, setGeneralErr] = useState("");
+    const [formErrors, setFormErrors] = useState<formData>(initialFormData);
+    const [generalErr, setGeneralErr] = useState<string>("");
 
     const toggleForm = (isSignupClick: boolean) => {
         setIsSignup(isSignupClick);
@@ -65,7 +66,10 @@ const AuthModal = ({
 
     const submitForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setFormErrors(initialFormData);
+        setGeneralErr("");
         try {
+            setIsSubmit(true);
             if (!handleErrors(formData)) {
                 return;
             }
@@ -81,16 +85,22 @@ const AuthModal = ({
             if (resp.status === 200 || resp.status === 201) {
                 const accessToken = resp.data?.accessToken;
                 setAuth({ accessToken });
-                toggleAuthModal();
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {
                 // Access to config, request, and response
-                setFormErrors(err.response?.data);
+                console.log(err);
+                if (err.code === "ERR_NETWORK") {
+                    setGeneralErr("Server error");
+                } else {
+                    setFormErrors(err.response?.data);
+                }
             } else {
                 setGeneralErr("Server error");
                 console.log(err);
             }
+        } finally {
+            setIsSubmit(false);
         }
     };
 
@@ -143,9 +153,21 @@ const AuthModal = ({
                     </button>
                 </div>
                 <form
-                    className="mt-4 w-full px-10 flex flex-col"
+                    className={`mt-4 w-full px-10 flex flex-col relative ${
+                        isSubmit ? "opacity-70 pointer-events-none" : ""
+                    }`}
                     onSubmit={(e) => submitForm(e)}
                 >
+                    <div
+                        className={`absolute top-0 left-0 w-full h-full flex items-center justify-center ${
+                            isSubmit ? "block" : "hidden"
+                        }`}
+                    >
+                        <IconLoader
+                            size="40"
+                            className={`${isSubmit ? "animate-spin" : ""}`}
+                        />
+                    </div>
                     <div className="mb-2">
                         <label htmlFor="email" className="block font-semibold">
                             Email
@@ -178,7 +200,7 @@ const AuthModal = ({
                             type="password"
                             id="password"
                             className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
-                            placeholder="Not 1234 please:)"
+                            placeholder="Password"
                             name="password"
                             onChange={handleFormData}
                             value={formData.password}
@@ -231,6 +253,13 @@ const AuthModal = ({
                             ""
                         )}
                     </div>
+                    {generalErr ? (
+                        <p className="text-red-400 mt-2">
+                            Server is not responding
+                        </p>
+                    ) : (
+                        ""
+                    )}
                     <button
                         type="submit"
                         className="bg-primary text-white py-2 px-8 rounded-xl text-lg font-semibold mt-6"
