@@ -127,8 +127,8 @@ export const signup: RequestHandler = async (req, res) => {
         // Creates Secure Cookie with refresh token
         res.cookie("jwt", refreshToken, {
             httpOnly: true,
-            // secure: true,
-            // sameSite: "none",
+            secure: true,
+            sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000,
         });
 
@@ -154,8 +154,8 @@ export const login: RequestHandler = async (req, res) => {
         // Creates Secure Cookie with refresh token
         res.cookie("jwt", refreshToken, {
             httpOnly: true,
-            // secure: true,
-            // sameSite: "none",
+            secure: true,
+            sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000,
         });
 
@@ -177,8 +177,8 @@ export const logout: RequestHandler = async (req, res) => {
     if (!foundUser) {
         res.clearCookie("jwt", {
             httpOnly: true,
-            // sameSite: "none",
-            // secure: true,
+            sameSite: "none",
+            secure: true,
         });
         return res.sendStatus(204);
     }
@@ -198,12 +198,18 @@ export const refresh: RequestHandler = async (req, res) => {
     console.log(cookies);
 
     try {
-        if (!refreshToken) return res.sendStatus(401);
+        if (!refreshToken)
+            return res
+                .status(401)
+                .send({ msg: "Refresh token is empty", cookies });
 
         const user = await User.findOne({ refreshToken });
         console.log(user);
 
-        if (!user) return res.sendStatus(403); // Forbidden
+        if (!user)
+            return res
+                .status(403)
+                .send({ msg: "No user with this refresh token" }); // Forbidden
 
         // evaluate jwt
         jwt.verify(

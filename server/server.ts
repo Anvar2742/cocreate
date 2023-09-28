@@ -20,8 +20,8 @@ connect();
 const app = express();
 const port = 5050;
 
-app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
+app.use(express.json({ limit: "50mb" }));
 app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 
 app.get("/", (req: Request, res: Response) => {
