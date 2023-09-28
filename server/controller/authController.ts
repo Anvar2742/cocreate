@@ -197,27 +197,33 @@ export const refresh: RequestHandler = async (req, res) => {
     const refreshToken = cookies?.jwt;
     console.log(cookies);
 
-    if (!refreshToken) return res.sendStatus(401);
+    try {
+        if (!refreshToken) return res.sendStatus(401);
 
-    const user = await User.findOne({ refreshToken });
-    console.log(user);
+        const user = await User.findOne({ refreshToken });
+        console.log(user);
 
-    if (!user) return res.sendStatus(403); // Forbidden
+        if (!user) return res.sendStatus(403); // Forbidden
 
-    // evaluate jwt
-    jwt.verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET as string,
-        (err: any, decoded: any) => {
-            if (err || user.email !== decoded.email) return res.sendStatus(403);
-            const accessToken = jwt.sign(
-                {
-                    email: user.email,
-                },
-                process.env.ACCESS_TOKEN_SECRET as string,
-                { expiresIn: "10s" }
-            );
-            return res.json({ accessToken });
-        }
-    );
+        // evaluate jwt
+        jwt.verify(
+            refreshToken,
+            process.env.REFRESH_TOKEN_SECRET as string,
+            (err: any, decoded: any) => {
+                if (err || user.email !== decoded.email)
+                    return res.sendStatus(403);
+                const accessToken = jwt.sign(
+                    {
+                        email: user.email,
+                    },
+                    process.env.ACCESS_TOKEN_SECRET as string,
+                    { expiresIn: "10s" }
+                );
+                return res.json({ accessToken });
+            }
+        );
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
 };
