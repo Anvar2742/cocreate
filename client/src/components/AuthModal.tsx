@@ -111,13 +111,13 @@ const AuthModal = ({
     return (
         <>
             <div
-                className={`w-screen h-screen backdrop-blur-sm bg-opacity-20 fixed left-0 transition-all duration-300 z-40 ${
-                    isAuthModal ? "bg-black top-0" : "bg-transparent -top-full"
+                className={`w-screen h-screen backdrop-blur-sm bg-black top-0 bg-opacity-20 fixed left-0 transition-all duration-300 z-40 ${
+                    isAuthModal ? "block" : "hidden"
                 }`}
             ></div>
             <div
-                className={`text-blueGray fixed translate-y-1/2 bottom-1/2 left-0 right-0 mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center flex-col bg-cover z-50 rounded-2xl transition-all duration-500 ${
-                    isAuthModal ? "block" : "hidden"
+                className={`text-blueGray fixed translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center flex-col bg-cover z-50 rounded-2xl transition-all duration-500 ${
+                    isAuthModal ? "bottom-1/2" : "-bottom-full"
                 }`}
             >
                 <div className="flex justify-center bg-primary bg-opacity-60 backdrop-blur-sm text-white rounded-2xl mb-4">

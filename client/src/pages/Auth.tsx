@@ -108,7 +108,7 @@ const Auth = () => {
     }, [location?.pathname]);
 
     return (
-        <div className="text-blueGray mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center justify-center flex-col bg-cover z-10 rounded-2xl transition-all duration-500 h-screen">
+        <div className="text-blueGray mx-auto max-w-xs bg-white sm:pt-8 sm:pb-14 flex items-center justify-center flex-col bg-cover z-10 rounded-2xl transition-all duration-500 h-screen pt-32 pb-20 overflow-auto">
             <div className="flex justify-center bg-primary bg-opacity-60 backdrop-blur-sm text-white rounded-2xl mb-4">
                 <button
                     onClick={() => toggleForm(true)}

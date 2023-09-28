@@ -18,7 +18,7 @@ const Navbar = ({
     return (
         <header className="py-4 bg-primary text-white">
             <div className="max-w-5xl px-4 m-auto flex justify-between items-center">
-                <Link to="/" className="font-extrabold text-4xl text-white">
+                <Link to="/" className="font-extrabold text-2xl sm:text-4xl text-white">
                     Oxillia
                 </Link>
                 <div className="flex items-center gap-10">
