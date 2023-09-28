@@ -193,6 +193,10 @@ export const logout: RequestHandler = async (req, res) => {
 };
 
 export const refresh: RequestHandler = async (req, res) => {
+    res.setHeader(
+        "Cache-Control",
+        "no-store, no-cache, must-revalidate, private"
+    );
     const cookies = req.cookies;
     console.log(cookies);
 
