@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Request, Response } from "express";
 import passport from "passport";
 import passportConfig from "../config/passportConfig";
 import User from "../models/User";
@@ -139,7 +139,7 @@ export const signup: RequestHandler = async (req, res) => {
     }
 };
 
-export const login: RequestHandler = async (req, res) => {
+export const login: RequestHandler = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     try {
         const userInstance = new User();
@@ -152,11 +152,12 @@ export const login: RequestHandler = async (req, res) => {
         await logedInUser.save();
 
         // Creates Secure Cookie with refresh token
-        res.cookie("jwt", refreshToken, {
+        res.cookie("jwt", {
             httpOnly: true,
             secure: true,
             sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000,
+            domain: "oxillia.com",
         });
 
         res.status(200).json({ accessToken, logedInUser });
