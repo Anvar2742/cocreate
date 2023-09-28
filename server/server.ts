@@ -32,22 +32,6 @@ app.use(authRouter);
 app.use(courseRouter);
 app.use(lessonRouter);
 
-app.get("/cookie", (req: Request, res: Response) => {
-    let cookieVal = null;
-    if (req.cookies["3pcookie"]) {
-        // check the new style cookie first
-        cookieVal = req.cookies["3pcookie"];
-    } else if (req.cookies["3pcookie-legacy"]) {
-        // otherwise fall back to the legacy cookie
-        cookieVal = req.cookies["3pcookie-legacy"];
-    } else {
-        // Cookie doesn't exist or is empty
-        return res.status(404).json({ message: "Cookie not found" });
-    }
-
-    res.status(200).json(cookieVal);
-});
-
 app.listen(port, () => {
     console.log(`Listening on port ${port} ✨`);
 });

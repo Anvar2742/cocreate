@@ -3,18 +3,15 @@ import useAuth from "./useAuth";
 
 const useRefreshToken = () => {
     const { setAuth } = useAuth();
-    console.log("refresh");
 
     const refresh = async () => {
         try {
             const response = await axiosInstance.get("/refresh", {
                 withCredentials: true,
             });
-            console.log(response);
-
             setAuth((prev) => {
-                console.log(JSON.stringify(prev));
-                console.log(response.data.accessToken);
+                // console.log(JSON.stringify(prev));
+                // console.log(response.data.accessToken);
                 return {
                     ...prev,
                     accessToken: response.data.accessToken,
@@ -22,7 +19,7 @@ const useRefreshToken = () => {
             });
             return response.data.accessToken;
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             setAuth((prev) => {
                 return {
                     ...prev,
