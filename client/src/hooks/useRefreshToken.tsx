@@ -3,6 +3,8 @@ import useAuth from "./useAuth";
 
 const useRefreshToken = () => {
     const { setAuth } = useAuth();
+    console.log("refresh");
+    
 
     const refresh = async () => {
         try {
