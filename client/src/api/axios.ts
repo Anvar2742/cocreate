@@ -4,6 +4,7 @@ const SERVER_BASE_URL = import.meta.env.VITE_SERVER_API_URL;
 
 export const axiosInstance = axios.create({
     baseURL: SERVER_BASE_URL,
+    withCredentials: true,
 });
 
 export const axiosPrivate = axios.create({
