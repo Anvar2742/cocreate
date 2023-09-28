@@ -32,6 +32,17 @@ app.use(authRouter);
 app.use(courseRouter);
 app.use(lessonRouter);
 
+app.get("/cookie", (req: Request, res: Response) => {
+    const jwtCookie = req.cookies.jwt; // Access the "jwt" cookie
+    if (jwtCookie) {
+        // Cookie exists, you can use it
+        res.status(200).json({ jwtCookie });
+    } else {
+        // Cookie doesn't exist or is empty
+        res.status(404).json({ message: "Cookie not found" });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Listening on port ${port} ✨`);
 });
