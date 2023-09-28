@@ -152,7 +152,7 @@ export const login: RequestHandler = async (req: Request, res: Response) => {
         await logedInUser.save();
 
         // Creates Secure Cookie with refresh token
-        res.cookie("jwt", {
+        res.cookie("jwt", refreshToken, {
             httpOnly: true,
             secure: true,
             sameSite: "none",
