@@ -11,14 +11,13 @@ dotenv.config();
 import sendEmail from "./utils/sendEmail";
 import lessonRouter from "./routes/lessonRouter";
 // sendEmail().catch(console.error);
+const app = express();
+const port = 5050;
 
 // Passport config
 passportConfig(passport);
 // connect to db
 connect();
-
-const app = express();
-const port = 5050;
 
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));

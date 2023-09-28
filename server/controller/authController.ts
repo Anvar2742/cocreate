@@ -194,14 +194,14 @@ export const logout: RequestHandler = async (req, res) => {
 
 export const refresh: RequestHandler = async (req, res) => {
     const cookies = req.cookies;
-    const refreshToken = cookies?.jwt;
     console.log(cookies);
 
     try {
-        if (!refreshToken)
+        if (!cookies?.jwt)
             return res
                 .status(401)
                 .send({ msg: "Refresh token is empty", cookies });
+        const refreshToken = cookies?.jwt;
 
         const user = await User.findOne({ refreshToken });
         console.log(user);

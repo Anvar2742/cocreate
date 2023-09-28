@@ -1,8 +1,38 @@
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { useEffect } from "react";
 
 const Home = () => {
     const { auth } = useAuth();
+
+    function areCookiesEnabled() {
+        // Generate a random unique cookie name
+        const testCookieName =
+            "testCookie_" + Math.random().toString(36).substring(7);
+
+        // Set the test cookie
+        document.cookie = testCookieName + "=1";
+
+        // Check if the cookie was successfully set
+        const cookiesEnabled = document.cookie.indexOf(testCookieName) !== -1;
+
+        // Delete the test cookie
+        document.cookie =
+            testCookieName +
+            "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+        return cookiesEnabled;
+    }
+
+    useEffect(() => {
+        // Usage
+        if (areCookiesEnabled()) {
+            alert("Cookies are enabled.");
+        } else {
+            alert("Cookies are disabled.");
+        }
+    });
+
     return (
         <>
             <section className="py-32 bg-heroBg bg-cover">
