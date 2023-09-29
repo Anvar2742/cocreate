@@ -1,7 +1,14 @@
 import { MouseEventHandler, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { IconMenu, IconUser, IconX } from "@tabler/icons-react";
+import {
+    IconAddressBook,
+    IconBooks,
+    IconHome,
+    IconMenu,
+    IconUser,
+    IconX,
+} from "@tabler/icons-react";
 
 const Navbar = ({
     toggleAuthModal,
@@ -18,48 +25,84 @@ const Navbar = ({
     return (
         <header className="py-4 bg-primary text-white">
             <div className="max-w-5xl px-4 m-auto flex justify-between items-center">
-                <Link to="/" className="font-extrabold text-2xl sm:text-4xl text-white">
+                <Link
+                    to="/"
+                    className="font-extrabold text-2xl sm:text-4xl text-white"
+                >
                     Oxillia
                 </Link>
                 <div className="flex items-center gap-10">
-                    <div
-                        className={`sm:block fixed sm:static bottom-0 bg-primary sm:bg-transparent w-1/2 sm:w-auto p-7 sm:p-0 h-4 sm:h-auto z-20 flex items-center justify-between transition-all duration-300 ${
-                            isMenuOpen
-                                ? "right-0"
-                                : "-right-full opacity-0 sm:opacity-100"
+                    {/* <div
+                        className={`w-screen h-screen backdrop-blur-sm bg-black top-0 bg-opacity-20 fixed left-0 transition-all duration-300 z-40 ${
+                            isMenuOpen ? "block sm:hidden" : "hidden"
                         }`}
+                    ></div> */}
+                    <div
+                        className={`sm:block z-50 right-0 fixed sm:static bg-primary sm:bg-transparent w-full sm:w-auto p-4 sm:p-0 flex flex-col items-center justify-between transition-all duration-300 rounded-t-2xl bottom-0`}
                     >
                         <nav>
-                            <ul className="flex gap-4">
+                            <ul className="flex gap-4 items-center fixed sm:static left-0 right-0 justify-center bottom-3">
+                                <li>
+                                    <NavLink
+                                        to="/"
+                                        className={({ isActive }) =>
+                                            `flex items-center justify-center rounded-full sm:rounded-none w-12 sm:w-auto h-12 sm:h-auto ${
+                                                isActive
+                                                    ? "font-bold bg-secRed sm:bg-transparent"
+                                                    : "bg-primary"
+                                            }`
+                                        }
+                                    >
+                                        <IconHome className="sm:hidden" />
+                                        <span className="hidden sm:block">
+                                            Home
+                                        </span>
+                                    </NavLink>
+                                </li>
                                 <li>
                                     <NavLink
                                         to="/courses"
                                         className={({ isActive }) =>
-                                            isActive ? "font-bold" : ""
+                                            `flex items-center justify-center rounded-full w-12 sm:w-auto h-12 sm:h-auto ${
+                                                isActive
+                                                    ? "font-bold bg-secRed sm:bg-transparent"
+                                                    : "bg-primary"
+                                            }`
                                         }
                                     >
-                                        Courses
+                                        <IconBooks
+                                            stroke={1}
+                                            size={28}
+                                            className="sm:hidden"
+                                        />
+                                        <span className="hidden sm:block">
+                                            Courses
+                                        </span>
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
                                         to="/students"
                                         className={({ isActive }) =>
-                                           `opacity-30 pointer-events-none ${isActive ? "font-bold" : ""}`
+                                            `pointer-events-none flex items-center justify-center rounded-full w-12 sm:w-auto h-12 sm:h-auto ${
+                                                isActive
+                                                    ? "font-bold bg-secRed sm:bg-transparent"
+                                                    : "bg-primary"
+                                            }`
                                         }
                                     >
-                                        Students
+                                        <IconAddressBook
+                                            stroke={1}
+                                            size={30}
+                                            className="sm:hidden opacity-40"
+                                        />
+                                        <span className="hidden sm:block opacity-40">
+                                            Students
+                                        </span>
                                     </NavLink>
                                 </li>
                             </ul>
                         </nav>
-
-                        <button
-                            className="sm:hidden bg-secRed w-9 h-9 flex items-center justify-center rounded-full"
-                            onClick={toggleMenu}
-                        >
-                            <IconX color="white" />
-                        </button>
                     </div>
                     <div className="flex gap-2">
                         {auth?.accessToken ? (
