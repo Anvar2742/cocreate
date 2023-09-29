@@ -7,7 +7,6 @@ import {
     IconHome,
     IconMenu,
     IconUser,
-    IconX,
 } from "@tabler/icons-react";
 
 const Navbar = ({
@@ -15,7 +14,7 @@ const Navbar = ({
 }: {
     toggleAuthModal: MouseEventHandler<HTMLButtonElement>;
 }) => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [_isMenuOpen, setIsMenuOpen] = useState(false);
     const { auth } = useAuth();
 
     const toggleMenu = () => {
