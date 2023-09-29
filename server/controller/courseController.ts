@@ -97,17 +97,22 @@ export const getSingleCourse = async (req: Request, res: Response) => {
 };
 
 export const giveAccessToCourse = async (req: Request, res: Response) => {
-    const { studentEmail: email, courseId } = req.body;
+    const { email, courseId } = req.body;
     try {
         const user = req.user as UserDoc;
         if (!user || user.userType !== "tutor") {
-            return res.status(401).send("You're not a tutor:(");
+            return res.status(400).json({ msg: "You're not a tutor:(" });
         }
-        if (!email) return res.status(400).send("Provide email");
+        if (!email)
+            return res.status(400).json({ email: "Please enter an email" });
         const student = await User.findOne({ email });
-        if (!student) return res.status(404).send("No student with this email");
+
+        if (!student)
+            return res.status(404).json({ email: "No user with this email" });
         if (!courseId) return res.status(400).send("No course ID");
+
         student.courses.push(courseId);
+
         await student.save();
         res.status(204).send("Data saved successfully");
     } catch (error) {

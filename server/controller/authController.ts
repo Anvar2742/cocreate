@@ -198,7 +198,7 @@ export const refresh: RequestHandler = async (req, res) => {
         "no-store, no-cache, must-revalidate, private"
     );
     const cookies = req.cookies;
-    console.log(cookies);
+    // console.log(cookies);
 
     try {
         if (!cookies?.jwt)
@@ -208,12 +208,10 @@ export const refresh: RequestHandler = async (req, res) => {
         const refreshToken = cookies?.jwt;
 
         const user = await User.findOne({ refreshToken });
-        console.log(user);
+        // console.log(user);
 
         if (!user)
-            return res
-                .status(403)
-                .send({ msg: "No user with this refresh token" }); // Forbidden
+            return res.status(403).send({ msg: "No user with this token" }); // Forbidden
 
         // evaluate jwt
         jwt.verify(
