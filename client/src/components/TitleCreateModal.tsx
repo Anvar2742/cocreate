@@ -52,11 +52,11 @@ const TitleCreateModal = ({
             return false;
         }
 
-        if (!formData.description) {
-            titleCreateErrors.description = "Please enter a description";
-            setFormErrors(titleCreateErrors);
-            return false;
-        }
+        // if (!formData.description) {
+        //     titleCreateErrors.description = "Please enter a description";
+        //     setFormErrors(titleCreateErrors);
+        //     return false;
+        // }
 
         return true;
     };

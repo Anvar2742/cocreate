@@ -71,7 +71,7 @@ const Courses = () => {
     }, [coursesArr]);
 
     return (
-        <section className=" pt-24">
+        <section className=" py-24">
             <div className="max-w-5xl px-4 m-auto">
                 <h1 className="font-bold text-5xl">Your courses</h1>
                 <div className="mt-8 grid gap-4">

@@ -30,7 +30,7 @@ const Lessons = ({ course }: { course: CourseDoc | null }) => {
                 setLessonsEls(
                     <div>
                         <h2 className="font-medium text-xl">
-                            You don't have any lessons yet
+                            No lesson in this course
                         </h2>
                         <p className="text-md">Let's create one</p>
                     </div>
