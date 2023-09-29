@@ -57,7 +57,7 @@ export const createCourse = async (req: Request, res: Response) => {
 
         if (!newCourse) return res.sendStatus(400);
 
-        res.send(newCourse);
+        res.status(201).send(newCourse);
     } catch (error) {
         const errors = handleErrors(error);
         res.send(errors);

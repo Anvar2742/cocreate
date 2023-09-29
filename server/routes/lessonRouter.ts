@@ -16,7 +16,7 @@ lessonRouter.post(
 );
 
 lessonRouter.post(
-    "/create_lesson",
+    "/lessons/create",
     passport.authenticate("jwt", { session: false }),
     createLesson
 );

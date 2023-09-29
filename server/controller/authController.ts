@@ -17,7 +17,7 @@ const createJWT = (user: UserDoc) => {
             email: user.email,
         },
         process.env.ACCESS_TOKEN_SECRET as string,
-        { expiresIn: "10s" }
+        { expiresIn: "15m" }
     );
 
     const refreshToken = jwt.sign(
@@ -227,7 +227,7 @@ export const refresh: RequestHandler = async (req, res) => {
                         email: user.email,
                     },
                     process.env.ACCESS_TOKEN_SECRET as string,
-                    { expiresIn: "10s" }
+                    { expiresIn: "15m" }
                 );
                 return res.json({ accessToken });
             }

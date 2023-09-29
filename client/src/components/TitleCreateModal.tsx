@@ -1,7 +1,9 @@
 import axios, { AxiosError } from "axios";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { axiosInstance } from "../api/axios";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { axiosPrivate } from "../api/axios";
 import { IconLoader, IconX } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
+import useRefreshToken from "../hooks/useRefreshToken";
 
 const TitleCreateModal = ({
     toggleCreateModal,
@@ -15,14 +17,16 @@ const TitleCreateModal = ({
     }
     const initialFormData = {
         title: "",
-        password: "",
-        passwordRep: "",
+        description: "",
     };
+
+    const refresh = useRefreshToken();
 
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [formData, setFormData] = useState<formData>(initialFormData);
     const [formErrors, setFormErrors] = useState<formData>(initialFormData);
     const [generalErr, setGeneralErr] = useState<string>("");
+    const navigate = useNavigate();
 
     const handleFormData = async (e: ChangeEvent<HTMLInputElement>) => {
         setFormData((prevFormData) => {
@@ -34,10 +38,16 @@ const TitleCreateModal = ({
     };
 
     const handleErrors = (formData: formData) => {
-        const titleCreateErrors = { title: "", password: "", passwordRep: "" };
+        const titleCreateErrors = initialFormData;
 
         if (!formData.title) {
             titleCreateErrors.title = "Please enter a title";
+            setFormErrors(titleCreateErrors);
+            return false;
+        }
+
+        if (!formData.description) {
+            titleCreateErrors.description = "Please enter a description";
             setFormErrors(titleCreateErrors);
             return false;
         }
@@ -54,7 +64,7 @@ const TitleCreateModal = ({
             if (!handleErrors(formData)) {
                 return;
             }
-            const resp = await axiosInstance.post(
+            const resp = await axiosPrivate.post(
                 `/${true ? "courses" : "lessons"}/create`,
                 formData,
                 {
@@ -64,7 +74,7 @@ const TitleCreateModal = ({
 
             console.log(resp);
             if (resp.status === 201) {
-                // sdfsd
+                navigate(resp?.data?.slug);
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {
@@ -83,6 +93,12 @@ const TitleCreateModal = ({
             setIsSubmit(false);
         }
     };
+
+    useEffect(() => {
+        if (isCreateModal) {
+            refresh();
+        }
+    }, [isCreateModal]);
 
     return (
         <>
@@ -121,7 +137,7 @@ const TitleCreateModal = ({
                             type="text"
                             id="title"
                             className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
-                            placeholder="Your title"
+                            placeholder="Title"
                             name="title"
                             onChange={handleFormData}
                             value={formData.title}
@@ -129,6 +145,30 @@ const TitleCreateModal = ({
                         {formErrors?.title ? (
                             <p className="text-red-400 mt-2">
                                 {formErrors?.title}
+                            </p>
+                        ) : (
+                            ""
+                        )}
+                    </div>
+                    <div className="mb-2">
+                        <label
+                            htmlFor="description"
+                            className="block font-semibold"
+                        >
+                            Description
+                        </label>
+                        <input
+                            type="text"
+                            id="description"
+                            className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
+                            placeholder="Description"
+                            name="description"
+                            onChange={handleFormData}
+                            value={formData.description}
+                        />
+                        {formErrors?.description ? (
+                            <p className="text-red-400 mt-2">
+                                {formErrors?.description}
                             </p>
                         ) : (
                             ""
