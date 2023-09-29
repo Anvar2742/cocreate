@@ -31,13 +31,8 @@ const Navbar = ({
                     Oxillia
                 </Link>
                 <div className="flex items-center gap-10">
-                    {/* <div
-                        className={`w-screen h-screen backdrop-blur-sm bg-black top-0 bg-opacity-20 fixed left-0 transition-all duration-300 z-40 ${
-                            isMenuOpen ? "block sm:hidden" : "hidden"
-                        }`}
-                    ></div> */}
                     <div
-                        className={`sm:block z-50 right-0 fixed sm:static bg-primary sm:bg-transparent w-full sm:w-auto p-4 sm:p-0 flex flex-col items-center justify-between transition-all duration-300 rounded-t-2xl bottom-0`}
+                        className={`sm:block z-30 right-0 fixed sm:static bg-primary sm:bg-transparent w-full sm:w-auto p-4 sm:p-0 flex flex-col items-center justify-between transition-all duration-300 rounded-t-2xl bottom-0`}
                     >
                         <nav>
                             <ul className="flex gap-4 items-center fixed sm:static left-0 right-0 justify-center bottom-3">
@@ -119,12 +114,6 @@ const Navbar = ({
                                 Sign Up
                             </button>
                         )}
-                        <button
-                            onClick={toggleMenu}
-                            className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-3 rounded-full font-semibold hover:shadow-white transition-all sm:hidden"
-                        >
-                            <IconMenu />
-                        </button>
                     </div>
                 </div>
             </div>

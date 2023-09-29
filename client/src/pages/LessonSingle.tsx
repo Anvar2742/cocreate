@@ -3,6 +3,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
 import { LessonDoc } from "../interfaces/interfaces";
 import LessonEditor from "../components/LessonEditor";
+import Loader from "../components/Loader";
 
 const LessonSingle = () => {
     const [lesson, setLesson] = useState<LessonDoc | null>(null);
@@ -47,19 +48,12 @@ const LessonSingle = () => {
 
     return (
         <section className="py-20">
+            {isLoading ? <Loader /> : ""}
             <div className="max-w-5xl px-4 m-auto overflow-y-hidden">
-                {isLoading ? (
-                    "loading..."
-                ) : (
-                    <>
-                        <div className="mb-10">
-                            <h1 className="font-bold text-5xl mb-3">
-                                {lesson?.title}
-                            </h1>
-                            <p>{lesson?.description}</p>
-                        </div>
-                    </>
-                )}
+                <div className="mb-10">
+                    <h1 className="font-bold text-5xl mb-3">{lesson?.title}</h1>
+                    <p>{lesson?.description}</p>
+                </div>
                 <div
                     className={`transition-all duration-500 ${
                         isLoading
