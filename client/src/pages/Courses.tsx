@@ -3,9 +3,11 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Link, useLocation } from "react-router-dom";
 import { CourseDoc } from "../interfaces/interfaces";
 import { AxiosError } from "axios";
+import TitleCreateModal from "../components/TitleCreateModal";
 
 const Courses = () => {
     const location = useLocation();
+    const [isCreateModal, setIsCreateModal] = useState<boolean>(false);
     const [coursesArr, setCoursesArr] = useState<CourseDoc[]>([]);
     const [coursesEls, setCoursesEls] = useState<JSX.Element[] | JSX.Element>(
         []
@@ -25,7 +27,9 @@ const Courses = () => {
             if (error.response.status === 404) {
                 setCoursesEls(
                     <div>
-                        <h2 className="font-medium text-xl">You don't have any courses yet</h2>
+                        <h2 className="font-medium text-xl">
+                            You don't have any courses yet
+                        </h2>
                         <p className="text-md">Let's create one</p>
                     </div>
                 );
@@ -34,6 +38,10 @@ const Courses = () => {
         }
     };
     const axiosPrivate = useAxiosPrivate();
+
+    const toggleCreateModal = () => {
+        setIsCreateModal((prev) => !prev);
+    };
 
     useEffect(() => {
         getCourses();
@@ -76,9 +84,16 @@ const Courses = () => {
                         coursesEls
                     )}
                 </div>
-                <button className="bg-primary block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all mt-6 mx-auto">
+                <button
+                    onClick={toggleCreateModal}
+                    className="bg-primary block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all mt-6 mx-auto"
+                >
                     New Course
                 </button>
+                <TitleCreateModal
+                    toggleCreateModal={toggleCreateModal}
+                    isCreateModal={isCreateModal}
+                />
             </div>
         </section>
     );
