@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { CourseDoc } from "../interfaces/interfaces";
 import { AxiosError } from "axios";
 import TitleCreateModal from "../components/TitleCreateModal";
+import TitleLoader from "../components/TitleLoader";
 
 const Courses = () => {
     const location = useLocation();
@@ -74,15 +75,7 @@ const Courses = () => {
             <div className="max-w-5xl px-4 m-auto">
                 <h1 className="font-bold text-5xl">Your courses</h1>
                 <div className="mt-8 grid gap-4">
-                    {isLoading ? (
-                        <>
-                            <div className="w-full h-16 bg-gray-300 rounded-lg animate-pulse-3"></div>
-                            <div className="w-full h-16 bg-gray-300 rounded-lg animate-pulse"></div>
-                            <div className="w-full h-16 bg-gray-300 rounded-lg animate-pulse-2"></div>
-                        </>
-                    ) : (
-                        coursesEls
-                    )}
+                    {isLoading ? <TitleLoader /> : coursesEls}
                 </div>
                 <button
                     onClick={toggleCreateModal}
@@ -93,6 +86,8 @@ const Courses = () => {
                 <TitleCreateModal
                     toggleCreateModal={toggleCreateModal}
                     isCreateModal={isCreateModal}
+                    typeOfTitle="course"
+                    courseId={null}
                 />
             </div>
         </section>

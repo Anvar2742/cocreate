@@ -8,9 +8,13 @@ import useRefreshToken from "../hooks/useRefreshToken";
 const TitleCreateModal = ({
     toggleCreateModal,
     isCreateModal,
+    typeOfTitle,
+    courseId,
 }: {
     toggleCreateModal: CallableFunction;
     isCreateModal: boolean;
+    typeOfTitle: "course" | "lesson" | "excercise";
+    courseId: string | null;
 }) => {
     interface formData {
         [key: string]: string;
@@ -29,6 +33,8 @@ const TitleCreateModal = ({
     const navigate = useNavigate();
 
     const handleFormData = async (e: ChangeEvent<HTMLInputElement>) => {
+        setFormErrors(initialFormData);
+        setGeneralErr("");
         setFormData((prevFormData) => {
             return {
                 ...prevFormData,
@@ -64,9 +70,12 @@ const TitleCreateModal = ({
             if (!handleErrors(formData)) {
                 return;
             }
+
+            const dataToSend =
+                typeOfTitle === "lesson" ? { ...formData, courseId } : formData;
             const resp = await axiosPrivate.post(
-                `/${true ? "courses" : "lessons"}/create`,
-                formData,
+                `/${typeOfTitle}s/create`,
+                dataToSend,
                 {
                     withCredentials: true,
                 }
@@ -112,7 +121,6 @@ const TitleCreateModal = ({
                     isCreateModal ? "bottom-1/2" : "-bottom-full"
                 }`}
             >
-                <h2 className="font-bold text-2xl">Your courses</h2>
                 <form
                     className={`mt-4 w-full px-10 flex flex-col relative ${
                         isSubmit ? "opacity-70 pointer-events-none" : ""

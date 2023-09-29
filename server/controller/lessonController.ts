@@ -54,7 +54,7 @@ export const createLesson = async (req: Request, res: Response) => {
 
         if (!newLesson) return res.sendStatus(400);
 
-        res.send(newLesson);
+        res.status(201).send(newLesson);
     } catch (error) {
         const errors = handleErrors(error);
         res.send(errors);

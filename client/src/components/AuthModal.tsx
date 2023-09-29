@@ -106,6 +106,8 @@ const AuthModal = ({
     };
 
     const handleFormData = async (e: ChangeEvent<HTMLInputElement>) => {
+        setFormErrors(initialFormData);
+        setGeneralErr("");
         setFormData((prevFormData) => {
             return {
                 ...prevFormData,
