@@ -3,16 +3,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { IconLoader } from "@tabler/icons-react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAuth from "../hooks/useAuth";
+import useRefreshToken from "../hooks/useRefreshToken";
 
 const Onboard = () => {
-    const location = useLocation();
-    // const { auth } = useAuth();
+    const { auth } = useAuth();
+    const refresh = useRefreshToken();
     interface formData {
         [key: string]: string;
     }
     const initialFormData = {
         userType: "tutor",
     };
+    const location = useLocation();
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
 
@@ -38,6 +41,8 @@ const Onboard = () => {
         setFormErrors(initialFormData);
         setGeneralErr("");
 
+        // If user waited long enough for accessToken to expire
+        await refresh();
         try {
             setIsSubmit(true);
             if (!handleErrors(formData)) {
@@ -45,9 +50,11 @@ const Onboard = () => {
             }
             const resp = await axiosPrivate.post("/onboarding", formData);
 
-            console.log(resp);
-            if (resp.status === 200) {
-                navigate("/");
+            // console.log(resp);
+            if (resp.status === 204) {
+                // Update isOnboard status for user
+                await refresh();
+                navigate(location?.state?.from);
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {
@@ -76,12 +83,17 @@ const Onboard = () => {
         });
     };
 
-    useEffect(() => {
-        console.log(formData);
-    }, [formData]);
+    // useEffect(() => {
+    //     console.log(formData);
+    // }, [formData]);
 
     useEffect(() => {
         // get user and check isOnboard
+        // console.log(auth);
+
+        if (auth?.isOnboard) {
+            navigate(-1);
+        }
     }, [location?.pathname]);
 
     return (

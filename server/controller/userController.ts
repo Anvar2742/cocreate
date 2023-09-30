@@ -24,3 +24,17 @@ export const onboard = async (req: Request, res: Response) => {
         res.status(400).send(err);
     }
 };
+
+export const getSingleUser = async (req: Request, res: Response) => {
+    try {
+        const user = req.user as UserDoc | null;
+        const email = user?.email;
+        if (!user) return res.status(401).json({ msg: "No user" });
+        let accessibleData = {
+            isOnboard: user.isOnboard,
+        };
+        res.send(accessibleData);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+};

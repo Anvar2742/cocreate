@@ -2,7 +2,7 @@ import { Router } from "express";
 import { login, logout, refresh, signup } from "../controller/authController";
 import passport from "passport";
 import passportConfig from "../config/passportConfig";
-import { onboard } from "../controller/onboardController";
+import { onboard } from "../controller/userController";
 
 // Passport config
 passportConfig(passport);
@@ -14,13 +14,5 @@ authRouter.get("/logout", logout);
 
 // refresh token to get new access tokens
 authRouter.get("/refresh", refresh);
-
-// use passport.authenticate('jwt') to protect routes
-// Onboarding
-authRouter.post(
-    "/onboarding",
-    passport.authenticate("jwt", { session: false }),
-    onboard
-);
 
 export default authRouter;

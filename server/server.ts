@@ -10,6 +10,7 @@ import cors from "cors";
 dotenv.config();
 import sendEmail from "./utils/sendEmail";
 import lessonRouter from "./routes/lessonRouter";
+import userRouter from "./routes/userRouter";
 // sendEmail().catch(console.error);
 const app = express();
 const port = 5050;
@@ -31,6 +32,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use(authRouter);
 app.use(courseRouter);
 app.use(lessonRouter);
+app.use(userRouter);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port} ✨`);

@@ -202,9 +202,7 @@ export const refresh: RequestHandler = async (req, res) => {
 
     try {
         if (!cookies?.jwt)
-            return res
-                .status(401)
-                .send({ msg: "Refresh token is empty", cookies });
+            return res.status(401).send({ msg: "Refresh token is empty" });
         const refreshToken = cookies?.jwt;
 
         const user = await User.findOne({ refreshToken });
@@ -227,7 +225,7 @@ export const refresh: RequestHandler = async (req, res) => {
                     process.env.ACCESS_TOKEN_SECRET as string,
                     { expiresIn: "15m" }
                 );
-                return res.json({ accessToken });
+                return res.json({ accessToken, isOnboard: user.isOnboard });
             }
         );
     } catch (err) {
