@@ -3,14 +3,16 @@ import { axiosInstance } from "../api/axios";
 import useAuth from "./../hooks/useAuth";
 import { IconLoader, IconX } from "@tabler/icons-react";
 import axios, { AxiosError } from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const AuthModal = ({
     toggleAuthModal,
     isAuthModal,
+    isAuthPage,
 }: {
-    toggleAuthModal: CallableFunction;
-    isAuthModal: boolean;
+    toggleAuthModal: CallableFunction | null;
+    isAuthModal: boolean | null;
+    isAuthPage: boolean;
 }) => {
     interface formData {
         [key: string]: string;
@@ -21,6 +23,8 @@ const AuthModal = ({
         passwordRep: "",
     };
 
+    const navigate = useNavigate();
+    const location = useLocation();
     const { setAuth } = useAuth();
 
     const [isSignup, setIsSignup] = useState<boolean>(true);
@@ -85,7 +89,16 @@ const AuthModal = ({
             if (resp.status === 200 || resp.status === 201) {
                 const accessToken = resp.data?.accessToken;
                 setAuth({ accessToken });
-                toggleAuthModal();
+                if (isAuthPage) {
+                    if (resp.status === 201) {
+                        navigate("/onboarding");
+                    } else {
+                        navigate(location?.state?.from);
+                    }
+                }
+                if (toggleAuthModal) {
+                    toggleAuthModal();
+                }
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {
@@ -122,15 +135,25 @@ const AuthModal = ({
     }, [isAuthModal]);
 
     return (
-        <>
+        <div
+            className={
+                isAuthPage
+                    ? "w-screen h-screen bg-sec flex items-center justify-center"
+                    : ""
+            }
+        >
             <div
                 className={`w-screen h-screen backdrop-blur-sm bg-black top-0 bg-opacity-20 fixed left-0 transition-all duration-300 z-40 ${
                     isAuthModal ? "block" : "hidden"
                 }`}
             ></div>
             <div
-                className={`text-blueGray fixed translate-y-1/2 left-0 right-0 mx-auto max-w-xs bg-white pt-8 pb-14 flex items-center flex-col bg-cover z-50 rounded-2xl transition-all duration-500 ${
-                    isAuthModal ? "bottom-1/2" : "-bottom-full"
+                className={`text-blueGray left-0 right-0 mx-auto max-w-xs bg-white pt-8 flex items-center flex-col bg-cover z-50 rounded-2xl transition-all duration-500 ${
+                    isAuthPage
+                        ? "static translate-y-0 shadow-lg pb-6"
+                        : "fixed translate-y-1/2 pb-14"
+                } ${
+                    isAuthModal && !isAuthPage ? "bottom-1/2" : "-bottom-full"
                 }`}
             >
                 <div className="flex justify-center bg-primary bg-opacity-60 backdrop-blur-sm text-white rounded-2xl mb-4">
@@ -183,6 +206,7 @@ const AuthModal = ({
                             name="email"
                             onChange={handleFormData}
                             value={formData.email}
+                            autoComplete="username"
                         />
                         {formErrors?.email ? (
                             <p className="text-red-400 mt-2">
@@ -207,6 +231,9 @@ const AuthModal = ({
                             name="password"
                             onChange={handleFormData}
                             value={formData.password}
+                            autoComplete={
+                                isAuthPage ? "current-password" : "new-password"
+                            }
                         />
                         {formErrors?.password ? (
                             <p className="text-red-400 mt-2">
@@ -223,6 +250,7 @@ const AuthModal = ({
                                 ? " opacity-0 pointer-events-none -z-10 select-none max-h-0"
                                 : " max-h-60 mt-2"
                         }`}
+                        tabIndex={isSignup ? -1 : 0}
                     >
                         Forgot password?
                     </Link>
@@ -247,6 +275,7 @@ const AuthModal = ({
                             name="passwordRep"
                             onChange={handleFormData}
                             value={formData.passwordRep}
+                            tabIndex={!isSignup ? -1 : 0}
                         />
                         {formErrors?.passwordRep ? (
                             <p className="text-red-400 mt-2">
@@ -270,14 +299,22 @@ const AuthModal = ({
                         Submit
                     </button>
                 </form>
-                <button
-                    className="absolute -bottom-3 bg-secRed w-9 h-9 flex items-center justify-center rounded-full"
-                    onClick={() => toggleAuthModal()}
-                >
-                    <IconX color="white" />
-                </button>
+                {isAuthPage ? (
+                    <Link to="/" className="mt-8">
+                        Home
+                    </Link>
+                ) : (
+                    <button
+                        className="absolute -bottom-3 bg-secRed w-9 h-9 flex items-center justify-center rounded-full"
+                        onClick={() =>
+                            toggleAuthModal ? toggleAuthModal() : ""
+                        }
+                    >
+                        <IconX color="white" />
+                    </button>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 

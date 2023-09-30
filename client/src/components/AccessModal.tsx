@@ -123,12 +123,12 @@ const AccessModal = ({
                         />
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="email" className="block font-semibold">
+                        <label htmlFor="studentEmail" className="block font-semibold">
                             Student email
                         </label>
                         <input
                             type="email"
-                            id="email"
+                            id="studentEmail"
                             className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
                             placeholder="Student email"
                             name="email"

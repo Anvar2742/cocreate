@@ -9,7 +9,6 @@ const CourseSchema = new Schema<CourseDoc>({
     },
     description: {
         type: String,
-        required: [true, "Please enter a description"],
     },
     tutorId: {
         type: String,
@@ -17,7 +16,7 @@ const CourseSchema = new Schema<CourseDoc>({
     },
     slug: {
         type: String,
-        unique: true,
+        // unique: true,
     },
 });
 

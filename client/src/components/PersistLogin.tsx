@@ -52,6 +52,7 @@ const PersistLogin = () => {
                     <AuthModal
                         toggleAuthModal={toggleAuthModal}
                         isAuthModal={isAuthModal}
+                        isAuthPage={false}
                     />
                 </>
             ) : (

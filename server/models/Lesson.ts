@@ -12,11 +12,11 @@ const LessonSchema = new Schema<LessonDoc>({
     },
     courseId: {
         type: String,
-        required: true,
+        // required: true,
     },
     slug: {
         type: String,
-        unique: true,
+        // unique: true,
     },
     content: {
         type: String,
