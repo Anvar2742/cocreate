@@ -21,6 +21,7 @@ const LessonEditor = ({
                 init={{
                     height: 500,
                     menubar: false,
+                    toolbar_mode: "sliding",
                     plugins: [
                         "advlist",
                         "autolink",

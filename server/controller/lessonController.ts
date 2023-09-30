@@ -11,6 +11,8 @@ const handleErrors = (err: any) => {
         description: "",
     };
 
+    console.log(err);
+    
     // Lesson with that name already exists
     if (err.code === 11000) {
         lessonErrors.title = "This title is already in use";
