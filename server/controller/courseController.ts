@@ -48,6 +48,10 @@ export const createCourse = async (req: Request, res: Response) => {
         const tutorId = tutor._id;
         const slug = slugify(title);
 
+        const isTakenName = await Course.find({ slug, tutorId });
+        if (isTakenName?.length)
+            return res.status(400).json({ title: "Name already taken" });
+
         const newCourse = await Course.create({
             title,
             description,
@@ -86,9 +90,11 @@ export const getCourses = async (req: Request, res: Response) => {
 
 export const getSingleCourse = async (req: Request, res: Response) => {
     const { slug } = req.body;
+    const user = req.user as UserDoc;
+
     try {
         if (!slug) return res.sendStatus(400);
-        const course = await Course.findOne({ slug });
+        const course = await Course.findOne({ slug, tutorId: user._id });
         if (!course) return res.sendStatus(404);
         res.status(200).send(course);
     } catch (error) {
@@ -101,39 +107,21 @@ export const giveAccessToCourse = async (req: Request, res: Response) => {
     try {
         const user = req.user as UserDoc;
         if (!user || user.userType !== "tutor") {
-            return res.status(400).json({ msg: "You're not a tutor:(" });
+            return res.status(401).json({ msg: "You're not a tutor:(" });
         }
         if (!email)
             return res.status(400).json({ email: "Please enter an email" });
-        const student = await User.findOne({ email });
 
+        const student = await User.findOne({ email });
         if (!student)
             return res.status(404).json({ email: "No user with this email" });
         if (!courseId) return res.status(400).send("No course ID");
 
         student.courses.push(courseId);
-
         await student.save();
+
         res.status(204).send("Data saved successfully");
     } catch (error) {
         console.log(error);
-    }
-};
-
-export const onboard = async (req: Request, res: Response) => {
-    const { userType } = req.body;
-    try {
-        const user = req.user as UserDoc | null;
-        const email = user?.email;
-
-        if (!user) return res.status(401).json({ msg: "No user" });
-        const currentUser = await User.findOne({ email });
-        if (!currentUser) return res.sendStatus(404);
-        currentUser.userType = userType;
-        currentUser.isOnboard = true;
-        await currentUser.save();
-        res.sendStatus(204);
-    } catch (err) {
-        res.status(400).send(err);
     }
 };

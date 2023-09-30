@@ -20,8 +20,11 @@ const LessonSingle = () => {
                 setLesson(resp.data);
                 setIsLoading(false);
             }
-        } catch (error) {
-            console.log(error);
+        } catch (err: any) {
+            console.log(err);
+            if (err.response.status === 404) {
+                setLesson(null);
+            }
             setIsLoading(false);
         }
     };
@@ -50,22 +53,30 @@ const LessonSingle = () => {
         <section className="py-20">
             {isLoading ? <Loader /> : ""}
             <div className="max-w-5xl px-4 m-auto overflow-y-hidden">
-                <div className="mb-10">
-                    <h1 className="font-bold text-5xl mb-3">{lesson?.title}</h1>
-                    <p>{lesson?.description}</p>
-                </div>
-                <div
-                    className={`transition-all duration-500 ${
-                        isLoading
-                            ? "opacity-0 translate-y-full"
-                            : "opacity-100 translate-y-0"
-                    }`}
-                >
-                    <LessonEditor
-                        updateContent={updateContent}
-                        initialContent={lesson?.content}
-                    />
-                </div>
+                {lesson ? (
+                    <>
+                        <div className="mb-10">
+                            <h1 className="font-bold text-5xl mb-3">
+                                {lesson?.title}
+                            </h1>
+                            <p>{lesson?.description}</p>
+                        </div>
+                        <div
+                            className={`transition-all duration-500 ${
+                                isLoading
+                                    ? "opacity-0 translate-y-full"
+                                    : "opacity-100 translate-y-0"
+                            }`}
+                        >
+                            <LessonEditor
+                                updateContent={updateContent}
+                                initialContent={lesson?.content}
+                            />
+                        </div>
+                    </>
+                ) : (
+                    "404"
+                )}
             </div>
         </section>
     );

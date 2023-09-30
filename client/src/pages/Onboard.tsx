@@ -50,11 +50,15 @@ const Onboard = () => {
             }
             const resp = await axiosPrivate.post("/onboarding", formData);
 
-            // console.log(resp);
+            console.log(resp);
             if (resp.status === 204) {
                 // Update isOnboard status for user
                 await refresh();
-                navigate(location?.state?.from);
+                if (location?.state?.from) {
+                    navigate(location?.state?.from);
+                } else {
+                    navigate("/");
+                }
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {

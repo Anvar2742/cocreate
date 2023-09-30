@@ -24,6 +24,7 @@ export interface LessonDoc extends Document {
     title: string;
     description: string;
     courseId: string;
+    tutorId: string;
     slug: string;
     content: string;
 }

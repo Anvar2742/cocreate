@@ -14,6 +14,10 @@ const LessonSchema = new Schema<LessonDoc>({
         type: String,
         // required: true,
     },
+    tutorId: {
+        type: String,
+        // required: true,
+    },
     slug: {
         type: String,
         // unique: true,

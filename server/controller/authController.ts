@@ -132,7 +132,7 @@ export const signup: RequestHandler = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.status(201).json({ accessToken });
+        res.status(201).json({ accessToken, isOnboard: newUser.isOnboard });
     } catch (err) {
         const errors = handleErrors(err);
         res.status(400).send(errors);
@@ -159,7 +159,7 @@ export const login: RequestHandler = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.status(200).json({ accessToken, logedInUser });
+        res.status(200).json({ accessToken, isOnboard: logedInUser.isOnboard });
     } catch (err) {
         const errors = handleErrors(err);
         res.status(400).send(errors);

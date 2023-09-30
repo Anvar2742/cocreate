@@ -11,8 +11,8 @@ const handleErrors = (err: any) => {
         description: "",
     };
 
-    console.log(err);
-    
+    // console.log(err);
+
     // Lesson with that name already exists
     if (err.code === 11000) {
         lessonErrors.title = "This title is already in use";
@@ -44,14 +44,21 @@ const handleErrors = (err: any) => {
 
 export const createLesson = async (req: Request, res: Response) => {
     const { title, description, courseId } = req.body;
+    const user = req.user as UserDoc;
     try {
         const slug = slugify(title);
+        const tutorId = user._id;
+
+        const isTakenName = await Lesson.find({ slug, courseId });
+        if (isTakenName?.length)
+            return res.status(400).json({ title: "Name already taken" });
 
         const newLesson = await Lesson.create({
             title,
             description,
             slug,
             courseId,
+            tutorId,
         });
 
         if (!newLesson) return res.sendStatus(400);
@@ -64,9 +71,12 @@ export const createLesson = async (req: Request, res: Response) => {
 };
 
 export const getLessons = async (req: Request, res: Response) => {
+    const user = req.user as UserDoc;
     const { courseId } = req.body;
     try {
-        const lessons = await Lesson.find({ courseId });
+        const lessons = await Lesson.find({ courseId, tutorId: user._id });
+        // console.log(lessons);
+
         if (!lessons.length) return res.sendStatus(404);
         res.status(200).send(lessons);
     } catch (error) {
@@ -76,9 +86,12 @@ export const getLessons = async (req: Request, res: Response) => {
 
 export const getSingleLesson = async (req: Request, res: Response) => {
     const { slug } = req.body;
+    const user = req.user as UserDoc;
+
     try {
         if (!slug) return res.sendStatus(400);
-        const lesson = await Lesson.findOne({ slug });
+        const lesson = await Lesson.findOne({ slug, tutorId: user._id });
+        
         if (!lesson) return res.sendStatus(404);
         res.status(200).send(lesson);
     } catch (error) {
