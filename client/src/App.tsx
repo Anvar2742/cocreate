@@ -7,6 +7,7 @@ import RequireAuth from "./components/RequireAuth";
 import Auth from "./pages/Auth";
 import CourseSingle from "./pages/CourseSingle";
 import LessonSingle from "./pages/LessonSingle";
+import Onboard from "./pages/Onboard";
 
 function App() {
     return (
@@ -15,10 +16,14 @@ function App() {
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/" element={<Home />} />
                 <Route element={<RequireAuth />}>
+                    <Route path="/onboarding" element={<Onboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/courses/:slug" element={<CourseSingle />} />
-                    <Route path="/courses/:slug/:lessonSlug" element={<LessonSingle />} />
+                    <Route
+                        path="/courses/:slug/:lessonSlug"
+                        element={<LessonSingle />}
+                    />
                 </Route>
             </Route>
         </Routes>

@@ -38,6 +38,7 @@ const Courses = () => {
             setIsLoading(false);
         }
     };
+    
     const axiosPrivate = useAxiosPrivate();
 
     const toggleCreateModal = () => {

@@ -57,7 +57,7 @@ export const createLesson = async (req: Request, res: Response) => {
         res.status(201).send(newLesson);
     } catch (error) {
         const errors = handleErrors(error);
-        res.send(errors);
+        res.status(400).send(errors);
     }
 };
 
@@ -68,7 +68,7 @@ export const getLessons = async (req: Request, res: Response) => {
         if (!lessons.length) return res.sendStatus(404);
         res.status(200).send(lessons);
     } catch (error) {
-        res.send(error);
+        res.status(400).send(error);
     }
 };
 
@@ -80,7 +80,7 @@ export const getSingleLesson = async (req: Request, res: Response) => {
         if (!lesson) return res.sendStatus(404);
         res.status(200).send(lesson);
     } catch (error) {
-        res.send(error);
+        res.status(400).send(error);
     }
 };
 
@@ -96,6 +96,6 @@ export const updateLesson = async (req: Request, res: Response) => {
 
         res.status(204).send(lesson);
     } catch (error) {
-        res.send(error);
+        res.status(400).send(error);
     }
 };

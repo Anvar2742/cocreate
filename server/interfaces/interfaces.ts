@@ -6,6 +6,7 @@ export interface UserDoc extends Document {
     refreshToken: string;
     userType: string;
     courses: string[];
+    isOnboard: boolean;
     isModified: (pw: string) => Promise<boolean>;
     login: (email: string, password: string) => Promise<UserDoc>;
 }

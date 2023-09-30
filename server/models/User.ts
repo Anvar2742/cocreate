@@ -33,6 +33,10 @@ const UserSchema = new Schema<UserDoc>({
     courses: {
         type: [String],
     },
+    isOnboard: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 UserSchema.pre<UserDoc>("save", async function (next) {

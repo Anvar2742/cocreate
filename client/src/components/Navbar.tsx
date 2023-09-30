@@ -1,11 +1,10 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import {
     IconAddressBook,
     IconBooks,
     IconHome,
-    IconMenu,
     IconUser,
 } from "@tabler/icons-react";
 
@@ -14,12 +13,7 @@ const Navbar = ({
 }: {
     toggleAuthModal: MouseEventHandler<HTMLButtonElement>;
 }) => {
-    const [_isMenuOpen, setIsMenuOpen] = useState(false);
     const { auth } = useAuth();
-
-    const toggleMenu = () => {
-        setIsMenuOpen((prev) => !prev);
-    };
 
     return (
         <header className="py-4 bg-primary text-white">

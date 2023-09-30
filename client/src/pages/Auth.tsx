@@ -82,8 +82,15 @@ const Auth = () => {
             // console.log(resp);
             if (resp.status === 200 || resp.status === 201) {
                 const accessToken = resp.data?.accessToken;
+                console.log(accessToken);
+
                 setAuth({ accessToken });
-                navigate(location?.state?.from);
+
+                if (resp.status === 201) {
+                    navigate("/onboarding");
+                } else {
+                    navigate(location?.state?.from);
+                }
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {

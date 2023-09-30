@@ -60,7 +60,7 @@ export const createCourse = async (req: Request, res: Response) => {
         res.status(201).send(newCourse);
     } catch (error) {
         const errors = handleErrors(error);
-        res.send(errors);
+        res.status(400).send(errors);
     }
 };
 
@@ -80,7 +80,7 @@ export const getCourses = async (req: Request, res: Response) => {
         if (!courses.length) return res.sendStatus(404);
         res.status(200).send(courses);
     } catch (error) {
-        res.send(error);
+        res.status(400).send(error);
     }
 };
 
@@ -92,7 +92,7 @@ export const getSingleCourse = async (req: Request, res: Response) => {
         if (!course) return res.sendStatus(404);
         res.status(200).send(course);
     } catch (error) {
-        res.send(error);
+        res.status(400).send(error);
     }
 };
 
@@ -117,5 +117,23 @@ export const giveAccessToCourse = async (req: Request, res: Response) => {
         res.status(204).send("Data saved successfully");
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const onboard = async (req: Request, res: Response) => {
+    const { userType } = req.body;
+    try {
+        const user = req.user as UserDoc | null;
+        const email = user?.email;
+
+        if (!user) return res.status(401).json({ msg: "No user" });
+        const currentUser = await User.findOne({ email });
+        if (!currentUser) return res.sendStatus(404);
+        currentUser.userType = userType;
+        currentUser.isOnboard = true;
+        await currentUser.save();
+        res.sendStatus(204);
+    } catch (err) {
+        res.status(400).send(err);
     }
 };
