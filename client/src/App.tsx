@@ -9,7 +9,7 @@ import CourseSingle from "./pages/CourseSingle";
 import LessonSingle from "./pages/LessonSingle";
 import Onboard from "./pages/Onboard";
 import RequireOnboard from "./components/RequireOnboard";
-import Students from "./pages/Students";
+// import Students from "./pages/Students";
 
 function App() {
     return (
@@ -22,7 +22,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route element={<RequireOnboard />}>
                         <Route path="/courses" element={<Courses />} />
-                        <Route path="/students" element={<Students />} />
+                        {/* <Route path="/students" element={<Students />} /> */}
                         <Route
                             path="/courses/:slug"
                             element={<CourseSingle />}

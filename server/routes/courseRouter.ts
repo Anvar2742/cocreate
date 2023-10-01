@@ -4,6 +4,7 @@ import {
     createCourse,
     getCourses,
     getSingleCourse,
+    getSingleCourseStudent,
     giveAccessToCourse,
 } from "../controller/courseController";
 
@@ -31,6 +32,12 @@ courseRouter.post(
     "/courses/access",
     passport.authenticate("jwt", { session: false }),
     giveAccessToCourse
+);
+
+courseRouter.post(
+    "/course/student",
+    passport.authenticate("jwt", { session: false }),
+    getSingleCourseStudent
 );
 
 export default courseRouter;
