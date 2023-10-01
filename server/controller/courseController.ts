@@ -110,17 +110,17 @@ export const getSingleCourseStudent = async (req: Request, res: Response) => {
         if (!slug) return res.sendStatus(400);
         const course = await Course.findOne({ slug });
         if (!course) return res.sendStatus(404);
-        
+
         const student = await User.findOne({ _id: user._id });
         if (!student) return res.status(401).send("No student found");
 
         const courseIds = student.courses;
-        if (!courseIds.length) return res.status(404);
+        if (!courseIds.length) return res.sendStatus(404);
 
-        const courses = await Course.find({ _id: { $in: courseIds } });
-        if (!courses.length) return res.status(400).send("No courses");
+        const hasAccess = courseIds.filter((el) => el === course._id);
+        if (!hasAccess) return res.sendStatus(404);
 
-        res.status(200).send(courses);
+        res.status(200).send(course);
     } catch (error) {
         res.status(400).send(error);
     }

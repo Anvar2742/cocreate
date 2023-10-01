@@ -29,15 +29,15 @@ courseRouter.post(
 );
 
 courseRouter.post(
-    "/courses/access",
-    passport.authenticate("jwt", { session: false }),
-    giveAccessToCourse
-);
-
-courseRouter.post(
     "/course/student",
     passport.authenticate("jwt", { session: false }),
     getSingleCourseStudent
+);
+
+courseRouter.post(
+    "/courses/access",
+    passport.authenticate("jwt", { session: false }),
+    giveAccessToCourse
 );
 
 export default courseRouter;
