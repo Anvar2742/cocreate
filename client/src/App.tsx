@@ -15,6 +15,7 @@ import CourseSingleStudent from "./pages/CourseSingleStudent";
 import LessonSingleStudent from "./pages/LessonSingleStudent";
 import RequireActivate from "./components/RequireActivate";
 import Activation from "./pages/Activation";
+import UserActivate from "./pages/UserActivate";
 // import Students from "./pages/Students";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/" element={<Home />} />
                 <Route element={<RequireAuth />}>
+                    <Route path="/activate" element={<UserActivate />} />
                     <Route path="/onboarding" element={<Onboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/activation" element={<Activation />} />

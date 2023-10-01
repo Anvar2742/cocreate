@@ -121,7 +121,9 @@ export const signup: RequestHandler = async (req, res) => {
         const newUser = await User.create({ email, password });
         const { refreshToken, accessToken } = createJWT(newUser);
 
-        const activateToken = await require("crypto").randomBytes(48);
+        const activateToken = await require("crypto")
+            .randomBytes(48)
+            .toString("hex");
 
         // Saving tokens with the new user
         newUser.activateToken = activateToken;
@@ -136,8 +138,10 @@ export const signup: RequestHandler = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        const sentEmail = await sendEmail(activateToken);
-        console.log(sentEmail);
+        // console.log(activateToken);
+
+        const sentEmail = await sendEmail(activateToken, email);
+        // console.log(sentEmail);
         if (!sentEmail) return res.send(400).send("email not sent");
 
         res.status(201).json({

@@ -1,4 +1,6 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
     host: "smtp-relay.brevo.com",
@@ -11,17 +13,17 @@ const transporter = nodemailer.createTransport({
 });
 
 // async..await is not allowed in global scope, must use a wrapper
-async function sendEmail(activationToken: string) {
+async function sendEmail(activationToken: string, email: string) {
     // send mail with defined transport object
     const info = await transporter.sendMail({
         from: "<anvarmusa12@gmail.com>", // sender address
-        to: "anvarmusa12@gmail.com", // list of receivers
+        to: email, // list of receivers
         subject: "Account activation - Oxillia", // Subject line
         // text: "Hello world?", // plain text body
-        html: `<div>
+        html: `<div style="font-family: sans-serif;">
                     <p>Hello, thank you for signin up!</p>
                     <p>Please activate your account to start using Oxillia.</p>
-                    <a href="http://localhost:5173/activate?token${activationToken}" style="background-color: #6739ff; color: #fff;">Activate</a>
+                    <a href="${process.env.HOME_URL}/activate?token=${activationToken}" style="background-color: #6739ff; color: #fff; text-decoration: none; padding: 10px 15px; margin-top: 5px; display: inline-block; border-radius:10px;">Activate</a>
                 </div>
                 `, // html body
     });
