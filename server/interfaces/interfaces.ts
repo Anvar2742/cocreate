@@ -8,6 +8,8 @@ export interface UserDoc extends Document {
     courses: string[];
     students: string[];
     isOnboard: boolean;
+    activateToken: string;
+    isActive: boolean;
     isModified: (pw: string) => Promise<boolean>;
     login: (email: string, password: string) => Promise<UserDoc>;
 }

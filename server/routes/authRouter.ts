@@ -2,7 +2,6 @@ import { Router } from "express";
 import { login, logout, refresh, signup } from "../controller/authController";
 import passport from "passport";
 import passportConfig from "../config/passportConfig";
-import { onboard } from "../controller/userController";
 
 // Passport config
 passportConfig(passport);

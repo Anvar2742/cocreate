@@ -5,6 +5,7 @@ import User from "../models/User";
 import jwt from "jsonwebtoken";
 import { UserDoc } from "../interfaces/interfaces";
 import dotenv from "dotenv";
+import sendEmail from "../utils/sendEmail";
 dotenv.config();
 
 // Passport config
@@ -120,7 +121,10 @@ export const signup: RequestHandler = async (req, res) => {
         const newUser = await User.create({ email, password });
         const { refreshToken, accessToken } = createJWT(newUser);
 
-        // Saving refreshToken with current user
+        const activateToken = await require("crypto").randomBytes(48);
+
+        // Saving tokens with the new user
+        newUser.activateToken = activateToken;
         newUser.refreshToken = refreshToken;
         await newUser.save();
 
@@ -132,7 +136,15 @@ export const signup: RequestHandler = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.status(201).json({ accessToken, isOnboard: newUser.isOnboard });
+        const sentEmail = await sendEmail(activateToken);
+        console.log(sentEmail);
+        if (!sentEmail) return res.send(400).send("email not sent");
+
+        res.status(201).json({
+            accessToken,
+            isOnboard: newUser.isOnboard,
+            isActive: newUser.isActive,
+        });
     } catch (err) {
         const errors = handleErrors(err);
         res.status(400).send(errors);

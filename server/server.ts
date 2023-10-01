@@ -11,7 +11,7 @@ dotenv.config();
 import sendEmail from "./utils/sendEmail";
 import lessonRouter from "./routes/lessonRouter";
 import userRouter from "./routes/userRouter";
-// sendEmail().catch(console.error);
+
 const app = express();
 const port = 5050;
 
@@ -25,6 +25,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 
 app.get("/", (req: Request, res: Response) => {
+    // sendEmail().catch(console.error);
     res.send("cool!");
 });
 

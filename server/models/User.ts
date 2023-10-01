@@ -40,6 +40,13 @@ const UserSchema = new Schema<UserDoc>({
         type: Boolean,
         default: false,
     },
+    activateToken: {
+        type: String,
+    },
+    isActive: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 UserSchema.pre<UserDoc>("save", async function (next) {
