@@ -3,6 +3,7 @@ import { UserDoc } from "../interfaces/interfaces";
 import dotenv from "dotenv";
 import Lesson from "../models/Lesson";
 import slugify from "../utils/slugify";
+import User from "../models/User";
 dotenv.config();
 
 const handleErrors = (err: any) => {
@@ -84,6 +85,25 @@ export const getLessons = async (req: Request, res: Response) => {
     }
 };
 
+export const getLessonsStudent = async (req: Request, res: Response) => {
+    const user = req.user as UserDoc;
+    const { courseId } = req.body;
+    try {
+        const student = await User.findOne({ _id: user._id });
+        if (!student) return res.sendStatus(401);
+        const courseIds = student.courses;
+
+        const hasAccess = courseIds.filter((el) => el === courseId);
+        if (!hasAccess.length) return res.sendStatus(401);
+        const lessons = await Lesson.find({ courseId });
+
+        if (!lessons.length) return res.sendStatus(404);
+        res.status(200).send(lessons);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+};
+
 export const getSingleLesson = async (req: Request, res: Response) => {
     const { slug } = req.body;
     const user = req.user as UserDoc;
@@ -91,7 +111,7 @@ export const getSingleLesson = async (req: Request, res: Response) => {
     try {
         if (!slug) return res.sendStatus(400);
         const lesson = await Lesson.findOne({ slug, tutorId: user._id });
-        
+
         if (!lesson) return res.sendStatus(404);
         res.status(200).send(lesson);
     } catch (error) {

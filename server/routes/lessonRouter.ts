@@ -3,6 +3,7 @@ import passport from "passport";
 import {
     createLesson,
     getLessons,
+    getLessonsStudent,
     getSingleLesson,
     updateLesson,
 } from "../controller/lessonController";
@@ -13,6 +14,12 @@ lessonRouter.post(
     "/lessons",
     passport.authenticate("jwt", { session: false }),
     getLessons
+);
+
+lessonRouter.post(
+    "/lessons/student",
+    passport.authenticate("jwt", { session: false }),
+    getLessonsStudent
 );
 
 lessonRouter.post(
