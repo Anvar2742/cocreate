@@ -2,14 +2,12 @@ import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
 import { CourseDoc } from "../interfaces/interfaces";
-import AccessModal from "../components/AccessModal";
 import Loader from "../components/Loader";
 import LessonsStudent from "./LessonsStudent";
 
 const CourseSingleStudent = () => {
     const { slug } = useParams();
     const axiosPrivate = useAxiosPrivate();
-    const [isCreateModal, setIsAccessModal] = useState<boolean>(false);
     const [course, setCourse] = useState<CourseDoc | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -34,10 +32,6 @@ const CourseSingleStudent = () => {
     useEffect(() => {
         getSingleCourse();
     }, [location?.pathname]);
-
-    const toggleAccessModal = () => {
-        setIsAccessModal((prev) => !prev);
-    };
 
     return (
         <section className="pt-6 overflow-hidden">

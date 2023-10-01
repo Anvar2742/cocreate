@@ -5,15 +5,18 @@ import { LessonDoc } from "../interfaces/interfaces";
 import LessonEditor from "../components/LessonEditor";
 import Loader from "../components/Loader";
 
-const LessonSingle = () => {
+const LessonSingleStudent = () => {
     const [lesson, setLesson] = useState<LessonDoc | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const axiosPrivate = useAxiosPrivate();
-    const { lessonSlug: slug } = useParams();
+    const { lessonSlug, courseSlug } = useParams();
 
     const getSingleLesson = async () => {
         try {
-            const resp = await axiosPrivate.post("/lesson", { slug });
+            const resp = await axiosPrivate.post("/lesson/student", {
+                lessonSlug,
+                courseSlug,
+            });
             console.log(resp);
 
             if (resp.status === 200) {
@@ -32,7 +35,7 @@ const LessonSingle = () => {
     const updateLesson = async (content: string) => {
         try {
             const resp = await axiosPrivate.put("/lesson", {
-                slug,
+                courseSlug,
                 content,
             });
             console.log(resp);
@@ -71,6 +74,7 @@ const LessonSingle = () => {
                             <LessonEditor
                                 updateContent={updateContent}
                                 initialContent={lesson?.content}
+                                isTutor={false}
                             />
                         </div>
                     </>
@@ -82,4 +86,4 @@ const LessonSingle = () => {
     );
 };
 
-export default LessonSingle;
+export default LessonSingleStudent;

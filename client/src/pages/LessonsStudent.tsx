@@ -2,12 +2,10 @@ import { useState, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Link } from "react-router-dom";
 import { CourseDoc, LessonDoc } from "../interfaces/interfaces";
-import TitleCreateModal from "../components/TitleCreateModal";
 import TitleLoader from "../components/TitleLoader";
 import { AxiosError } from "axios";
 
 const LessonsStudent = ({ course }: { course: CourseDoc | null }) => {
-    const [isCreateModal, setIsCreateModal] = useState<boolean>(false);
     const [lessonsArr, setLessonsArr] = useState<LessonDoc[]>([]);
     const [lessonsEls, setLessonsEls] = useState<JSX.Element[] | JSX.Element>(
         []
@@ -71,27 +69,11 @@ const LessonsStudent = ({ course }: { course: CourseDoc | null }) => {
         }
     }, [lessonsArr]);
 
-    const toggleCreateModal = () => {
-        setIsCreateModal((prev) => !prev);
-    };
-
     return (
         <div className="flex flex-col gap-2">
             <div className="mt-8 grid sm:grid-cols-3 gap-4">
                 {isLoading ? <TitleLoader /> : lessonsEls}
             </div>
-            <button
-                onClick={toggleCreateModal}
-                className="bg-primary block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all mt-6 mx-auto"
-            >
-                New Lesson
-            </button>
-            <TitleCreateModal
-                toggleCreateModal={toggleCreateModal}
-                isCreateModal={isCreateModal}
-                typeOfTitle="lesson"
-                courseId={courseId}
-            />
         </div>
     );
 };

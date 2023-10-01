@@ -71,6 +71,7 @@ const LessonSingle = () => {
                             <LessonEditor
                                 updateContent={updateContent}
                                 initialContent={lesson?.content}
+                                isTutor={true}
                             />
                         </div>
                     </>

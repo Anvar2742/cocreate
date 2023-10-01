@@ -4,9 +4,11 @@ import { useRef } from "react";
 const LessonEditor = ({
     updateContent,
     initialContent,
+    isTutor,
 }: {
     updateContent: CallableFunction;
     initialContent: string | undefined;
+    isTutor: boolean;
 }) => {
     const editorRef = useRef<any>(null);
 
@@ -18,9 +20,11 @@ const LessonEditor = ({
                 }
                 onInit={(_evt, editor) => (editorRef.current = editor)}
                 initialValue={initialContent}
+                disabled={!isTutor}
                 init={{
-                    height: 500,
-                    menubar: false,
+                    // height: 500,
+                    menubar: isTutor,
+                    statusbar: false,
                     toolbar_mode: "sliding",
                     plugins: [
                         "advlist",
@@ -42,12 +46,14 @@ const LessonEditor = ({
                         "wordcount",
                         "table",
                         "image",
+                        "autoresize",
                     ],
-                    toolbar:
-                        "undo redo | blocks | " +
-                        "bold italic forecolor | alignleft aligncenter " +
-                        "alignright alignjustify | bullist numlist outdent indent | fullscreen " +
-                        "removeformat | insertfile link image | help | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
+                    toolbar: isTutor
+                        ? "undo redo | blocks | " +
+                          "bold italic forecolor | alignleft aligncenter " +
+                          "alignright alignjustify | bullist numlist outdent indent | fullscreen " +
+                          "removeformat | insertfile link image | help | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol"
+                        : false,
                     content_style:
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                     image_title: true,
@@ -90,12 +96,18 @@ const LessonEditor = ({
                     },
                 }}
             />
-            <button
-                onClick={() => updateContent(editorRef.current.getContent())}
-                className="mt-4 bg-primary inline-block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
-            >
-                Save
-            </button>
+            {isTutor ? (
+                <button
+                    onClick={() =>
+                        updateContent(editorRef.current.getContent())
+                    }
+                    className="mt-4 bg-primary inline-block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
+                >
+                    Save
+                </button>
+            ) : (
+                ""
+            )}
         </>
     );
 };

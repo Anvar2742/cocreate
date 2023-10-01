@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
-import { UserDoc } from "../interfaces/interfaces";
+import { CourseDoc, UserDoc } from "../interfaces/interfaces";
 import dotenv from "dotenv";
 import Lesson from "../models/Lesson";
 import slugify from "../utils/slugify";
 import User from "../models/User";
+import Course from "../models/Course";
 dotenv.config();
 
 const handleErrors = (err: any) => {
@@ -111,6 +112,27 @@ export const getSingleLesson = async (req: Request, res: Response) => {
     try {
         if (!slug) return res.sendStatus(400);
         const lesson = await Lesson.findOne({ slug, tutorId: user._id });
+
+        if (!lesson) return res.sendStatus(404);
+        res.status(200).send(lesson);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+};
+
+export const getSingleLessonStudent = async (req: Request, res: Response) => {
+    const { courseSlug, lessonSlug } = req.body;
+    // const user = req.user as UserDoc;
+
+    try {
+        if (!lessonSlug || !courseSlug) return res.status(400).send("No slug");
+        const course = (await Course.findOne({
+            slug: courseSlug,
+        })) as CourseDoc;
+        const lesson = await Lesson.findOne({
+            slug: lessonSlug,
+            courseId: course._id,
+        });
 
         if (!lesson) return res.sendStatus(404);
         res.status(200).send(lesson);

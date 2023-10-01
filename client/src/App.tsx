@@ -12,6 +12,7 @@ import RequireOnboard from "./components/RequireOnboard";
 import useAuth from "./hooks/useAuth";
 import CoursesStudents from "./pages/CoursesStudent";
 import CourseSingleStudent from "./pages/CourseSingleStudent";
+import LessonSingleStudent from "./pages/LessonSingleStudent";
 // import Students from "./pages/Students";
 
 function App() {
@@ -48,8 +49,14 @@ function App() {
                             }
                         />
                         <Route
-                            path="/courses/:slug/:lessonSlug"
-                            element={<LessonSingle />}
+                            path="/courses/:courseSlug/:lessonSlug"
+                            element={
+                                auth?.userType === "tutor" ? (
+                                    <LessonSingle />
+                                ) : (
+                                    <LessonSingleStudent />
+                                )
+                            }
                         />
                     </Route>
                 </Route>

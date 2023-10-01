@@ -5,6 +5,7 @@ import {
     getLessons,
     getLessonsStudent,
     getSingleLesson,
+    getSingleLessonStudent,
     updateLesson,
 } from "../controller/lessonController";
 
@@ -32,6 +33,12 @@ lessonRouter.post(
     "/lesson",
     passport.authenticate("jwt", { session: false }),
     getSingleLesson
+);
+
+lessonRouter.post(
+    "/lesson/student",
+    passport.authenticate("jwt", { session: false }),
+    getSingleLessonStudent
 );
 
 lessonRouter.put(
