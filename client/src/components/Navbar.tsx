@@ -72,7 +72,7 @@ const Navbar = ({
                                     <NavLink
                                         to="/students"
                                         className={({ isActive }) =>
-                                            `flex items-center justify-center rounded-full w-12 sm:w-auto h-12 sm:h-auto ${
+                                            `pointer-events-none flex items-center justify-center rounded-full w-12 sm:w-auto h-12 sm:h-auto ${
                                                 isActive
                                                     ? "font-bold bg-secRed sm:bg-transparent"
                                                     : "bg-primary"
@@ -82,9 +82,9 @@ const Navbar = ({
                                         <IconAddressBook
                                             stroke={1}
                                             size={30}
-                                            className="sm:hidden"
+                                            className="sm:hidden opacity-40"
                                         />
-                                        <span className="hidden sm:block">
+                                        <span className="hidden sm:block opacity-40">
                                             Students
                                         </span>
                                     </NavLink>

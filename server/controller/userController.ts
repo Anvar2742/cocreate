@@ -48,8 +48,24 @@ export const getStudents = async (req: Request, res: Response) => {
         if (!tutor) return res.status(401).send("No tutor");
         if (tutor.userType !== "tutor")
             return res.status(400).json({ msg: "You're not a tutor" });
-        if (!tutor.students.length) return res.sendStatus(404);
-        res.status(200).send(tutor.students);
+
+        const studentsIds = tutor.students;
+        if (!studentsIds.length) return res.sendStatus(404);
+
+        const students = await User.find({
+            _id: { $in: studentsIds },
+            userType: "student",
+        });
+        if (!students.length)
+            return res.status(400).send("No students with these ids");
+
+        const filteredStudents = students.map((student) => {
+            return {
+                email: student.email,
+            };
+        });
+
+        res.status(200).send(filteredStudents);
     } catch (err) {
         res.status(400).send(err);
     }
