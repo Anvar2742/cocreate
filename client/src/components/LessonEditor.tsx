@@ -1,12 +1,15 @@
+import { IconLoader } from "@tabler/icons-react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
 
 const LessonEditor = ({
     updateContent,
+    isUpdate,
     initialContent,
     isTutor,
 }: {
     updateContent: CallableFunction;
+    isUpdate: boolean;
     initialContent: string | undefined;
     isTutor: boolean;
 }) => {
@@ -14,6 +17,16 @@ const LessonEditor = ({
 
     return (
         <>
+            {isUpdate ? (
+                <div className="absolute bg-white w-full h-full z-20 flex items-center justify-center">
+                    <IconLoader
+                        className="stroke-primary animate-spin-2"
+                        size={60}
+                    />
+                </div>
+            ) : (
+                ""
+            )}
             <Editor
                 tinymceScriptSrc={
                     "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.0/tinymce.min.js"
@@ -22,8 +35,10 @@ const LessonEditor = ({
                 initialValue={initialContent}
                 disabled={!isTutor}
                 init={{
-                    // height: 500,
-                    menubar: isTutor,
+                    promotion: false,
+                    menubar: isTutor
+                        ? "edit insert view format table tools"
+                        : "",
                     statusbar: false,
                     toolbar_mode: "sliding",
                     plugins: [

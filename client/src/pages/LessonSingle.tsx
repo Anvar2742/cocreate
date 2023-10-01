@@ -6,6 +6,7 @@ import LessonEditor from "../components/LessonEditor";
 import Loader from "../components/Loader";
 
 const LessonSingle = () => {
+    const [isUpdate, setIsUpdate] = useState<boolean>(false);
     const [lesson, setLesson] = useState<LessonDoc | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const axiosPrivate = useAxiosPrivate();
@@ -14,14 +15,14 @@ const LessonSingle = () => {
     const getSingleLesson = async () => {
         try {
             const resp = await axiosPrivate.post("/lesson", { slug });
-            console.log(resp);
+            // console.log(resp);
 
             if (resp.status === 200) {
                 setLesson(resp.data);
                 setIsLoading(false);
             }
         } catch (err: any) {
-            console.log(err);
+            // console.log(err);
             if (err.response.status === 404) {
                 setLesson(null);
             }
@@ -38,10 +39,13 @@ const LessonSingle = () => {
             console.log(resp);
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsUpdate(false);
         }
     };
 
     const updateContent = (content: string) => {
+        setIsUpdate(true);
         updateLesson(content);
     };
 
@@ -72,6 +76,7 @@ const LessonSingle = () => {
                                 updateContent={updateContent}
                                 initialContent={lesson?.content}
                                 isTutor={true}
+                                isUpdate={isUpdate}
                             />
                         </div>
                     </>
