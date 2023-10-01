@@ -109,6 +109,7 @@ export const giveAccessToCourse = async (req: Request, res: Response) => {
         if (!user || user.userType !== "tutor") {
             return res.status(401).json({ msg: "You're not a tutor:(" });
         }
+
         if (!email)
             return res.status(400).json({ email: "Please enter an email" });
 
@@ -123,6 +124,17 @@ export const giveAccessToCourse = async (req: Request, res: Response) => {
             return res
                 .status(400)
                 .json({ msg: "Student already has the course" });
+
+        const foundTutor = await User.findOne({ _id: user._id });
+
+        if (!foundTutor) return res.status(400).send("Tutor not found");
+        const hasStudent = foundTutor.students.filter(
+            (el) => el === student._id
+        );
+        if (!hasStudent.length) {
+            foundTutor.students.push(student._id);
+            await foundTutor.save();
+        }
 
         student.courses.push(courseId);
         await student.save();

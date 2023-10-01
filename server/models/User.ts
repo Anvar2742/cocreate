@@ -33,6 +33,9 @@ const UserSchema = new Schema<UserDoc>({
     courses: {
         type: [String],
     },
+    students: {
+        type: [String],
+    },
     isOnboard: {
         type: Boolean,
         default: false,
