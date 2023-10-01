@@ -87,14 +87,8 @@ const Onboard = () => {
         });
     };
 
-    // useEffect(() => {
-    //     console.log(formData);
-    // }, [formData]);
-
     useEffect(() => {
         // get user and check isOnboard
-        // console.log(auth);
-
         if (auth?.isOnboard) {
             navigate(-1);
         }
@@ -103,24 +97,32 @@ const Onboard = () => {
     return (
         <section className="py-24">
             <div className="max-w-5xl px-4 m-auto">
-                <h1>Onboarding</h1>
+                <h1 className="font-bold text-5xl mb-8">Onboarding</h1>
                 <form onSubmit={submitForm}>
                     <div
-                        className={`absolute top-0 left-0 w-full h-full flex items-center justify-center ${
+                        className={`absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white ${
                             isSubmit ? "block" : "hidden"
                         }`}
                     >
                         <IconLoader
                             size="40"
-                            className={`${isSubmit ? "animate-spin" : ""}`}
+                            className={`stroke-primary ${
+                                isSubmit ? "animate-spin" : ""
+                            }`}
                         />
                     </div>
                     <div className="mb-2">
-                        <p>You are a...</p>
-                        <div className="flex">
+                        <p className="font-semibold text-xl mb-3">
+                            You are a...
+                        </p>
+                        <div className="flex gap-2">
                             <label
                                 htmlFor="tutor"
-                                className="block font-semibold"
+                                className={`border-2 rounded-lg px-3 cursor-pointer transition-all hover:bg-primary hover:border-primary hover:text-white ${
+                                    formData.userType === "tutor"
+                                        ? "border-primary text-white bg-primary"
+                                        : "border-gray-300"
+                                }`}
                             >
                                 Tutor
                             </label>
@@ -131,10 +133,15 @@ const Onboard = () => {
                                 name="userType"
                                 onChange={handleFormData}
                                 checked={formData.userType === "tutor"}
+                                className="hidden"
                             />
                             <label
                                 htmlFor="student"
-                                className="block font-semibold"
+                                className={`border-2 rounded-lg px-3 cursor-pointer transition-all hover:bg-primary hover:border-primary hover:text-white ${
+                                    formData.userType === "student"
+                                        ? "border-primary text-white bg-primary"
+                                        : "border-gray-300"
+                                }`}
                             >
                                 Student
                             </label>
@@ -145,6 +152,7 @@ const Onboard = () => {
                                 name="userType"
                                 onChange={handleFormData}
                                 checked={formData.userType === "student"}
+                                className="hidden"
                             />
                             {formErrors?.email ? (
                                 <p className="text-red-400 mt-2">
