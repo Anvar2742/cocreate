@@ -75,6 +75,7 @@ const LessonSingleStudent = () => {
                                 updateContent={updateContent}
                                 initialContent={lesson?.content}
                                 isTutor={false}
+                                isUpdate={false}
                             />
                         </div>
                     </>
