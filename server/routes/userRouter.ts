@@ -1,7 +1,11 @@
 import { Router } from "express";
 import passport from "passport";
 import passportConfig from "../config/passportConfig";
-import { getSingleUser, onboard } from "../controller/userController";
+import {
+    getSingleUser,
+    getStudents,
+    onboard,
+} from "../controller/userController";
 
 // Passport config
 passportConfig(passport);
@@ -20,6 +24,12 @@ userRouter.get(
     "/user",
     passport.authenticate("jwt", { session: false }),
     getSingleUser
+);
+// Get students for tutor
+userRouter.get(
+    "/students",
+    passport.authenticate("jwt", { session: false }),
+    getStudents
 );
 
 export default userRouter;
