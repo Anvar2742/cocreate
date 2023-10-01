@@ -5,9 +5,11 @@ import { CourseDoc } from "../interfaces/interfaces";
 import { AxiosError } from "axios";
 import TitleCreateModal from "../components/TitleCreateModal";
 import TitleLoader from "../components/TitleLoader";
+import useAuth from "../hooks/useAuth";
 
 const Courses = () => {
     const location = useLocation();
+    const { auth } = useAuth();
     const [isCreateModal, setIsCreateModal] = useState<boolean>(false);
     const [coursesArr, setCoursesArr] = useState<CourseDoc[]>([]);
     const [coursesEls, setCoursesEls] = useState<JSX.Element[] | JSX.Element>(
@@ -38,7 +40,7 @@ const Courses = () => {
             setIsLoading(false);
         }
     };
-    
+
     const axiosPrivate = useAxiosPrivate();
 
     const toggleCreateModal = () => {
@@ -78,18 +80,24 @@ const Courses = () => {
                 <div className="mt-8 grid sm:grid-cols-3 gap-4">
                     {isLoading ? <TitleLoader /> : coursesEls}
                 </div>
-                <button
-                    onClick={toggleCreateModal}
-                    className="bg-primary block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all mt-6 mx-auto"
-                >
-                    New Course
-                </button>
-                <TitleCreateModal
-                    toggleCreateModal={toggleCreateModal}
-                    isCreateModal={isCreateModal}
-                    typeOfTitle="course"
-                    courseId={null}
-                />
+                {auth?.userType === "tutor" ? (
+                    <>
+                        <button
+                            onClick={toggleCreateModal}
+                            className="bg-primary block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all mt-6 mx-auto"
+                        >
+                            New Course
+                        </button>
+                        <TitleCreateModal
+                            toggleCreateModal={toggleCreateModal}
+                            isCreateModal={isCreateModal}
+                            typeOfTitle="course"
+                            courseId={null}
+                        />
+                    </>
+                ) : (
+                    ""
+                )}
             </div>
         </section>
     );

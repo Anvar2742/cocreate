@@ -159,7 +159,11 @@ export const login: RequestHandler = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.status(200).json({ accessToken, isOnboard: logedInUser.isOnboard });
+        res.status(200).json({
+            accessToken,
+            isOnboard: logedInUser.isOnboard,
+            userType: logedInUser.userType,
+        });
     } catch (err) {
         const errors = handleErrors(err);
         res.status(400).send(errors);
@@ -225,7 +229,11 @@ export const refresh: RequestHandler = async (req, res) => {
                     process.env.ACCESS_TOKEN_SECRET as string,
                     { expiresIn: "15m" }
                 );
-                return res.json({ accessToken, isOnboard: user.isOnboard });
+                return res.json({
+                    accessToken,
+                    isOnboard: user.isOnboard,
+                    userType: user.userType,
+                });
             }
         );
     } catch (err) {

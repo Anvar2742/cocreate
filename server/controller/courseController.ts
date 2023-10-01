@@ -117,6 +117,13 @@ export const giveAccessToCourse = async (req: Request, res: Response) => {
             return res.status(404).json({ email: "No user with this email" });
         if (!courseId) return res.status(400).send("No course ID");
 
+        // Check if already has access
+        const hasCourse = student.courses.filter((el) => el === courseId);
+        if (hasCourse.length)
+            return res
+                .status(400)
+                .json({ msg: "Student already has the course" });
+
         student.courses.push(courseId);
         await student.save();
 

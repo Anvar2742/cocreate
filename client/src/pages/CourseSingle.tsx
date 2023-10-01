@@ -62,6 +62,7 @@ const CourseSingle = () => {
                         <AccessModal
                             toggleAccessModal={toggleAccessModal}
                             isAccessModal={isCreateModal}
+                            courseId={course?._id}
                         />
                     </>
                 ) : (

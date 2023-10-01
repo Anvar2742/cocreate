@@ -88,7 +88,11 @@ const AuthModal = ({
             console.log(resp);
             if (resp.status === 200 || resp.status === 201) {
                 const accessToken = resp.data?.accessToken;
-                setAuth({ accessToken });
+                setAuth({
+                    accessToken,
+                    isOnboard: resp.data.isOnboard,
+                    userType: resp.data.userType,
+                });
                 if (isAuthPage) {
                     if (resp.status === 201) {
                         navigate("/onboarding");

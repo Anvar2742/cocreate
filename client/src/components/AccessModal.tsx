@@ -2,30 +2,32 @@ import axios, { AxiosError } from "axios";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { axiosPrivate } from "../api/axios";
 import { IconLoader, IconX } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
 import useRefreshToken from "../hooks/useRefreshToken";
 
 const AccessModal = ({
     toggleAccessModal,
     isAccessModal,
+    courseId,
 }: {
     toggleAccessModal: CallableFunction;
     isAccessModal: boolean;
+    courseId: string;
 }) => {
     interface formData {
         [key: string]: string;
     }
     const initialFormData = {
         email: "",
+        courseId,
     };
 
     const refresh = useRefreshToken();
 
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
+    const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [formData, setFormData] = useState<formData>(initialFormData);
     const [formErrors, setFormErrors] = useState<formData>(initialFormData);
     const [generalErr, setGeneralErr] = useState<string>("");
-    const navigate = useNavigate();
 
     const handleFormData = async (e: ChangeEvent<HTMLInputElement>) => {
         setFormErrors(initialFormData);
@@ -54,6 +56,10 @@ const AccessModal = ({
         e.preventDefault();
         setFormErrors(initialFormData);
         setGeneralErr("");
+
+        if (isSuccess) {
+            return;
+        }
         try {
             setIsSubmit(true);
             if (!handleErrors(formData)) {
@@ -65,8 +71,8 @@ const AccessModal = ({
             });
 
             console.log(resp);
-            if (resp.status === 201) {
-                navigate(resp?.data?.slug);
+            if (resp.status === 204) {
+                setIsSuccess(true);
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {
@@ -94,6 +100,12 @@ const AccessModal = ({
         }
     }, [isAccessModal]);
 
+    const handleIsSuccess = () => {
+        toggleAccessModal();
+        setIsSuccess(false);
+        setFormData(initialFormData);
+    };
+
     return (
         <>
             <div
@@ -112,6 +124,28 @@ const AccessModal = ({
                     }`}
                     onSubmit={submitForm}
                 >
+                    {isSuccess ? (
+                        <div className="w-full h-full absolute top-0 left-0 bg-white z-10 flex items-center justify-center flex-col px-6">
+                            <h3 className="text-2xl font-bold">
+                                Access granted!
+                            </h3>
+                            <p className="text-md font-medium mt-2 text-center">
+                                Now a student with this email
+                                <b className="font-bold inline">
+                                    {` ${formData?.email} `}
+                                </b>
+                                has access to your course!
+                            </p>
+                            <button
+                                onClick={handleIsSuccess}
+                                className="border-2 border-primary rounded-lg px-5 mt-4"
+                            >
+                                OK
+                            </button>
+                        </div>
+                    ) : (
+                        ""
+                    )}
                     <div
                         className={`absolute top-0 left-0 w-full h-full flex items-center justify-center ${
                             isSubmit ? "block" : "hidden"
@@ -123,7 +157,10 @@ const AccessModal = ({
                         />
                     </div>
                     <div className="mb-2">
-                        <label htmlFor="studentEmail" className="block font-semibold">
+                        <label
+                            htmlFor="studentEmail"
+                            className="block font-semibold"
+                        >
                             Student email
                         </label>
                         <input

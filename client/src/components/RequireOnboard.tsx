@@ -5,16 +5,19 @@ const RequireOnboard = () => {
     const { auth } = useAuth();
     const location = useLocation();
 
+    // console.log(auth);
+
     if (auth?.isOnboard) {
         return <Outlet />;
+    } else {
+        return (
+            <Navigate
+                to="/onboarding"
+                state={{ from: location.pathname }}
+                replace
+            />
+        );
     }
-    return (
-        <Navigate
-            to="/onboarding"
-            state={{ from: location.pathname }}
-            replace
-        />
-    );
 };
 
 export default RequireOnboard;

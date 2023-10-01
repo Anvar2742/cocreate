@@ -16,6 +16,7 @@ const useRefreshToken = () => {
                     ...prev,
                     accessToken: response.data.accessToken,
                     isOnboard: response.data.isOnboard,
+                    userType: response.data.userType,
                 };
             });
             return response.data.accessToken;
