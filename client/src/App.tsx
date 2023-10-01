@@ -13,6 +13,8 @@ import useAuth from "./hooks/useAuth";
 import CoursesStudents from "./pages/CoursesStudent";
 import CourseSingleStudent from "./pages/CourseSingleStudent";
 import LessonSingleStudent from "./pages/LessonSingleStudent";
+import RequireActivate from "./components/RequireActivate";
+import Activation from "./pages/Activation";
 // import Students from "./pages/Students";
 
 function App() {
@@ -26,38 +28,41 @@ function App() {
                 <Route element={<RequireAuth />}>
                     <Route path="/onboarding" element={<Onboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/activation" element={<Activation />} />
                     <Route element={<RequireOnboard />}>
-                        {/* <Route path="/students" element={<Students />} /> */}
-                        <Route
-                            path="/courses"
-                            element={
-                                auth?.userType === "tutor" ? (
-                                    <Courses />
-                                ) : (
-                                    <CoursesStudents />
-                                )
-                            }
-                        />
-                        <Route
-                            path="/courses/:slug"
-                            element={
-                                auth?.userType === "tutor" ? (
-                                    <CourseSingle />
-                                ) : (
-                                    <CourseSingleStudent />
-                                )
-                            }
-                        />
-                        <Route
-                            path="/courses/:courseSlug/:lessonSlug"
-                            element={
-                                auth?.userType === "tutor" ? (
-                                    <LessonSingle />
-                                ) : (
-                                    <LessonSingleStudent />
-                                )
-                            }
-                        />
+                        <Route element={<RequireActivate />}>
+                            {/* <Route path="/students" element={<Students />} /> */}
+                            <Route
+                                path="/courses"
+                                element={
+                                    auth?.userType === "tutor" ? (
+                                        <Courses />
+                                    ) : (
+                                        <CoursesStudents />
+                                    )
+                                }
+                            />
+                            <Route
+                                path="/courses/:slug"
+                                element={
+                                    auth?.userType === "tutor" ? (
+                                        <CourseSingle />
+                                    ) : (
+                                        <CourseSingleStudent />
+                                    )
+                                }
+                            />
+                            <Route
+                                path="/courses/:courseSlug/:lessonSlug"
+                                element={
+                                    auth?.userType === "tutor" ? (
+                                        <LessonSingle />
+                                    ) : (
+                                        <LessonSingleStudent />
+                                    )
+                                }
+                            />
+                        </Route>
                     </Route>
                 </Route>
             </Route>
