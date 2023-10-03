@@ -5,6 +5,7 @@ import {
     getSingleUser,
     getStudents,
     onboard,
+    updateUser,
 } from "../controller/userController";
 
 // Passport config
@@ -30,6 +31,12 @@ userRouter.get(
     "/students",
     passport.authenticate("jwt", { session: false }),
     getStudents
+);
+// Update user
+userRouter.put(
+    "/user",
+    passport.authenticate("jwt", { session: false }),
+    updateUser
 );
 
 export default userRouter;

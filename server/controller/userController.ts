@@ -32,6 +32,8 @@ export const getSingleUser = async (req: Request, res: Response) => {
         if (!user) return res.status(401).json({ msg: "No user" });
         let accessibleData = {
             isOnboard: user.isOnboard,
+            isActive: user.isActive,
+            activateToken: user.activateToken,
         };
         res.send(accessibleData);
     } catch (err) {
@@ -66,6 +68,27 @@ export const getStudents = async (req: Request, res: Response) => {
         });
 
         res.status(200).send(filteredStudents);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+    const user = req.user as UserDoc;
+    const { isActive } = req.body;
+    try {
+        const email = user?.email;
+        if (!user) return res.status(401).json({ msg: "No user" });
+        const foundUser = await User.findOne({ email });
+        if (!foundUser) return res.status(400).send("No user found");
+        if (isActive) {
+            foundUser.isActive = isActive;
+            await foundUser.save();
+        } else {
+            return res.status(400).send("Email is not activated");
+        }
+
+        res.sendStatus(204);
     } catch (err) {
         res.status(400).send(err);
     }
