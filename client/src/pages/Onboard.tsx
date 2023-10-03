@@ -100,7 +100,7 @@ const Onboard = () => {
                 <h1 className="font-bold text-5xl mb-8">Onboarding</h1>
                 <form onSubmit={submitForm}>
                     <div
-                        className={`absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white ${
+                        className={`absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white z-20 ${
                             isSubmit ? "block" : "hidden"
                         }`}
                     >

@@ -248,6 +248,7 @@ export const refresh: RequestHandler = async (req, res) => {
                 return res.json({
                     accessToken,
                     isOnboard: user.isOnboard,
+                    isActive: user.isActive,
                     userType: user.userType,
                 });
             }

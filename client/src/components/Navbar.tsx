@@ -26,7 +26,7 @@ const Navbar = ({
                 </Link>
                 <div className="flex items-center gap-10">
                     <div
-                        className={`sm:block z-30 right-0 fixed sm:static bg-primary sm:bg-transparent w-full sm:w-auto p-4 sm:p-0 flex flex-col items-center justify-between transition-all duration-300 rounded-t-2xl bottom-0`}
+                        className={`sm:block z-20 right-0 fixed sm:static bg-primary sm:bg-transparent w-full sm:w-auto p-4 sm:p-0 flex flex-col items-center justify-between transition-all duration-300 rounded-t-2xl bottom-0`}
                     >
                         <nav>
                             <ul className="flex gap-4 items-center fixed sm:static left-0 right-0 justify-center bottom-3">
