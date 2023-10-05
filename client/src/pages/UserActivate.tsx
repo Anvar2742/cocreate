@@ -3,16 +3,19 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import useGetUser from "../hooks/api/useGetUser";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import Loader from "../components/Loader";
+import useRefreshToken from "../hooks/useRefreshToken";
 
 const UserActivate = () => {
     const location = useLocation();
     const axiosPrivate = useAxiosPrivate();
+    const refresh = useRefreshToken();
     const getUser = useGetUser();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [searchParams, _setSearchParams] = useSearchParams();
     const [activateToken, setActivateToken] = useState<string | null>(null);
     const [isValidToken, setIsValidToken] = useState<boolean | null>(null);
     const [isActivated, setIsActivated] = useState<boolean>(false);
+    const [isError, setIsError] = useState<boolean>(false);
 
     const updateUser = async (isActive: boolean) => {
         try {
@@ -21,9 +24,11 @@ const UserActivate = () => {
 
             if (resp.status === 204) {
                 setIsActivated(true);
+                await refresh();
             }
         } catch (err) {
             console.log(err);
+            setIsError(true);
         } finally {
             setIsLoading(false);
         }
@@ -68,6 +73,11 @@ const UserActivate = () => {
                     <>
                         <h1 className="font-bold text-5xl">Great, all done!</h1>
                         <p className="text-2xl mt-4">We verified your email.</p>
+                    </>
+                ) : isError ? (
+                    <>
+                        <h1 className="font-bold text-5xl">Something went wrong...</h1>
+                        {/* <p className="text-2xl mt-4"></p> */}
                     </>
                 ) : (
                     <>

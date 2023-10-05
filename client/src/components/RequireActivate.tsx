@@ -5,7 +5,7 @@ const RequireActivate = () => {
     const { auth } = useAuth();
     const location = useLocation();
 
-    console.log(auth);
+    // console.log(auth);
 
     if (auth?.isActive) {
         return <Outlet />;
