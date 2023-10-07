@@ -178,6 +178,7 @@ export const login: RequestHandler = async (req, res) => {
         res.status(200).json({
             accessToken,
             isOnboard: logedInUser.isOnboard,
+            isActive: logedInUser.isActive,
             userType: logedInUser.userType,
         });
     } catch (err) {
@@ -213,10 +214,6 @@ export const logout: RequestHandler = async (req, res) => {
 };
 
 export const refresh: RequestHandler = async (req, res) => {
-    res.setHeader(
-        "Cache-Control",
-        "no-store, no-cache, must-revalidate, private"
-    );
     const cookies = req.cookies;
     // console.log(cookies);
 

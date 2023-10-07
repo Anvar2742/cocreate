@@ -67,7 +67,7 @@ const AuthModal = ({
 
         return true;
     };
-
+ 
     const submitForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFormErrors(initialFormData);
@@ -85,12 +85,13 @@ const AuthModal = ({
                 }
             );
 
-            console.log(resp);
+            // console.log(resp);
             if (resp.status === 200 || resp.status === 201) {
                 const accessToken = resp.data?.accessToken;
                 setAuth({
                     accessToken,
                     isOnboard: resp.data.isOnboard,
+                    isActive: resp.data.isActive,
                     userType: resp.data.userType,
                 });
                 if (isAuthPage) {
@@ -249,7 +250,7 @@ const AuthModal = ({
                     </div>
                     <Link
                         to="/password"
-                        className={`transition-all ${
+                        className={`transition-all hover:underline ${
                             isSignup
                                 ? " opacity-0 pointer-events-none -z-10 select-none max-h-0"
                                 : " max-h-60 mt-2"

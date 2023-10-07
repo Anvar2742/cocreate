@@ -15,7 +15,7 @@ const LessonSingle = () => {
     const getSingleLesson = async () => {
         try {
             const resp = await axiosPrivate.post("/lesson", { slug });
-            // console.log(resp);
+            console.log(resp);
 
             if (resp.status === 200) {
                 setLesson(resp.data);

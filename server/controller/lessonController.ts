@@ -143,6 +143,7 @@ export const getSingleLessonStudent = async (req: Request, res: Response) => {
 
 export const updateLesson = async (req: Request, res: Response) => {
     const { slug, content } = req.body;
+
     try {
         if (!slug) return res.sendStatus(400);
         const lesson = await Lesson.findOne({ slug });
@@ -150,6 +151,7 @@ export const updateLesson = async (req: Request, res: Response) => {
         if (!content) return res.sendStatus(400);
         lesson.content = content;
         await lesson.save();
+        console.log(lesson);
 
         res.status(204).send(lesson);
     } catch (error) {
