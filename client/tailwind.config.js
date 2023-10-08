@@ -23,6 +23,7 @@ export default {
                 "spin-2": "spin 1.5s linear infinite",
                 "pulse-2": "pulse 1.5s linear infinite",
                 "pulse-3": "pulse 2s linear infinite",
+                draw: "draw 1.7s ease-in-out 1",
             },
             fontFamily: {
                 sans: ["Gabarito", "sans-serif"],
@@ -39,11 +40,9 @@ export default {
                     "100%": { "stroke-dasharray": "1500 1500" },
                 },
             },
-            animation: {
-                draw: "draw 1.7s ease-in-out 1",
-            },
             width: {
                 100: "400px",
+                110: "440px",
             },
             screens: {
                 xs: "567px",

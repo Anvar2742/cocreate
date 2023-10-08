@@ -10,9 +10,9 @@ const Home = () => {
 
     return (
         <>
-            <section className="py-32 sm:pt-16 sm:pb-0 bg-heroBg bg-cover">
-                <div className="max-w-5xl mx-auto px-4 flex items-center justify-center text-primText">
-                    <div className=" max-w-md">
+            <section className="pt-36 pb-28 sm:pt-16 sm:pb-0 bg-heroBg bg-cover sm:h-[80vh] max-h-[680px]">
+                <div className="max-w-4xl mx-auto px-4 flex items-end justify-between h-full text-primText">
+                    <div className=" max-w-md flex flex-col items-start justify-center h-full">
                         <h1 className="text-3xl sm:text-5xl font-bold leading-tight">
                             A personal assistant for{" "}
                             <span className="relative inline-block">
@@ -51,7 +51,7 @@ const Home = () => {
                         )}
                     </div>
                     <div className="hidden sm:block">
-                        <img src={heroImg} alt="" className="w-100" />
+                        <img src={heroImg} alt="" className="w-110" />
                     </div>
                 </div>
             </section>
