@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import heroImg from "./../img/hero-right.png";
 import teacher from "./../img/teacher.png";
+import studentTwo from "./../img/student-2.png";
 import students from "./../img/students.png";
+import TextImageSection from "../components/TextImageSection";
 
 const Home = () => {
     const { auth } = useAuth();
@@ -55,9 +57,11 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className="py-20 xs:py-28">
+            <section className="py-20 xs:py-32">
                 <div className="max-w-5xl mx-auto px-4 text-primText text-center">
-                    <h2 className=" text-4xl xs:text-5xl font-bold">What is <span className="text-primary">Oxillia</span>?</h2>
+                    <h2 className=" text-4xl xs:text-5xl font-bold">
+                        What is <span className="text-primary">Oxillia</span>?
+                    </h2>
                     <p className=" text-lg xs:text-xl max-w-sm mt-4 mx-auto">
                         All in one sollution for tutors. An assistant to help
                         you manage your courses, lessons and engage with
@@ -86,6 +90,33 @@ const Home = () => {
                                 Join your tutor
                             </button>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="py-32">
+                <div
+                    className={`max-w-5xl mx-auto px-4 text-primText md:flex md:items-center md:justify-between md:flex-row-reverse text-center sm:text-right`}
+                >
+                    <div>
+                        <h2 className="text-3xl xs:text-4xl font-bold">
+                            <span className="text-primary">Tools</span> for
+                            teachers and learners
+                        </h2>
+                        <p
+                            className={`text-lg xs:text-xl max-w-sm mt-4 mx-auto sm:mr-0 sm:ml-auto`}
+                        >
+                            Numerous usefull instruments to improve online
+                            learning experience. Create courses, manage your
+                            lessons as a tutor and learn faster as a student.
+                        </p>
+                    </div>
+                    <div className="hidden sm:block sm:-mt-20 md:-mt-0">
+                        <img
+                            src={studentTwo}
+                            alt=""
+                            className="max-w-sm lg:max-w-md"
+                        />
                     </div>
                 </div>
             </section>
