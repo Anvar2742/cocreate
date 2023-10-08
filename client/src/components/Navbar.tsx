@@ -16,11 +16,11 @@ const Navbar = ({
     const { auth } = useAuth();
 
     return (
-        <header className="py-4 bg-primary text-white">
+        <header className="py-4 bgs-primary text-black fixed top-0 left-0 w-full">
             <div className="max-w-5xl px-4 m-auto flex justify-between items-center">
                 <Link
                     to="/"
-                    className="font-extrabold text-2xl sm:text-4xl text-white"
+                    className="font-extrabold text-2xl sm:text-4xl text-black"
                 >
                     Oxillia
                 </Link>
@@ -34,10 +34,10 @@ const Navbar = ({
                                     <NavLink
                                         to="/"
                                         className={({ isActive }) =>
-                                            `flex items-center justify-center rounded-full sm:rounded-none w-12 sm:w-auto h-12 sm:h-auto ${
+                                            `flex items-center justify-center rounded-full sm:rounded-none w-12 sm:w-auto h-12 sm:h-auto text-primText ${
                                                 isActive
                                                     ? "font-bold bg-secRed sm:bg-transparent"
-                                                    : "bg-primary"
+                                                    : "bg-primary sm:bg-transparent"
                                             }`
                                         }
                                     >
@@ -51,10 +51,10 @@ const Navbar = ({
                                     <NavLink
                                         to="/courses"
                                         className={({ isActive }) =>
-                                            `flex items-center justify-center rounded-full w-12 sm:w-auto h-12 sm:h-auto ${
+                                            `flex items-center justify-center rounded-full w-12 sm:w-auto h-12 sm:h-auto text-primText ${
                                                 isActive
                                                     ? "font-bold bg-secRed sm:bg-transparent"
-                                                    : "bg-primary"
+                                                    : "bg-primary sm:bg-transparent"
                                             }`
                                         }
                                     >
@@ -72,10 +72,10 @@ const Navbar = ({
                                     <NavLink
                                         to="/students"
                                         className={({ isActive }) =>
-                                            `pointer-events-none flex items-center justify-center rounded-full w-12 sm:w-auto h-12 sm:h-auto ${
+                                            `pointer-events-none flex items-center justify-center rounded-full w-12 sm:w-auto h-12 sm:h-auto text-primText ${
                                                 isActive
                                                     ? "font-bold bg-secRed sm:bg-transparent"
-                                                    : "bg-primary"
+                                                    : "bg-primary sm:bg-transparent"
                                             }`
                                         }
                                     >
@@ -96,13 +96,13 @@ const Navbar = ({
                         {auth?.accessToken ? (
                             <Link
                                 to="/dashboard"
-                                className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-3 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
+                                className="bg-primary text-white py-2 px-3 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
                             >
                                 <IconUser />
                             </Link>
                         ) : (
                             <button
-                                className="backdrop-blur-sm bg-white bg-opacity-40 text-white py-2 px-8 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
+                                className="bg-primary text-white py-2 px-8 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
                                 onClick={toggleAuthModal}
                             >
                                 Sign Up

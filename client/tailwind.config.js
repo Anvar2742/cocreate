@@ -9,6 +9,7 @@ export default {
                 primary: "#6739FF",
                 sec: "#F9F7FF",
                 input: "#F0F4F8",
+                primText: "#3B393F",
             },
             backgroundImage: {
                 heroBg: "url('./img/hero.png')",
@@ -22,6 +23,27 @@ export default {
                 "spin-2": "spin 1.5s linear infinite",
                 "pulse-2": "pulse 1.5s linear infinite",
                 "pulse-3": "pulse 2s linear infinite",
+            },
+            fontFamily: {
+                sans: ["Gabarito", "sans-serif"],
+            },
+            strokeWidth: {
+                3: "3px",
+            },
+            transitionDuration: {
+                1200: "1200ms",
+            },
+            keyframes: {
+                draw: {
+                    "0%": { "stroke-dasharray": "0 1500" },
+                    "100%": { "stroke-dasharray": "1500 1500" },
+                },
+            },
+            animation: {
+                draw: "draw 1.7s ease-in-out 1",
+            },
+            width: {
+                100: "400px"
             }
         },
     },

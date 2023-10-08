@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* *:focus {
-    outline: none;
-} */
+* {
+    @apply font-sans;
+}
