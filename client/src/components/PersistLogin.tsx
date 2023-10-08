@@ -5,6 +5,7 @@ import useAuth from "../hooks/useAuth";
 import Loader from "./Loader";
 import Navbar from "./Navbar";
 import AuthModal from "./AuthModal";
+import Footer from "./Footer";
 
 const PersistLogin = () => {
     const location = useLocation();
@@ -58,6 +59,7 @@ const PersistLogin = () => {
             ) : (
                 ""
             )}
+            {!(location?.pathname === "/auth") ? <Footer /> : ""}
         </>
     );
 };

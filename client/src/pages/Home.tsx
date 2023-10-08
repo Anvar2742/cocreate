@@ -55,9 +55,9 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className="py-20">
+            <section className="py-20 xs:py-28">
                 <div className="max-w-5xl mx-auto px-4 text-primText text-center">
-                    <h2 className=" text-4xl xs:text-5xl font-bold">What is Oxillia?</h2>
+                    <h2 className=" text-4xl xs:text-5xl font-bold">What is <span className="text-primary">Oxillia</span>?</h2>
                     <p className=" text-lg xs:text-xl max-w-sm mt-4 mx-auto">
                         All in one sollution for tutors. An assistant to help
                         you manage your courses, lessons and engage with
