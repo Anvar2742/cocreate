@@ -4,7 +4,6 @@ import heroImg from "./../img/hero-right.png";
 import teacher from "./../img/teacher.png";
 import studentTwo from "./../img/student-2.png";
 import students from "./../img/students.png";
-import TextImageSection from "../components/TextImageSection";
 
 const Home = () => {
     const { auth } = useAuth();
@@ -94,7 +93,7 @@ const Home = () => {
                 </div>
             </section>
 
-            <section className="py-32">
+            <section className="py-32 bg-sec">
                 <div
                     className={`max-w-5xl mx-auto px-4 text-primText md:flex md:items-center md:justify-between md:flex-row-reverse text-center sm:text-right`}
                 >
