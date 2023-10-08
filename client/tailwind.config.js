@@ -43,8 +43,14 @@ export default {
                 draw: "draw 1.7s ease-in-out 1",
             },
             width: {
-                100: "400px"
-            }
+                100: "400px",
+            },
+            screens: {
+                xs: "567px",
+            },
+            padding: {
+                22: "5.75em",
+            },
         },
     },
     plugins: [],

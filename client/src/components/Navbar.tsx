@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import {
@@ -14,9 +14,24 @@ const Navbar = ({
     toggleAuthModal: MouseEventHandler<HTMLButtonElement>;
 }) => {
     const { auth } = useAuth();
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+    const scrollHandle = () => {
+        if (window.scrollY > 50) {
+            setIsScrolled(true);
+        } else {
+            setIsScrolled(false);
+        }
+    };
+
+    window.addEventListener("scroll", scrollHandle);
 
     return (
-        <header className="py-4 bgs-primary text-black fixed top-0 left-0 w-full">
+        <header
+            className={`py-4 bgs-primary text-black fixed top-0 left-0 w-full z-40 ${
+                isScrolled ? "bg-sec" : ""
+            }`}
+        >
             <div className="max-w-5xl px-4 m-auto flex justify-between items-center">
                 <Link
                     to="/"
@@ -41,7 +56,7 @@ const Navbar = ({
                                             }`
                                         }
                                     >
-                                        <IconHome className="sm:hidden" />
+                                        <IconHome className="sm:hidden stroke-white" />
                                         <span className="hidden sm:block">
                                             Home
                                         </span>
@@ -61,7 +76,7 @@ const Navbar = ({
                                         <IconBooks
                                             stroke={1}
                                             size={28}
-                                            className="sm:hidden"
+                                            className="sm:hidden stroke-white"
                                         />
                                         <span className="hidden sm:block">
                                             Courses
@@ -82,7 +97,7 @@ const Navbar = ({
                                         <IconAddressBook
                                             stroke={1}
                                             size={30}
-                                            className="sm:hidden opacity-40"
+                                            className="sm:hidden opacity-40 stroke-white"
                                         />
                                         <span className="hidden sm:block opacity-40">
                                             Students

@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import heroImg from "./../img/hero-right.png";
+import teacher from "./../img/teacher.png";
+import students from "./../img/students.png";
 
 const Home = () => {
     const { auth } = useAuth();
+
     return (
         <>
             <section className="py-32 sm:pt-16 sm:pb-0 bg-heroBg bg-cover">
                 <div className="max-w-5xl mx-auto px-4 flex items-center justify-center text-primText">
                     <div className=" max-w-md">
-                        <h1 className="text-xl sm:text-5xl font-bold leading-tight">
+                        <h1 className="text-3xl sm:text-5xl font-bold leading-tight">
                             A personal assistant for{" "}
                             <span className="relative inline-block">
                                 tutors
@@ -42,12 +45,47 @@ const Home = () => {
                                 to="/auth"
                                 className="bg-primary inline-block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
                             >
-                                Sign Up
+                                Join for free
                             </Link>
                         )}
                     </div>
                     <div className="hidden sm:block">
                         <img src={heroImg} alt="" className="w-100" />
+                    </div>
+                </div>
+            </section>
+
+            <section className="py-20">
+                <div className="max-w-5xl mx-auto px-4 text-primText text-center">
+                    <h2 className=" text-4xl xs:text-5xl font-bold">What is Oxillia?</h2>
+                    <p className=" text-lg xs:text-xl max-w-sm mt-4 mx-auto">
+                        All in one sollution for tutors. An assistant to help
+                        you manage your courses, lessons and engage with
+                        students easily.
+                    </p>
+                    <div className="mt-10 flex flex-col xs:flex-row gap-5 sm:gap-7">
+                        <div
+                            style={{ backgroundImage: `url(${teacher})` }}
+                            className="bg-cover bg-no-repeat bg-center flex items-center justify-center flex-col pt-14 xs:pt-20 pb-10 xs:pb-22 px-10 relative rounded-lg overflow-hidden xs:w-full before:bg-black before:bg-opacity-30 before:w-full before:h-full before:absolute before:top-0 before:left-0"
+                        >
+                            <h3 className=" text-3xl font-bold text-white z-10">
+                                For tutors
+                            </h3>
+                            <button className="text-white border-2 py-2 px-5 rounded-full mt-4 z-10 transition-all duration-300 hover:bg-primary">
+                                Start a class today
+                            </button>
+                        </div>
+                        <div
+                            style={{ backgroundImage: `url(${students})` }}
+                            className="bg-cover bg-no-repeat bg-center flex items-center justify-center flex-col pt-14 xs:pt-20 pb-10 xs:pb-22 px-10 relative rounded-lg overflow-hidden xs:w-full before:bg-black before:bg-opacity-30 before:w-full before:h-full before:absolute before:top-0 before:left-0"
+                        >
+                            <h3 className=" text-3xl font-bold text-white z-10">
+                                For learners
+                            </h3>
+                            <button className="text-white border-2 py-2 px-5 rounded-full mt-4 z-10 transition-all duration-300 hover:bg-primary">
+                                Join your tutor
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
