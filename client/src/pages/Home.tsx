@@ -6,10 +6,10 @@ const Home = () => {
     const { auth } = useAuth();
     return (
         <>
-            <section className="pt-16 bg-heroBg bg-cover">
+            <section className="py-32 sm:pt-16 sm:pb-0 bg-heroBg bg-cover">
                 <div className="max-w-5xl mx-auto px-4 flex items-center justify-center text-primText">
                     <div className=" max-w-md">
-                        <h1 className="text-5xl font-bold leading-tight">
+                        <h1 className="text-xl sm:text-5xl font-bold leading-tight">
                             A personal assistant for{" "}
                             <span className="relative inline-block">
                                 tutors
@@ -46,7 +46,7 @@ const Home = () => {
                             </Link>
                         )}
                     </div>
-                    <div>
+                    <div className="hidden sm:block">
                         <img src={heroImg} alt="" className="w-100" />
                     </div>
                 </div>
