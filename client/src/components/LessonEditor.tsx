@@ -61,7 +61,6 @@ const LessonEditor = ({
                         "wordcount",
                         "table",
                         "image",
-                        "autoresize",
                     ],
                     toolbar: isTutor
                         ? "undo redo | blocks | " +

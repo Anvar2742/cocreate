@@ -95,7 +95,7 @@ const Onboard = () => {
     }, [location?.pathname]);
 
     return (
-        <section className="py-24">
+        <section className="pt-36 pb-28">
             <div className="max-w-5xl px-4 m-auto">
                 <h1 className="font-bold text-5xl mb-8">Onboarding</h1>
                 <form onSubmit={submitForm}>

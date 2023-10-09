@@ -70,7 +70,7 @@ const LessonsStudent = ({ course }: { course: CourseDoc | null }) => {
     }, [lessonsArr]);
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 pt-36 pb-28">
             <div className="mt-8 grid sm:grid-cols-3 gap-4">
                 {isLoading ? <TitleLoader /> : lessonsEls}
             </div>

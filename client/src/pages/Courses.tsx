@@ -25,7 +25,7 @@ const Courses = () => {
                 setIsLoading(false);
             }
         } catch (error: AxiosError | any) {
-            console.log(error);
+            // console.log(error);
 
             if (error.response.status === 404) {
                 setCoursesEls(
@@ -60,9 +60,9 @@ const Courses = () => {
                             to={`/courses/${course.slug}`}
                             state={{ course }}
                             key={course._id}
-                            className="border-2 border-primary rounded-md bg-gray-100 py-2 px-4 block"
+                            className="border-2 rounded-md py-4 px-6 block transition-all duration-300 shadow-lg hover:shadow-none"
                         >
-                            <h3 className="font-bold text-2xl">
+                            <h3 className="font-semibold text-3xl">
                                 {course.title}
                             </h3>
                             <p>{course.description}</p>
@@ -74,10 +74,10 @@ const Courses = () => {
     }, [coursesArr]);
 
     return (
-        <section className=" py-24">
+        <section className="pt-36 pb-28">
             <div className="max-w-5xl px-4 m-auto">
                 <h1 className="font-bold text-5xl">Your courses</h1>
-                <div className="mt-8 grid sm:grid-cols-3 gap-4">
+                <div className="mt-8 grid sm:grid-cols-3 gap-y-6 gap-x-4">
                     {isLoading ? <TitleLoader /> : coursesEls}
                 </div>
                 {auth?.userType === "tutor" ? (

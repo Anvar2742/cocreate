@@ -53,7 +53,7 @@ const LessonSingleStudent = () => {
     }, [location?.pathname]);
 
     return (
-        <section className="py-20">
+        <section className="pt-36 pb-28">
             {isLoading ? <Loader /> : ""}
             <div className="max-w-5xl px-4 m-auto overflow-y-hidden">
                 {lesson ? (

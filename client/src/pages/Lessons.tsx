@@ -54,7 +54,7 @@ const Lessons = ({ course }: { course: CourseDoc | null }) => {
                         <Link
                             to={`/courses/${course?.slug}/${lesson.slug}`}
                             key={lesson._id}
-                            className="border-2 border-primary rounded-md bg-gray-100 py-2 px-4 block"
+                            className="border-2 rounded-md py-4 px-6 block transition-all duration-300 shadow-lg hover:shadow-none"
                         >
                             <h3 className="font-bold text-2xl">
                                 {lesson.title}

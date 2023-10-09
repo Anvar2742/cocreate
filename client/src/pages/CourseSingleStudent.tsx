@@ -34,7 +34,7 @@ const CourseSingleStudent = () => {
     }, [location?.pathname]);
 
     return (
-        <section className="pt-6 overflow-hidden">
+        <section className="pt-36 pb-28 overflow-hidden">
             {isLoading ? <Loader /> : ""}
             <div className="max-w-5xl px-4 m-auto">
                 {course ? (
