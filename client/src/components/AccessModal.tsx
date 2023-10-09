@@ -11,11 +11,12 @@ const AccessModal = ({
 }: {
     toggleAccessModal: CallableFunction;
     isAccessModal: boolean;
-    courseId: string;
+    courseId: string | undefined;
 }) => {
     interface formData {
-        [key: string]: string;
+        [key: string]: string | undefined;
     }
+
     const initialFormData = {
         email: "",
         courseId,

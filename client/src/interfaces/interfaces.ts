@@ -1,13 +1,13 @@
 export interface CourseDoc {
-    title: string;
-    description: string;
-    _id: string;
-    slug: string;
+    title?: string | undefined;
+    description?: string | undefined;
+    _id?: string | undefined;
+    slug?: string | undefined;
 }
 export interface LessonDoc {
-    title: string;
-    description: string;
-    _id: string;
-    slug: string;
-    content: string;
+    title?: string | undefined;
+    description?: string | undefined;
+    _id?: string | undefined;
+    slug?: string | undefined;
+    content?: string | undefined;
 }

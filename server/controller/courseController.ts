@@ -168,3 +168,22 @@ export const giveAccessToCourse = async (req: Request, res: Response) => {
         console.log(error);
     }
 };
+
+export const updateCourse = async (req: Request, res: Response) => {
+    const { courseId, courseData } = req.body;
+
+    try {
+        if (!courseId || !courseData) return res.sendStatus(400);
+        const course = await Course.findOne({ courseId });
+
+        if (!course) return res.sendStatus(404);
+        Object.keys(courseData).forEach((key) => {
+            if (courseData[key]) {
+                (course as any)[key] = courseData[key];
+            }
+        });
+        await course.save();
+    } catch (error) {
+        console.log(error);
+    }
+};

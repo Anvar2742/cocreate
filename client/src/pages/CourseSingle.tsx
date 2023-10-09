@@ -1,10 +1,17 @@
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useEffect, useState } from "react";
+import {
+    ChangeEvent,
+    DetailedHTMLProps,
+    InputHTMLAttributes,
+    useEffect,
+    useState,
+} from "react";
 import { CourseDoc } from "../interfaces/interfaces";
 import Lessons from "./Lessons";
 import AccessModal from "../components/AccessModal";
 import Loader from "../components/Loader";
+import { IconEdit } from "@tabler/icons-react";
 
 const CourseSingle = () => {
     const { slug } = useParams();
@@ -12,6 +19,8 @@ const CourseSingle = () => {
     const [isCreateModal, setIsAccessModal] = useState<boolean>(false);
     const [course, setCourse] = useState<CourseDoc | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [cssVariables, setCssVariables] = useState<any>(null);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
 
     const getSingleCourse = async () => {
         try {
@@ -39,6 +48,26 @@ const CourseSingle = () => {
         setIsAccessModal((prev) => !prev);
     };
 
+    useEffect(() => {
+        setCssVariables({
+            inputW: {
+                "--inputW": `${
+                    course?.title?.length ? course?.title?.length - 1.5 : ""
+                }ch`,
+            },
+        });
+    }, [course]);
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setIsEdit(true);
+        setCourse((prev) => {
+            return {
+                ...prev,
+                [e.target?.name]: e.target?.value,
+            };
+        });
+    };
+
     return (
         <section className="pt-36 pb-28">
             {isLoading ? <Loader /> : ""}
@@ -46,9 +75,36 @@ const CourseSingle = () => {
                 {course ? (
                     <>
                         <div className="mb-4">
-                            <h1 className="font-bold text-5xl mb-3">
-                                {course?.title}
-                            </h1>
+                            <div className="flex items-center justify-between overflow-hidden">
+                                <div className="flex items-center">
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        onChange={handleChange}
+                                        value={course?.title}
+                                        style={
+                                            cssVariables?.inputW as DetailedHTMLProps<
+                                                InputHTMLAttributes<HTMLInputElement>,
+                                                HTMLInputElement
+                                            >
+                                        }
+                                        className={`font-bold text-5xl mb-3 outline-none w-[var(--inputW)]`}
+                                    />
+                                    <button className=" cursor-pointer">
+                                        <IconEdit
+                                            size={30}
+                                            className=" stroke-gray-500"
+                                        />
+                                    </button>
+                                </div>
+                                <button
+                                    className={`border-2 border-primary inline-block py-2 px-8 rounded-full font-semibold transition-all hover:shadow-lg ${
+                                        !isEdit ? " translate-x-full" : ""
+                                    }`}
+                                >
+                                    Update
+                                </button>
+                            </div>
                             <p className="mb-4">{course?.description}</p>
 
                             <button
