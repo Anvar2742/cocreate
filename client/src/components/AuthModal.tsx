@@ -67,7 +67,7 @@ const AuthModal = ({
 
         return true;
     };
- 
+
     const submitForm = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFormErrors(initialFormData);
@@ -98,7 +98,11 @@ const AuthModal = ({
                     if (resp.status === 201) {
                         navigate("/onboarding");
                     } else {
-                        navigate(location?.state?.from);
+                        if (location?.state?.from) {
+                            navigate(location?.state?.from);
+                        } else {
+                            navigate("/courses");
+                        }
                     }
                 }
                 if (toggleAuthModal) {
