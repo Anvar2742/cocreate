@@ -4,12 +4,16 @@ import heroImg from "./../img/hero-right.png";
 import teacher from "./../img/teacher.png";
 import studentTwo from "./../img/student-2.png";
 import students from "./../img/students.png";
+import { useState } from "react";
+import Loader from "../components/Loader";
 
 const Home = () => {
     const { auth } = useAuth();
+    const [isLoad, setIsLoad] = useState<boolean>(true);
 
     return (
         <>
+            {isLoad ? <Loader /> : ""}
             <section className="pt-36 pb-28 sm:pt-16 sm:pb-0 bg-heroBg bg-cover sm:h-[80vh] max-h-[680px]">
                 <div className="max-w-4xl mx-auto px-4 flex items-end justify-between h-full text-primText">
                     <div className=" max-w-md flex flex-col items-start justify-center h-full">
@@ -51,7 +55,12 @@ const Home = () => {
                         )}
                     </div>
                     <div className="hidden sm:block">
-                        <img src={heroImg} alt="" className="w-110" />
+                        <img
+                            src={heroImg}
+                            alt=""
+                            className="w-110"
+                            onLoad={() => setIsLoad(false)}
+                        />
                     </div>
                 </div>
             </section>
