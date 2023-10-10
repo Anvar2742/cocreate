@@ -9,13 +9,20 @@ import { IconEdit } from "@tabler/icons-react";
 import areObjectsEqual from "../utils/compareObjects";
 
 const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
+    const initialFormData = {
+        title: "",
+        description: "",
+    };
     const { slug } = useParams();
     const axiosPrivate = useAxiosPrivate();
+
     const [isCreateModal, setIsAccessModal] = useState<boolean>(false);
     const [course, setCourse] = useState<CourseDoc | null>(null);
     const [courseData, setCourseData] = useState<CourseDoc | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [formErrors, setFormErrors] = useState(initialFormData);
+    const [generalErr, setGeneralErr] = useState<string>("");
 
     const titleInputRef = useRef(null);
     const descrInputRef = useRef(null);
@@ -65,6 +72,7 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const handleChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
+        setFormErrors(initialFormData);
         setCourseData((prev) => {
             return {
                 ...prev,
@@ -84,6 +92,12 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
             handleMsg("Nothing changed. Please edit a field to update.");
             return;
         }
+
+        const errors = handleEmpty(courseData?.title, courseData?.description);
+        if (errors.title) {
+            setFormErrors(errors);
+            return;
+        }
         setIsLoading(true);
         try {
             const resp = await axiosPrivate.put("/course/update", {
@@ -97,9 +111,29 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
             }
         } catch (err: any) {
             console.log(err);
+            setGeneralErr("Server Error");
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleEmpty = (
+        title: string | undefined,
+        description: string | undefined
+    ) => {
+        let errors: {
+            title: string;
+            description: string;
+        } = { title: "", description: "" };
+
+        if (!title) {
+            errors.title = "Please enter a title";
+        }
+        if (!description) {
+            errors.description = "Please enter a description";
+        }
+
+        return errors;
     };
 
     return (
@@ -131,6 +165,13 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                                                 className=" stroke-gray-500"
                                             />
                                         </button>
+                                        {formErrors.title ? (
+                                            <p className="text-red-400 mt-2">
+                                                {formErrors.title}
+                                            </p>
+                                        ) : (
+                                            ""
+                                        )}
                                     </div>
                                     <div className="flex items-center">
                                         <textarea

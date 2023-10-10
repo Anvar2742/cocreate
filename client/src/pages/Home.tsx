@@ -83,9 +83,12 @@ const Home = () => {
                             <h3 className=" text-3xl font-bold text-white z-10">
                                 For tutors
                             </h3>
-                            <button className="text-white border-2 py-2 px-5 rounded-full mt-4 z-10 transition-all duration-300 hover:bg-primary">
+                            <Link
+                                to={"/auth"}
+                                className="text-white border-2 py-2 px-5 rounded-full mt-4 z-10 transition-all duration-300 hover:bg-primary"
+                            >
                                 Start a class today
-                            </button>
+                            </Link>
                         </div>
                         <div
                             style={{ backgroundImage: `url(${students})` }}
@@ -94,9 +97,12 @@ const Home = () => {
                             <h3 className=" text-3xl font-bold text-white z-10">
                                 For learners
                             </h3>
-                            <button className="text-white border-2 py-2 px-5 rounded-full mt-4 z-10 transition-all duration-300 hover:bg-primary">
+                            <Link
+                                to={"/auth"}
+                                className="text-white border-2 py-2 px-5 rounded-full mt-4 z-10 transition-all duration-300 hover:bg-primary"
+                            >
                                 Join your tutor
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
