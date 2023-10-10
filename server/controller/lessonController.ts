@@ -141,7 +141,7 @@ export const getSingleLessonStudent = async (req: Request, res: Response) => {
     }
 };
 
-export const updateLesson = async (req: Request, res: Response) => {
+export const updateLessonContent = async (req: Request, res: Response) => {
     const { slug, content } = req.body;
 
     try {
@@ -156,5 +156,27 @@ export const updateLesson = async (req: Request, res: Response) => {
         res.status(204).send(lesson);
     } catch (error) {
         res.status(400).send(error);
+    }
+};
+
+export const updateLesson = async (req: Request, res: Response) => {
+    const { lessonData } = req.body;
+
+    try {
+        if (!lessonData) return res.sendStatus(400);
+        const lesson = await Lesson.findOne({ _id: lessonData._id });
+
+        if (!lesson) return res.sendStatus(404);
+        Object.keys(lessonData).forEach((key) => {
+            if (lessonData[key]) {
+                (lesson as any)[key] = lessonData[key];
+            }
+        });
+        await lesson.save();
+
+        res.status(204).send(lesson);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
     }
 };

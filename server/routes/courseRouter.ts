@@ -42,7 +42,7 @@ courseRouter.post(
 );
 
 courseRouter.put(
-    "/courses/update",
+    "/course/update",
     passport.authenticate("jwt", { session: false }),
     updateCourse
 );

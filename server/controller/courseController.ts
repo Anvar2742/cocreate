@@ -184,8 +184,9 @@ export const updateCourse = async (req: Request, res: Response) => {
         });
         await course.save();
 
-        res.sendStatus(204);
+        res.status(204).send(course);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
+        res.status(500).send(error);
     }
 };

@@ -7,6 +7,7 @@ import {
     getSingleLesson,
     getSingleLessonStudent,
     updateLesson,
+    updateLessonContent,
 } from "../controller/lessonController";
 
 const lessonRouter = Router();
@@ -42,7 +43,13 @@ lessonRouter.post(
 );
 
 lessonRouter.put(
-    "/lesson",
+    "/lesson/content",
+    passport.authenticate("jwt", { session: false }),
+    updateLessonContent
+);
+
+lessonRouter.put(
+    "/lesson/update",
     passport.authenticate("jwt", { session: false }),
     updateLesson
 );

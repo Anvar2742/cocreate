@@ -1,13 +1,6 @@
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import {
-    ChangeEvent,
-    DetailedHTMLProps,
-    InputHTMLAttributes,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { CourseDoc } from "../interfaces/interfaces";
 import Lessons from "./Lessons";
 import AccessModal from "../components/AccessModal";
@@ -15,18 +8,17 @@ import Loader from "../components/Loader";
 import { IconEdit } from "@tabler/icons-react";
 import areObjectsEqual from "../utils/compareObjects";
 
-const CourseSingle = () => {
+const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const { slug } = useParams();
     const axiosPrivate = useAxiosPrivate();
     const [isCreateModal, setIsAccessModal] = useState<boolean>(false);
     const [course, setCourse] = useState<CourseDoc | null>(null);
     const [courseData, setCourseData] = useState<CourseDoc | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [cssVariables, setCssVariables] = useState<any>(null);
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     const titleInputRef = useRef(null);
-    const titleDescrRef = useRef(null);
+    const descrInputRef = useRef(null);
 
     const getSingleCourse = async () => {
         try {
@@ -70,16 +62,6 @@ const CourseSingle = () => {
         setIsAccessModal((prev) => !prev);
     };
 
-    useEffect(() => {
-        setCssVariables({
-            inputW: {
-                "--inputW": `${
-                    course?.title?.length ? course?.title?.length - 1.5 : ""
-                }ch`,
-            },
-        });
-    }, [course]);
-
     const handleChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -98,15 +80,21 @@ const CourseSingle = () => {
     };
 
     const handleUpdate = async () => {
-        if (!areObjectsEqual(course, courseData)) {
+        if (areObjectsEqual(course, courseData)) {
+            handleMsg("Nothing changed. Please edit a field to update.");
             return;
         }
         setIsLoading(true);
         try {
-            const resp = await axiosPrivate.put("/courses/update", {
+            const resp = await axiosPrivate.put("/course/update", {
                 courseData,
             });
+
             console.log(resp);
+            if (resp.status === 204) {
+                setCourse(resp.data);
+                setIsEdit(false);
+            }
         } catch (err: any) {
             console.log(err);
         } finally {
@@ -124,20 +112,14 @@ const CourseSingle = () => {
                             <div className="flex items-center justify-between overflow-hidden">
                                 <div>
                                     <div className="flex items-center">
-                                        <input
-                                            type="text"
+                                        <textarea
                                             ref={titleInputRef}
+                                            placeholder="Course title"
                                             name="title"
                                             onChange={handleChange}
                                             value={courseData?.title}
-                                            style={
-                                                cssVariables?.inputW as DetailedHTMLProps<
-                                                    InputHTMLAttributes<HTMLInputElement>,
-                                                    HTMLInputElement
-                                                >
-                                            }
-                                            className={`font-bold text-5xl mb-3 outline-none w-[var(--inputW)] min-w-[300px] max-w-xs`}
-                                        />
+                                            className={`mb-3 outline-none min-w-[300px] resize-y text-3xl font-bold`}
+                                        ></textarea>
                                         <button
                                             className="cursor-pointer"
                                             onClick={() =>
@@ -152,7 +134,7 @@ const CourseSingle = () => {
                                     </div>
                                     <div className="flex items-center">
                                         <textarea
-                                            ref={titleDescrRef}
+                                            ref={descrInputRef}
                                             placeholder="Course description"
                                             name="description"
                                             onChange={handleChange}
@@ -162,7 +144,7 @@ const CourseSingle = () => {
                                         <button
                                             className="cursor-pointer"
                                             onClick={() =>
-                                                focusInput(titleDescrRef)
+                                                focusInput(descrInputRef)
                                             }
                                         >
                                             <IconEdit

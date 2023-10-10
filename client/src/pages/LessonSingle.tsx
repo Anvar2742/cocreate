@@ -1,16 +1,23 @@
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { LessonDoc } from "../interfaces/interfaces";
 import LessonEditor from "../components/LessonEditor";
 import Loader from "../components/Loader";
+import { IconEdit } from "@tabler/icons-react";
+import areObjectsEqual from "../utils/compareObjects";
 
-const LessonSingle = () => {
-    const [isUpdate, setIsUpdate] = useState<boolean>(false);
-    const [lesson, setLesson] = useState<LessonDoc | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const axiosPrivate = useAxiosPrivate();
+const LessonSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const { lessonSlug: slug } = useParams();
+    const axiosPrivate = useAxiosPrivate();
+    const [isUpdate, setIsUpdate] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [lesson, setLesson] = useState<LessonDoc | null>(null);
+    const [lessonData, setLessonData] = useState<LessonDoc | null>(null);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+
+    const titleInputRef = useRef(null);
+    const descrInputRef = useRef(null);
 
     const getSingleLesson = async () => {
         try {
@@ -32,7 +39,7 @@ const LessonSingle = () => {
 
     const updateLesson = async (content: string) => {
         try {
-            const resp = await axiosPrivate.put("/lesson", {
+            const resp = await axiosPrivate.put("/lesson/content", {
                 slug,
                 content,
             });
@@ -53,17 +60,122 @@ const LessonSingle = () => {
         getSingleLesson();
     }, [location?.pathname]);
 
+    useEffect(() => {
+        if (lesson) {
+            setLessonData(lesson);
+            setIsLoading(false);
+        }
+    }, [lesson]);
+
+    useEffect(() => {
+        if (lessonData) {
+            if (areObjectsEqual(lesson, lessonData)) {
+                setIsEdit(false);
+            } else {
+                setIsEdit(true);
+            }
+        }
+    }, [lessonData]);
+
+    const handleChange = (
+        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setLessonData((prev) => {
+            return {
+                ...prev,
+                [e.target?.name]: e.target?.value,
+            };
+        });
+    };
+
+    const focusInput = (ref: any) => {
+        if (ref.current) {
+            ref.current.focus();
+        }
+    };
+
+    const handleUpdate = async () => {
+        if (areObjectsEqual(lesson, lessonData)) {
+            handleMsg("Nothing changed. Please edit a field to update.");
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const resp = await axiosPrivate.put("/lesson/update", {
+                lessonData,
+            });
+
+            console.log(resp);
+            if (resp.status === 204) {
+                setLesson(resp.data);
+                setIsEdit(false);
+            }
+        } catch (err: any) {
+            console.log(err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <section className="pt-32 pb-28">
             {isLoading ? <Loader /> : ""}
             <div className="max-w-5xl px-4 m-auto overflow-y-hidden">
-                {lesson ? (
+                {lessonData ? (
                     <>
-                        <div className="mb-10">
-                            <h1 className="font-bold text-5xl mb-3">
-                                {lesson?.title}
-                            </h1>
-                            <p>{lesson?.description}</p>
+                        <div className="flex items-center justify-between overflow-hidden mb-10">
+                            <div>
+                                <div className="flex items-center">
+                                    <textarea
+                                        ref={titleInputRef}
+                                        placeholder="Lesson title"
+                                        name="title"
+                                        onChange={handleChange}
+                                        value={lessonData?.title}
+                                        className={`mb-3 outline-none min-w-[300px] resize-y text-3xl font-bold`}
+                                    ></textarea>
+                                    <button
+                                        className="cursor-pointer"
+                                        onClick={() =>
+                                            focusInput(titleInputRef)
+                                        }
+                                    >
+                                        <IconEdit
+                                            size={30}
+                                            className=" stroke-gray-500"
+                                        />
+                                    </button>
+                                </div>
+                                <div className="flex items-center">
+                                    <textarea
+                                        ref={descrInputRef}
+                                        placeholder="Lesson description"
+                                        name="description"
+                                        onChange={handleChange}
+                                        value={lessonData?.description}
+                                        className={`mb-3 outline-none min-w-[300px] resize-y`}
+                                    ></textarea>
+                                    <button
+                                        className="cursor-pointer"
+                                        onClick={() =>
+                                            focusInput(descrInputRef)
+                                        }
+                                    >
+                                        <IconEdit
+                                            size={30}
+                                            className=" stroke-gray-500"
+                                        />
+                                    </button>
+                                </div>
+                            </div>
+                            <button
+                                className={`border-2 border-primary inline-block py-2 px-8 rounded-full font-semibold transition-all hover:shadow-lg ${
+                                    !isEdit ? " translate-x-full" : ""
+                                }`}
+                                onClick={handleUpdate}
+                            >
+                                Update
+                            </button>
                         </div>
                         <div
                             className={`transition-all duration-500 ${
