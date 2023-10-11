@@ -7,6 +7,7 @@ import AccessModal from "../components/AccessModal";
 import Loader from "../components/Loader";
 import { IconEdit } from "@tabler/icons-react";
 import areObjectsEqual from "../utils/compareObjects";
+import useGetSingle from "../hooks/api/useGetSingle";
 
 const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const initialFormData = {
@@ -15,6 +16,7 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     };
     const { slug } = useParams();
     const axiosPrivate = useAxiosPrivate();
+    const getSingle = useGetSingle();
 
     const [isCreateModal, setIsAccessModal] = useState<boolean>(false);
     const [course, setCourse] = useState<CourseDoc | null>(null);
@@ -27,33 +29,21 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const titleInputRef = useRef(null);
     const descrInputRef = useRef(null);
 
-    const getSingleCourse = async () => {
-        try {
-            const resp = await axiosPrivate.post("/course", { slug });
-            console.log(resp);
-
-            if (resp.status === 200) {
-                setCourse(resp.data);
-            }
-        } catch (err: any) {
-            console.log(err);
-            if (err.response.status === 404) {
-                setCourse(null);
-            }
-            setIsLoading(false);
-        }
-    };
-
     useEffect(() => {
-        getSingleCourse();
+        if (slug) {
+            getSingle(slug, "course")
+                .then((course) => {
+                    setCourse(course);
+                    setCourseData(course);
+                })
+                .catch((err) => {
+                    setGeneralErr(err.message);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        }
     }, [location?.pathname]);
-
-    useEffect(() => {
-        if (course) {
-            setCourseData(course);
-            setIsLoading(false);
-        }
-    }, [course]);
 
     useEffect(() => {
         if (courseData) {
@@ -73,6 +63,7 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setFormErrors(initialFormData);
+        setGeneralErr("");
         setCourseData((prev) => {
             return {
                 ...prev,
@@ -104,13 +95,11 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                 courseData,
             });
 
-            console.log(resp);
             if (resp.status === 204) {
                 setCourse(resp.data);
                 setIsEdit(false);
             }
         } catch (err: any) {
-            console.log(err);
             setGeneralErr("Server Error");
         } finally {
             setIsLoading(false);
@@ -138,8 +127,9 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
 
     return (
         <section className="pt-36 pb-28">
-            {isLoading ? <Loader /> : ""}
             <div className="max-w-5xl px-4 m-auto">
+                {isLoading ? <Loader /> : ""}
+                {generalErr ? <p className="text-red-400">{generalErr}</p> : ""}
                 {courseData ? (
                     <>
                         <div className="mb-4">
@@ -220,7 +210,7 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                         />
                     </>
                 ) : (
-                    "404"
+                    ""
                 )}
             </div>
         </section>
