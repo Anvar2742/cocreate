@@ -1,38 +1,22 @@
 import { useParams } from "react-router-dom";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CourseDoc } from "../interfaces/interfaces";
 import Lessons from "./Lessons";
 import AccessModal from "../components/AccessModal";
 import Loader from "../components/Loader";
-import { IconEdit } from "@tabler/icons-react";
-import areObjectsEqual from "../utils/compareObjects";
 import useGetSingle from "../hooks/api/useGetSingle";
-import autoResizeTextArea from "../utils/autoResize";
+import { IconEdit } from "@tabler/icons-react";
+import SingleUpdateModal from "../components/SingleUpdate";
 
 const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
-    const initialFormData = {
-        title: "",
-        description: "",
-    };
     const { slug } = useParams();
-    const axiosPrivate = useAxiosPrivate();
     const getSingle = useGetSingle();
 
     const [isCreateModal, setIsAccessModal] = useState<boolean>(false);
+    const [isUpdateModal, setIsUpdateModal] = useState<boolean>(false);
     const [course, setCourse] = useState<CourseDoc | null>(null);
-    const [courseData, setCourseData] = useState<CourseDoc | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [isEdit, setIsEdit] = useState<boolean>(false);
-    const [formErrors, setFormErrors] = useState(initialFormData);
     const [generalErr, setGeneralErr] = useState<string>("");
-    const [textAreaRows, setTextAreaRows] = useState<{
-        title: number;
-        descr: number;
-    }>({
-        title: 1,
-        descr: 1,
-    });
 
     const titleInputRef = useRef(null);
     const descrInputRef = useRef(null);
@@ -42,7 +26,6 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
             getSingle(slug, "course")
                 .then((course) => {
                     setCourse(course);
-                    setCourseData(course);
                 })
                 .catch((err) => {
                     setGeneralErr(err.message);
@@ -53,59 +36,14 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
         }
     }, [location?.pathname]);
 
-    useEffect(() => {
-        if (courseData) {
-            if (areObjectsEqual(course, courseData)) {
-                setIsEdit(false);
-            } else {
-                setIsEdit(true);
-            }
-        }
-    }, [courseData]);
-
-    useEffect(() => {
-        setTextAreaRows((prev) => {
-            if (titleInputRef.current && descrInputRef.current) {
-                return {
-                    title: autoResizeTextArea(titleInputRef.current),
-                    descr: autoResizeTextArea(descrInputRef.current),
-                };
-            } else {
-                return prev;
-            }
-        });
-    }, [titleInputRef.current, descrInputRef.current]);
-
     const toggleAccessModal = () => {
         setIsAccessModal((prev) => !prev);
     };
 
-    const handleChange = (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setFormErrors(initialFormData);
-        setGeneralErr("");
-        setCourseData((prev) => {
-            return {
-                ...prev,
-                [e.target?.name]: e.target?.value,
-            };
-        });
+    const toggleUpdateModal = (ref: any | null = null) => {
+        setIsUpdateModal((prev) => !prev);
 
-        setTextAreaRows((prev) => {
-            if (titleInputRef.current && descrInputRef.current) {
-                return {
-                    title: autoResizeTextArea(titleInputRef.current),
-                    descr: autoResizeTextArea(descrInputRef.current),
-                };
-            } else {
-                return prev;
-            }
-        });
-    };
-
-    const focusInput = (ref: any) => {
-        if (ref.current) {
+        if (ref?.current) {
             const textArea = ref.current;
             textArea.setSelectionRange(
                 textArea.value.length,
@@ -115,123 +53,46 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
         }
     };
 
-    const handleUpdate = async () => {
-        if (areObjectsEqual(course, courseData)) {
-            handleMsg("Nothing changed. Please edit a field to update.");
-            return;
-        }
-
-        const errors = handleEmpty(courseData?.title, courseData?.description);
-        if (errors.title) {
-            setFormErrors(errors);
-            return;
-        }
-        setIsLoading(true);
-        try {
-            const resp = await axiosPrivate.put("/course/update", {
-                courseData,
-            });
-
-            if (resp.status === 204) {
-                setCourse(resp.data);
-                setIsEdit(false);
-            }
-        } catch (err: any) {
-            setGeneralErr("Server Error");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleEmpty = (
-        title: string | undefined,
-        description: string | undefined
-    ) => {
-        let errors: {
-            title: string;
-            description: string;
-        } = { title: "", description: "" };
-
-        if (!title) {
-            errors.title = "Please enter a title";
-        }
-        if (!description) {
-            errors.description = "Please enter a description";
-        }
-
-        return errors;
-    };
-
     return (
         <section className="pt-36 pb-28">
             <div className="max-w-5xl px-4 m-auto">
                 {isLoading ? <Loader /> : ""}
-                {generalErr ? <p className="text-red-400">{generalErr}</p> : ""}
-                {courseData ? (
+                {generalErr ? (
+                    <p className="text-red-400">{generalErr}</p>
+                ) : course ? (
                     <>
                         <div className="mb-4">
-                            <div className="flex items-center justify-between overflow-hidden">
-                                <div>
-                                    <div className="flex items-center">
-                                        <textarea
-                                            ref={titleInputRef}
-                                            placeholder="Course title"
-                                            name="title"
-                                            onChange={handleChange}
-                                            value={courseData?.title}
-                                            className={`mb-3 outline-none min-w-[300px] resize-y text-3xl font-bold`}
-                                            rows={textAreaRows.title}
-                                        ></textarea>
-                                        <button
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                                focusInput(titleInputRef)
-                                            }
-                                        >
-                                            <IconEdit
-                                                size={30}
-                                                className=" stroke-gray-500"
-                                            />
-                                        </button>
-                                        {formErrors.title ? (
-                                            <p className="text-red-400 mt-2">
-                                                {formErrors.title}
-                                            </p>
-                                        ) : (
-                                            ""
-                                        )}
-                                    </div>
-                                    <div className="flex items-center">
-                                        <textarea
-                                            ref={descrInputRef}
-                                            placeholder="Course description"
-                                            name="description"
-                                            onChange={handleChange}
-                                            value={courseData?.description}
-                                            className={`mb-3 outline-none min-w-[300px] resize-y`}
-                                            rows={textAreaRows.descr}
-                                        ></textarea>
-                                        <button
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                                focusInput(descrInputRef)
-                                            }
-                                        >
-                                            <IconEdit
-                                                size={30}
-                                                className=" stroke-gray-500"
-                                            />
-                                        </button>
-                                    </div>
+                            <div className="mb-5">
+                                <div className="flex items-center gap-4 mb-3">
+                                    <h1 className="text-3xl font-bold">
+                                        {course.title}
+                                    </h1>
+                                    <button
+                                        className="cursor-pointer"
+                                        onClick={() =>
+                                            toggleUpdateModal(titleInputRef)
+                                        }
+                                    >
+                                        <IconEdit
+                                            size={30}
+                                            className=" stroke-gray-500"
+                                        />
+                                    </button>
                                 </div>
-                                <button
-                                    className={`border-2 border-primary inline-block py-2 px-8 rounded-full font-semibold transition-all hover:shadow-lg ${
-                                        !isEdit ? " translate-x-full" : ""
-                                    }`}
-                                    onClick={handleUpdate}
-                                >
-                                    Update
-                                </button>
+                                <div className="flex items-center gap-4">
+                                    <p>{course.description}</p>
+                                    <button
+                                        className="cursor-pointer"
+                                        onClick={() =>
+                                            toggleUpdateModal(descrInputRef)
+                                        }
+                                    >
+                                        <IconEdit
+                                            size={20}
+                                            className=" stroke-gray-500"
+                                        />
+                                    </button>
+                                </div>
                             </div>
 
                             <button
@@ -246,6 +107,14 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                             toggleAccessModal={toggleAccessModal}
                             isAccessModal={isCreateModal}
                             courseId={course?._id}
+                        />
+                        <SingleUpdateModal
+                            toggleUpdateModal={toggleUpdateModal}
+                            isUpdateModal={isUpdateModal}
+                            course={course}
+                            handleMsg={handleMsg}
+                            titleInputRef={titleInputRef}
+                            descrInputRef={descrInputRef}
                         />
                     </>
                 ) : (
