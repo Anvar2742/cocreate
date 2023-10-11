@@ -8,6 +8,7 @@ import Loader from "../components/Loader";
 import { IconEdit } from "@tabler/icons-react";
 import areObjectsEqual from "../utils/compareObjects";
 import useGetSingle from "../hooks/api/useGetSingle";
+import autoResizeTextArea from "../utils/autoResize";
 
 const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const initialFormData = {
@@ -25,6 +26,13 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [formErrors, setFormErrors] = useState(initialFormData);
     const [generalErr, setGeneralErr] = useState<string>("");
+    const [textAreaRows, setTextAreaRows] = useState<{
+        title: number;
+        descr: number;
+    }>({
+        title: 1,
+        descr: 1,
+    });
 
     const titleInputRef = useRef(null);
     const descrInputRef = useRef(null);
@@ -55,6 +63,19 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
         }
     }, [courseData]);
 
+    useEffect(() => {
+        setTextAreaRows((prev) => {
+            if (titleInputRef.current && descrInputRef.current) {
+                return {
+                    title: autoResizeTextArea(titleInputRef.current),
+                    descr: autoResizeTextArea(descrInputRef.current),
+                };
+            } else {
+                return prev;
+            }
+        });
+    }, [titleInputRef.current, descrInputRef.current]);
+
     const toggleAccessModal = () => {
         setIsAccessModal((prev) => !prev);
     };
@@ -69,6 +90,17 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                 ...prev,
                 [e.target?.name]: e.target?.value,
             };
+        });
+
+        setTextAreaRows((prev) => {
+            if (titleInputRef.current && descrInputRef.current) {
+                return {
+                    title: autoResizeTextArea(titleInputRef.current),
+                    descr: autoResizeTextArea(descrInputRef.current),
+                };
+            } else {
+                return prev;
+            }
         });
     };
 
@@ -143,6 +175,7 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                                             onChange={handleChange}
                                             value={courseData?.title}
                                             className={`mb-3 outline-none min-w-[300px] resize-y text-3xl font-bold`}
+                                            rows={textAreaRows.title}
                                         ></textarea>
                                         <button
                                             className="cursor-pointer"
@@ -171,6 +204,7 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                                             onChange={handleChange}
                                             value={courseData?.description}
                                             className={`mb-3 outline-none min-w-[300px] resize-y`}
+                                            rows={textAreaRows.descr}
                                         ></textarea>
                                         <button
                                             className="cursor-pointer"
