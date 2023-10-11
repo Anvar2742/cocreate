@@ -106,6 +106,11 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
 
     const focusInput = (ref: any) => {
         if (ref.current) {
+            const textArea = ref.current;
+            textArea.setSelectionRange(
+                textArea.value.length,
+                textArea.value.length
+            );
             ref.current.focus();
         }
     };
