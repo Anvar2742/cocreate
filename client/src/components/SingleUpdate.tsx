@@ -6,7 +6,7 @@ import {
     useState,
 } from "react";
 import { IconX } from "@tabler/icons-react";
-import areObjectsEqual from "../utils/compareObjects";
+import compareObjects from "../utils/compareObjects";
 import autoResizeTextArea from "../utils/autoResize";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { CourseDoc } from "../interfaces/interfaces";
@@ -14,19 +14,21 @@ import Loader from "./Loader";
 import axios, { AxiosError } from "axios";
 
 const SingleUpdateModal = ({
-    handleMsg,
     course,
     isUpdateModal,
     toggleUpdateModal,
     titleInputRef,
     descrInputRef,
+    updateCurrentCourse,
+    slug,
 }: {
-    handleMsg: CallableFunction;
     course: CourseDoc;
     isUpdateModal: boolean;
     toggleUpdateModal: CallableFunction;
     titleInputRef: MutableRefObject<null>;
     descrInputRef: MutableRefObject<null>;
+    updateCurrentCourse: CallableFunction;
+    slug: string | undefined;
 }) => {
     const initialFormData = {
         title: "",
@@ -49,13 +51,18 @@ const SingleUpdateModal = ({
 
     useEffect(() => {
         if (course) {
-            setCourseData(course);
+            setCourseData(() => {
+                return {
+                    title: course.title,
+                    description: course.description,
+                };
+            });
         }
     }, [course]);
 
     useEffect(() => {
         if (courseData) {
-            if (areObjectsEqual(course, courseData)) {
+            if (compareObjects(course, courseData, ["title", "description"])) {
                 setIsEdit(false);
             } else {
                 setIsEdit(true);
@@ -75,6 +82,7 @@ const SingleUpdateModal = ({
             }
         });
     }, [titleInputRef.current, descrInputRef.current]);
+
     const handleChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -101,8 +109,8 @@ const SingleUpdateModal = ({
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (areObjectsEqual(course, courseData)) {
-            handleMsg("Nothing changed. Please edit a field to update.");
+        if (compareObjects(course, courseData, ["title", "description"])) {
+            setGeneralErr("Nothing changed. Please edit a field to update.");
             return;
         }
 
@@ -115,10 +123,11 @@ const SingleUpdateModal = ({
         try {
             const resp = await axiosPrivate.put("/course/update", {
                 courseData,
+                slug,
             });
 
-            if (resp.status === 204) {
-                // setCourse(resp.data);
+            if (resp.status === 200) {
+                updateCurrentCourse(resp.data);
                 setIsEdit(false);
             }
         } catch (err: Error | AxiosError | unknown) {
@@ -190,9 +199,7 @@ const SingleUpdateModal = ({
                             rows={textAreaRows.title}
                         ></textarea>
                         {formErrors.title ? (
-                            <p className="text-red-400">
-                                {formErrors.title}
-                            </p>
+                            <p className="text-red-400">{formErrors.title}</p>
                         ) : (
                             ""
                         )}

@@ -5,7 +5,7 @@ import { LessonDoc } from "../interfaces/interfaces";
 import LessonEditor from "../components/LessonEditor";
 import Loader from "../components/Loader";
 import { IconEdit } from "@tabler/icons-react";
-import areObjectsEqual from "../utils/compareObjects";
+import compareObjects from "../utils/compareObjects";
 
 const LessonSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const { lessonSlug: slug } = useParams();
@@ -69,7 +69,7 @@ const LessonSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
 
     useEffect(() => {
         if (lessonData) {
-            if (areObjectsEqual(lesson, lessonData)) {
+            if (compareObjects(lesson, lessonData)) {
                 setIsEdit(false);
             } else {
                 setIsEdit(true);
@@ -95,7 +95,7 @@ const LessonSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     };
 
     const handleUpdate = async () => {
-        if (areObjectsEqual(lesson, lessonData)) {
+        if (compareObjects(lesson, lessonData)) {
             handleMsg("Nothing changed. Please edit a field to update.");
             return;
         }

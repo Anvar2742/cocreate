@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { CourseDoc } from "../interfaces/interfaces";
 import Lessons from "./Lessons";
@@ -11,6 +11,7 @@ import SingleUpdateModal from "../components/SingleUpdate";
 const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const { slug } = useParams();
     const getSingle = useGetSingle();
+    const location = useLocation();
 
     const [isCreateModal, setIsAccessModal] = useState<boolean>(false);
     const [isUpdateModal, setIsUpdateModal] = useState<boolean>(false);
@@ -51,6 +52,12 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
             );
             ref.current.focus();
         }
+    };
+
+    const updateCurrentCourse = (course: CourseDoc) => {
+        setCourse(course);
+        setIsUpdateModal(false);
+        window.history.pushState({}, "", "/courses/" + course.slug);
     };
 
     return (
@@ -112,9 +119,10 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                             toggleUpdateModal={toggleUpdateModal}
                             isUpdateModal={isUpdateModal}
                             course={course}
-                            handleMsg={handleMsg}
                             titleInputRef={titleInputRef}
                             descrInputRef={descrInputRef}
+                            updateCurrentCourse={updateCurrentCourse}
+                            slug={slug}
                         />
                     </>
                 ) : (
