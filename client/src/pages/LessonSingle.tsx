@@ -82,9 +82,8 @@ const LessonSingle = () => {
     const updateCurrentLesson = (lesson: LessonDoc) => {
         setLesson(lesson);
         setIsUpdateModal(false);
-        console.log(courseSlug);
 
-        navigate(`/courses/${courseSlug}/${lesson.slug}`);
+        navigate(`/courses/${courseSlug}/${lesson.slug}`, { replace: true });
     };
 
     return (
@@ -145,6 +144,8 @@ const LessonSingle = () => {
                 ) : (
                     "404"
                 )}
+
+                {generalErr ? <p className="text-red-400">{generalErr}</p> : ""}
 
                 <SingleUpdateModal
                     singleType="lesson"

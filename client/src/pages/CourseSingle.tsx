@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { CourseDoc } from "../interfaces/interfaces";
 import Lessons from "./Lessons";
@@ -8,10 +8,11 @@ import useGetSingle from "../hooks/api/useGetSingle";
 import { IconEdit } from "@tabler/icons-react";
 import SingleUpdateModal from "../components/SingleUpdate";
 
-const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
+const CourseSingle = () => {
     const { slug } = useParams();
     const getSingle = useGetSingle();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [isCreateModal, setIsAccessModal] = useState<boolean>(false);
     const [isUpdateModal, setIsUpdateModal] = useState<boolean>(false);
@@ -57,7 +58,7 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
     const updateCurrentCourse = (course: CourseDoc) => {
         setCourse(course);
         setIsUpdateModal(false);
-        window.history.pushState({}, "", "/courses/" + course.slug);
+        navigate("/courses/" + course.slug, { replace: true });
     };
 
     return (
@@ -104,7 +105,7 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
 
                             <button
                                 onClick={toggleAccessModal}
-                                className="bg-primary inline-block text-white py-2 px-8 rounded-full font-semibold hover:shadow-black hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
+                                className="bg-primary inline-block text-white py-2 px-8 rounded-full font-semibold hover:shadow-lg transition-all"
                             >
                                 Add a student
                             </button>

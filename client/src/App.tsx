@@ -16,29 +16,29 @@ import LessonSingleStudent from "./pages/LessonSingleStudent";
 import RequireActivate from "./components/RequireActivate";
 import Activation from "./pages/Activation";
 import UserActivate from "./pages/UserActivate";
-import { useState } from "react";
+// import { useState } from "react";
 // import Students from "./pages/Students";
 
 function App() {
     const { auth } = useAuth();
-    const [msg, setMsg] = useState<string>("");
+    // const [msg, setMsg] = useState<string>("");
 
-    const handleMsg = (msg: string) => {
-        setMsg(msg);
-        setTimeout(() => {
-            setMsg("");
-        }, 5000);
-    };
+    // const handleMsg = (msg: string) => {
+    //     setMsg(msg);
+    //     setTimeout(() => {
+    //         setMsg("");
+    //     }, 5000);
+    // };
 
     return (
         <>
-            <p
+            {/* <p
                 className={`fixed bottom-32 transition-all z-50 ${
                     msg ? "right-4" : "-right-full opacity-0"
                 } bg-primary shadow-lg text-white text-xl py-1 px-4 min-h-[36px]`}
             >
                 {msg}
-            </p>
+            </p> */}
             <Routes>
                 <Route element={<PersistLogin />}>
                     <Route path="/auth" element={<Auth />} />
@@ -65,9 +65,7 @@ function App() {
                                     path="/courses/:slug"
                                     element={
                                         auth?.userType === "tutor" ? (
-                                            <CourseSingle
-                                                handleMsg={handleMsg}
-                                            />
+                                            <CourseSingle />
                                         ) : (
                                             <CourseSingleStudent />
                                         )

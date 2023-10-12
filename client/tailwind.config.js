@@ -30,6 +30,7 @@ export default {
             },
             strokeWidth: {
                 3: "3px",
+                5: "5px",
             },
             transitionDuration: {
                 1200: "1200ms",
