@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import Course from "../models/Course";
 import slugify from "../utils/slugify";
 import User from "../models/User";
+import { title } from "process";
 dotenv.config();
 
 const handleErrors = (err: any) => {
@@ -171,17 +172,27 @@ export const giveAccessToCourse = async (req: Request, res: Response) => {
 
 export const updateCourse = async (req: Request, res: Response) => {
     const { courseData } = req.body;
+    const { _id: tutorId } = req.user as UserDoc;
 
     try {
         if (!courseData) return res.sendStatus(400);
         const course = await Course.findOne({ _id: courseData._id });
 
         if (!course) return res.sendStatus(404);
-        Object.keys(courseData).forEach((key) => {
-            if (courseData[key]) {
-                (course as any)[key] = courseData[key];
-            }
-        });
+
+        if (!courseData.title)
+            return res.status(400).json({ title: "Please provide a title" });
+
+        const slug = slugify(courseData.title);
+        const isTakenName = await Course.find({ slug, tutorId });
+
+        if (isTakenName?.length)
+            return res.status(400).json({ title: "This title is taken" });
+
+        course.title = courseData.title;
+        course.description = courseData.description;
+        course.slug = slug;
+
         await course.save();
 
         res.status(204).send(course);

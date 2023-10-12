@@ -11,6 +11,7 @@ import autoResizeTextArea from "../utils/autoResize";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { CourseDoc } from "../interfaces/interfaces";
 import Loader from "./Loader";
+import axios, { AxiosError } from "axios";
 
 const SingleUpdateModal = ({
     handleMsg,
@@ -120,8 +121,19 @@ const SingleUpdateModal = ({
                 // setCourse(resp.data);
                 setIsEdit(false);
             }
-        } catch (err: any) {
-            setGeneralErr("Server Error");
+        } catch (err: Error | AxiosError | unknown) {
+            if (axios.isAxiosError(err)) {
+                // Access to config, request, and response
+                // console.log(err);
+                if (err.code === "ERR_NETWORK") {
+                    setGeneralErr("Server error");
+                } else {
+                    setFormErrors(err.response?.data);
+                }
+            } else {
+                setGeneralErr("Server error");
+                // console.log(err);
+            }
         } finally {
             setIsSubmit(false);
         }
@@ -160,7 +172,7 @@ const SingleUpdateModal = ({
             >
                 {isSubmit ? <Loader /> : ""}
                 <form
-                    className={`mt-4 w-full px-10 flex flex-col relative`}
+                    className={`mt-4 w-full px-10 flex flex-col gap-3 relative`}
                     onSubmit={handleSubmit}
                 >
                     <div className="">
@@ -174,11 +186,11 @@ const SingleUpdateModal = ({
                             name="title"
                             onChange={handleChange}
                             value={courseData?.title}
-                            className={`mb-3 outline-none resize-y bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md min-h-[40px]`}
+                            className={`outline-none resize-y bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md min-h-[40px]`}
                             rows={textAreaRows.title}
                         ></textarea>
                         {formErrors.title ? (
-                            <p className="text-red-400 mt-2">
+                            <p className="text-red-400">
                                 {formErrors.title}
                             </p>
                         ) : (
@@ -199,7 +211,7 @@ const SingleUpdateModal = ({
                             name="description"
                             onChange={handleChange}
                             value={courseData?.description}
-                            className="mb-3 outline-none resize-y bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md min-h-[40px]"
+                            className="outline-none resize-y bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md min-h-[40px]"
                             rows={textAreaRows.descr}
                         ></textarea>
                     </div>
