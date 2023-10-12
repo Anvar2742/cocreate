@@ -77,9 +77,7 @@ function App() {
                                     path="/courses/:courseSlug/:lessonSlug"
                                     element={
                                         auth?.userType === "tutor" ? (
-                                            <LessonSingle
-                                                handleMsg={handleMsg}
-                                            />
+                                            <LessonSingle />
                                         ) : (
                                             <LessonSingleStudent />
                                         )

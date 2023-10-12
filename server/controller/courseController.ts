@@ -171,31 +171,31 @@ export const giveAccessToCourse = async (req: Request, res: Response) => {
 };
 
 export const updateCourse = async (req: Request, res: Response) => {
-    const { courseData, slug } = req.body;
+    const { singleData, slug } = req.body;
     const { _id: tutorId } = req.user as UserDoc;
 
     try {
-        if (!courseData) return res.sendStatus(400);
+        if (!singleData) return res.sendStatus(400);
 
         const course = await Course.findOne({ slug, tutorId });
         if (!course) return res.sendStatus(404);
 
-        if (!courseData.title) {
+        if (!singleData.title) {
             return res.status(400).json({ title: "Please provide a title" });
         }
 
-        if (course.title !== courseData.title) {
-            const newSlug = slugify(courseData.title);
+        if (course.title !== singleData.title) {
+            const newSlug = slugify(singleData.title);
             const isTakenName = await Course.find({ slug: newSlug, tutorId });
             if (isTakenName?.length)
                 return res.status(400).json({ title: "This title is taken" });
 
-            course.title = courseData.title;
+            course.title = singleData.title;
             course.slug = newSlug;
         }
 
-        if (course.description !== courseData.description) {
-            course.description = courseData.description;
+        if (course.description !== singleData.description) {
+            course.description = singleData.description;
         }
 
         await course.save();

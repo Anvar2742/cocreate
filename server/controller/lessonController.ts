@@ -160,23 +160,38 @@ export const updateLessonContent = async (req: Request, res: Response) => {
 };
 
 export const updateLesson = async (req: Request, res: Response) => {
-    const { lessonData } = req.body;
+    const { singleData, slug } = req.body;
+    const { _id: tutorId } = req.user as UserDoc;
 
     try {
-        if (!lessonData) return res.sendStatus(400);
-        const lesson = await Lesson.findOne({ _id: lessonData._id });
+        if (!singleData) return res.sendStatus(400);
 
+        const lesson = await Lesson.findOne({ slug, tutorId });
         if (!lesson) return res.sendStatus(404);
-        Object.keys(lessonData).forEach((key) => {
-            if (lessonData[key]) {
-                (lesson as any)[key] = lessonData[key];
-            }
-        });
+
+        if (!singleData.title) {
+            return res.status(400).json({ title: "Please provide a title" });
+        }
+
+        if (lesson.title !== singleData.title) {
+            const newSlug = slugify(singleData.title);
+            const isTakenName = await Lesson.find({ slug: newSlug, tutorId });
+            if (isTakenName?.length)
+                return res.status(400).json({ title: "This title is taken" });
+
+            lesson.title = singleData.title;
+            lesson.slug = newSlug;
+        }
+
+        if (lesson.description !== singleData.description) {
+            lesson.description = singleData.description;
+        }
+
         await lesson.save();
 
-        res.status(204).send(lesson);
+        res.send(lesson);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).send(error);
     }
 };

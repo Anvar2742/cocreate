@@ -1,41 +1,51 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LessonDoc } from "../interfaces/interfaces";
 import LessonEditor from "../components/LessonEditor";
 import Loader from "../components/Loader";
 import { IconEdit } from "@tabler/icons-react";
-import compareObjects from "../utils/compareObjects";
+import useGetSingle from "../hooks/api/useGetSingle";
+import SingleUpdateModal from "../components/SingleUpdate";
 
-const LessonSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
-    const { lessonSlug: slug } = useParams();
+const LessonSingle = () => {
+    const { lessonSlug: slug, courseSlug } = useParams();
     const axiosPrivate = useAxiosPrivate();
+    const getSingle = useGetSingle();
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const [isUpdate, setIsUpdate] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [lesson, setLesson] = useState<LessonDoc | null>(null);
     const [lessonData, setLessonData] = useState<LessonDoc | null>(null);
-    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [generalErr, setGeneralErr] = useState<string>("");
+    const [isUpdateModal, setIsUpdateModal] = useState<boolean>(false);
 
     const titleInputRef = useRef(null);
     const descrInputRef = useRef(null);
 
-    const getSingleLesson = async () => {
-        try {
-            const resp = await axiosPrivate.post("/lesson", { slug });
-            console.log(resp);
+    useEffect(() => {
+        if (slug) {
+            getSingle(slug, "lesson")
+                .then((lesson) => {
+                    setLesson(lesson);
+                })
+                .catch((err) => {
+                    setGeneralErr(err.message);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        }
+    }, [location?.pathname]);
 
-            if (resp.status === 200) {
-                setLesson(resp.data);
-                setIsLoading(false);
-            }
-        } catch (err: any) {
-            // console.log(err);
-            if (err.response.status === 404) {
-                setLesson(null);
-            }
+    useEffect(() => {
+        if (lesson) {
+            setLessonData(lesson);
             setIsLoading(false);
         }
-    };
+    }, [lesson]);
 
     const updateLesson = async (content: string) => {
         try {
@@ -56,65 +66,25 @@ const LessonSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
         updateLesson(content);
     };
 
-    useEffect(() => {
-        getSingleLesson();
-    }, [location?.pathname]);
+    const toggleUpdateModal = (ref: any | null = null) => {
+        setIsUpdateModal((prev) => !prev);
 
-    useEffect(() => {
-        if (lesson) {
-            setLessonData(lesson);
-            setIsLoading(false);
-        }
-    }, [lesson]);
-
-    useEffect(() => {
-        if (lessonData) {
-            if (compareObjects(lesson, lessonData)) {
-                setIsEdit(false);
-            } else {
-                setIsEdit(true);
-            }
-        }
-    }, [lessonData]);
-
-    const handleChange = (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setLessonData((prev) => {
-            return {
-                ...prev,
-                [e.target?.name]: e.target?.value,
-            };
-        });
-    };
-
-    const focusInput = (ref: any) => {
-        if (ref.current) {
+        if (ref?.current) {
+            const textArea = ref.current;
+            textArea.setSelectionRange(
+                textArea.value.length,
+                textArea.value.length
+            );
             ref.current.focus();
         }
     };
 
-    const handleUpdate = async () => {
-        if (compareObjects(lesson, lessonData)) {
-            handleMsg("Nothing changed. Please edit a field to update.");
-            return;
-        }
-        setIsLoading(true);
-        try {
-            const resp = await axiosPrivate.put("/lesson/update", {
-                lessonData,
-            });
+    const updateCurrentLesson = (lesson: LessonDoc) => {
+        setLesson(lesson);
+        setIsUpdateModal(false);
+        console.log(courseSlug);
 
-            console.log(resp);
-            if (resp.status === 204) {
-                setLesson(resp.data);
-                setIsEdit(false);
-            }
-        } catch (err: any) {
-            console.log(err);
-        } finally {
-            setIsLoading(false);
-        }
+        navigate(`/courses/${courseSlug}/${lesson.slug}`);
     };
 
     return (
@@ -125,19 +95,14 @@ const LessonSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                     <>
                         <div className="flex items-center justify-between overflow-hidden mb-10">
                             <div>
-                                <div className="flex items-center">
-                                    <textarea
-                                        ref={titleInputRef}
-                                        placeholder="Lesson title"
-                                        name="title"
-                                        onChange={handleChange}
-                                        value={lessonData?.title}
-                                        className={`mb-3 outline-none min-w-[300px] resize-y text-3xl font-bold`}
-                                    ></textarea>
+                                <div className="flex items-center gap-4 mb-3">
+                                    <h1 className="text-3xl font-bold">
+                                        {lesson?.title}
+                                    </h1>
                                     <button
                                         className="cursor-pointer"
                                         onClick={() =>
-                                            focusInput(titleInputRef)
+                                            toggleUpdateModal(titleInputRef)
                                         }
                                     >
                                         <IconEdit
@@ -146,36 +111,21 @@ const LessonSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                                         />
                                     </button>
                                 </div>
-                                <div className="flex items-center">
-                                    <textarea
-                                        ref={descrInputRef}
-                                        placeholder="Lesson description"
-                                        name="description"
-                                        onChange={handleChange}
-                                        value={lessonData?.description}
-                                        className={`mb-3 outline-none min-w-[300px] resize-y`}
-                                    ></textarea>
+                                <div className="flex items-center gap-4">
+                                    <p>{lesson?.description}</p>
                                     <button
                                         className="cursor-pointer"
                                         onClick={() =>
-                                            focusInput(descrInputRef)
+                                            toggleUpdateModal(descrInputRef)
                                         }
                                     >
                                         <IconEdit
-                                            size={30}
+                                            size={20}
                                             className=" stroke-gray-500"
                                         />
                                     </button>
                                 </div>
                             </div>
-                            <button
-                                className={`border-2 border-primary inline-block py-2 px-8 rounded-full font-semibold transition-all hover:shadow-lg ${
-                                    !isEdit ? " translate-x-full" : ""
-                                }`}
-                                onClick={handleUpdate}
-                            >
-                                Update
-                            </button>
                         </div>
                         <div
                             className={`transition-all duration-500 ${
@@ -195,6 +145,17 @@ const LessonSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                 ) : (
                     "404"
                 )}
+
+                <SingleUpdateModal
+                    singleType="lesson"
+                    toggleUpdateModal={toggleUpdateModal}
+                    isUpdateModal={isUpdateModal}
+                    single={lesson}
+                    titleInputRef={titleInputRef}
+                    descrInputRef={descrInputRef}
+                    updateCurrentSingle={updateCurrentLesson}
+                    slug={slug}
+                />
             </div>
         </section>
     );

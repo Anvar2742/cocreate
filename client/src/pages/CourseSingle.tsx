@@ -116,12 +116,13 @@ const CourseSingle = ({ handleMsg }: { handleMsg: CallableFunction }) => {
                             courseId={course?._id}
                         />
                         <SingleUpdateModal
+                            singleType="course"
                             toggleUpdateModal={toggleUpdateModal}
                             isUpdateModal={isUpdateModal}
-                            course={course}
+                            single={course}
                             titleInputRef={titleInputRef}
                             descrInputRef={descrInputRef}
-                            updateCurrentCourse={updateCurrentCourse}
+                            updateCurrentSingle={updateCurrentCourse}
                             slug={slug}
                         />
                     </>

@@ -9,25 +9,27 @@ import { IconX } from "@tabler/icons-react";
 import compareObjects from "../utils/compareObjects";
 import autoResizeTextArea from "../utils/autoResize";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { CourseDoc } from "../interfaces/interfaces";
+import { CourseDoc, LessonDoc } from "../interfaces/interfaces";
 import Loader from "./Loader";
 import axios, { AxiosError } from "axios";
 
 const SingleUpdateModal = ({
-    course,
+    singleType,
+    single,
     isUpdateModal,
     toggleUpdateModal,
     titleInputRef,
     descrInputRef,
-    updateCurrentCourse,
+    updateCurrentSingle,
     slug,
 }: {
-    course: CourseDoc;
+    singleType: string;
+    single: CourseDoc | LessonDoc | null;
     isUpdateModal: boolean;
     toggleUpdateModal: CallableFunction;
     titleInputRef: MutableRefObject<null>;
     descrInputRef: MutableRefObject<null>;
-    updateCurrentCourse: CallableFunction;
+    updateCurrentSingle: CallableFunction;
     slug: string | undefined;
 }) => {
     const initialFormData = {
@@ -36,7 +38,7 @@ const SingleUpdateModal = ({
     };
     const axiosPrivate = useAxiosPrivate();
 
-    const [courseData, setCourseData] = useState<CourseDoc | null>(null);
+    const [singleData, setCourseData] = useState<CourseDoc | null>(null);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [formErrors, setFormErrors] = useState(initialFormData);
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
@@ -50,25 +52,25 @@ const SingleUpdateModal = ({
     });
 
     useEffect(() => {
-        if (course) {
+        if (single) {
             setCourseData(() => {
                 return {
-                    title: course.title,
-                    description: course.description,
+                    title: single.title,
+                    description: single.description,
                 };
             });
         }
-    }, [course]);
+    }, [single]);
 
     useEffect(() => {
-        if (courseData) {
-            if (compareObjects(course, courseData, ["title", "description"])) {
+        if (singleData) {
+            if (compareObjects(single, singleData, ["title", "description"])) {
                 setIsEdit(false);
             } else {
                 setIsEdit(true);
             }
         }
-    }, [courseData]);
+    }, [singleData]);
 
     useEffect(() => {
         setTextAreaRows((prev) => {
@@ -109,25 +111,25 @@ const SingleUpdateModal = ({
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (compareObjects(course, courseData, ["title", "description"])) {
+        if (compareObjects(single, singleData, ["title", "description"])) {
             setGeneralErr("Nothing changed. Please edit a field to update.");
             return;
         }
 
-        const errors = handleEmpty(courseData?.title, courseData?.description);
+        const errors = handleEmpty(singleData?.title, singleData?.description);
         if (errors.title) {
             setFormErrors(errors);
             return;
         }
         setIsSubmit(true);
         try {
-            const resp = await axiosPrivate.put("/course/update", {
-                courseData,
+            const resp = await axiosPrivate.put(`/${singleType}/update`, {
+                singleData,
                 slug,
             });
 
             if (resp.status === 200) {
-                updateCurrentCourse(resp.data);
+                updateCurrentSingle(resp.data);
                 setIsEdit(false);
             }
         } catch (err: Error | AxiosError | unknown) {
@@ -194,7 +196,7 @@ const SingleUpdateModal = ({
                             id="title"
                             name="title"
                             onChange={handleChange}
-                            value={courseData?.title}
+                            value={singleData?.title}
                             className={`outline-none resize-y bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md min-h-[40px]`}
                             rows={textAreaRows.title}
                         ></textarea>
@@ -217,7 +219,7 @@ const SingleUpdateModal = ({
                             id="description"
                             name="description"
                             onChange={handleChange}
-                            value={courseData?.description}
+                            value={singleData?.description}
                             className="outline-none resize-y bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md min-h-[40px]"
                             rows={textAreaRows.descr}
                         ></textarea>
