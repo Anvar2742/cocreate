@@ -51,6 +51,9 @@ export default {
             padding: {
                 22: "5.75em",
             },
+            gridTemplateColumns: {
+                leftSidebar: "20% 80%",
+            },
         },
     },
     plugins: [],

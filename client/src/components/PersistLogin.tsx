@@ -6,13 +6,14 @@ import Loader from "./Loader";
 import Navbar from "./Navbar";
 import AuthModal from "./AuthModal";
 import Footer from "./Footer";
+import Sidebar from "./Sidebar";
 
 const PersistLogin = () => {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
+    const [isAuthModal, setIsAuthModal] = useState(false);
     const refresh = useRefreshToken();
     const { auth } = useAuth();
-    const [isAuthModal, setIsAuthModal] = useState(false);
 
     const toggleAuthModal = () => {
         setIsAuthModal((prev) => !prev);
@@ -41,20 +42,20 @@ const PersistLogin = () => {
 
     return (
         <>
-            {!(
-                location?.pathname === "/auth" ||
-                location?.pathname === "/studio"
-            ) ? (
+            {!auth?.accessToken ? (
                 <Navbar toggleAuthModal={toggleAuthModal} />
             ) : (
                 ""
             )}
-            <Outlet />
 
-            {!(
-                location?.pathname === "/auth" ||
-                location?.pathname === "/studio"
-            ) ? (
+            <div className={"flex max-h-screen"}>
+                {auth?.accessToken ? <Sidebar /> : ""}
+                <div className=" overflow-y-auto w-full">
+                    <Outlet />
+                </div>
+            </div>
+
+            {!auth?.accessToken ? (
                 <>
                     <AuthModal
                         toggleAuthModal={toggleAuthModal}
@@ -65,14 +66,8 @@ const PersistLogin = () => {
             ) : (
                 ""
             )}
-            {!(
-                location?.pathname === "/auth" ||
-                location?.pathname === "/studio"
-            ) ? (
-                <Footer />
-            ) : (
-                ""
-            )}
+
+            {!auth?.accessToken ? <Footer /> : ""}
         </>
     );
 };

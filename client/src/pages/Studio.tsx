@@ -1,15 +1,9 @@
-
 const Studio = () => {
-  return (
-    <div className="h-screen">
-        <aside>
-            <h2>Something</h2>
-        </aside>
-        <div>
-            <h1>Your studio</h1>
+    return (
+        <div className="p-5">
+            <h1 className="text-center font-bold text-4xl">Your studio</h1>
         </div>
-    </div>
-  )
-}
+    );
+};
 
-export default Studio
+export default Studio;

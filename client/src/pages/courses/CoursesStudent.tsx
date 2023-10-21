@@ -68,7 +68,7 @@ const CoursesStudents = () => {
         <section className="pt-36 pb-28">
             <div className="max-w-5xl px-4 m-auto">
                 <h1 className="font-bold text-5xl">Your courses</h1>
-                <div className="mt-8 grid sm:grid-cols-3 gap-4">
+                <div className="mt-8 grid sm:grid-cols-2 gap-4">
                     {isLoading ? <TitleLoader /> : coursesEls}
                 </div>
             </div>
