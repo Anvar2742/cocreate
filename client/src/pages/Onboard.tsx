@@ -50,20 +50,16 @@ const Onboard = () => {
             }
             const resp = await axiosPrivate.post("/onboarding", formData);
 
-            console.log(resp);
+            // console.log(resp);
             if (resp.status === 204) {
                 // Update isOnboard status for user
-                await refresh();
-                if (location?.state?.from) {
-                    navigate(location?.state?.from);
-                } else {
-                    navigate("/");
-                }
+                // await refresh();
+                navigate("/verify");
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {
                 // Access to config, request, and response
-                console.log(err);
+                // console.log(err);
                 if (err.code === "ERR_NETWORK") {
                     setGeneralErr("Server error");
                 } else {
@@ -71,7 +67,7 @@ const Onboard = () => {
                 }
             } else {
                 setGeneralErr("Server error");
-                console.log(err);
+                // console.log(err);
             }
         } finally {
             setIsSubmit(false);

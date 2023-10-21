@@ -15,21 +15,25 @@ const useGetSingle = () => {
                 throw new Error("Server is not responding");
             }
         } catch (err: Error | AxiosError | any) {
+            let error = new Error();
             if (axios.isAxiosError(err)) {
                 // console.log(err);
                 if (err.code === "ERR_NETWORK") {
-                    throw new Error("Server is not responding");
+                    error.message = "Server is not responding";
                 } else if (err.response?.data?.msg) {
-                    throw new Error(err.response?.data?.msg);
+                    error.message = err.response?.data?.msg;
                 } else if (err.response?.status === 404) {
-                    throw new Error(err.response?.data);
+                    // error.code = err.response?.data;
+                    error.message = err.response?.data;
                 } else {
                     throw new Error(err.response?.data);
                 }
             } else {
-                // console.log(err);
+                console.log(err);
                 throw new Error("Server is not responding");
             }
+
+            throw error;
         }
     };
 

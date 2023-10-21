@@ -126,20 +126,12 @@ const LessonSingle = () => {
                                 </div>
                             </div>
                         </div>
-                        <div
-                            className={`transition-all duration-500 ${
-                                isLoading
-                                    ? "opacity-0 translate-y-full"
-                                    : "opacity-100 translate-y-0"
-                            }`}
-                        >
-                            <LessonEditor
-                                updateContent={updateContent}
-                                initialContent={lesson?.content}
-                                isTutor={true}
-                                isUpdate={isUpdate}
-                            />
-                        </div>
+                        <LessonEditor
+                            updateContent={updateContent}
+                            initialContent={lesson?.content}
+                            isTutor={true}
+                            isUpdate={isUpdate}
+                        />
                     </>
                 ) : (
                     "404"
