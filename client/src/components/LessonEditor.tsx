@@ -1,6 +1,6 @@
 import { IconLoader } from "@tabler/icons-react";
 import { Editor } from "@tinymce/tinymce-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const LessonEditor = ({
     updateContent,
@@ -15,10 +15,18 @@ const LessonEditor = ({
 }) => {
     const editorRef = useRef<any>(null);
 
+    useEffect(() => {
+        if (isUpdate) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+    }, [isUpdate]);
+
     return (
         <>
             {isUpdate ? (
-                <div className="absolute bg-white w-full h-full z-20 flex items-center justify-center">
+                <div className="fixed top-0 left-0 z-50 bg-white w-full h-full flex items-center justify-center">
                     <IconLoader
                         className="stroke-primary animate-spin-2"
                         size={60}
