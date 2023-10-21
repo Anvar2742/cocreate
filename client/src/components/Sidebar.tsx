@@ -1,9 +1,13 @@
 import { NavLink } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Sidebar = () => {
+    const { auth } = useAuth();
+
     return (
         <aside className="bg-input py-5 left-0 top-0 h-screen w-1/5">
-            <h2 className="font-semibold text-xl px-4">Something</h2>
+            <h2 className="font-semibold text-xl px-4">{auth?.email}</h2>
+            <h3 className="font-medium text-lg px-4">{auth?.userType}</h3>
             <nav>
                 <ul>
                     <li>

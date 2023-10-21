@@ -180,6 +180,7 @@ export const login: RequestHandler = async (req, res) => {
             isOnboard: logedInUser.isOnboard,
             isActive: logedInUser.isActive,
             userType: logedInUser.userType,
+            email: logedInUser.email,
         });
     } catch (err) {
         const errors = handleErrors(err);
@@ -247,6 +248,7 @@ export const refresh: RequestHandler = async (req, res) => {
                     isOnboard: user.isOnboard,
                     isActive: user.isActive,
                     userType: user.userType,
+                    email: user.email,
                 });
             }
         );

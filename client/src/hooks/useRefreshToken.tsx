@@ -14,10 +14,7 @@ const useRefreshToken = () => {
                 // console.log(response.data.accessToken);
                 return {
                     ...prev,
-                    accessToken: response.data.accessToken,
-                    isOnboard: response.data.isOnboard,
-                    isActive: response.data.isActive,
-                    userType: response.data.userType,
+                    ...response.data,
                 };
             });
             return response.data.accessToken;

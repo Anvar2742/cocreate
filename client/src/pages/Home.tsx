@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import heroImg from "./../img/hero-right.png";
 import teacher from "./../img/teacher.png";
@@ -11,6 +11,7 @@ const Home = () => {
     const { auth } = useAuth();
     const [isLoad, setIsLoad] = useState<boolean>(true);
 
+    if (auth?.accessToken) return <Navigate to={"/studio"} />;
     return (
         <>
             {isLoad ? <Loader /> : ""}
