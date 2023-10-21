@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
-import { LessonDoc } from "../interfaces/interfaces";
-import LessonEditor from "../components/LessonEditor";
-import Loader from "../components/Loader";
+import { LessonDoc } from "../../interfaces/interfaces";
+import LessonEditor from "../../components/LessonEditor";
+import Loader from "../../components/Loader";
 
 const LessonSingleStudent = () => {
     const [lesson, setLesson] = useState<LessonDoc | null>(null);

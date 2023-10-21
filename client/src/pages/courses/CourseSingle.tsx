@@ -1,35 +1,33 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useEffect, useRef, useState } from "react";
-import { LessonDoc } from "../interfaces/interfaces";
-import LessonEditor from "../components/LessonEditor";
-import Loader from "../components/Loader";
+import { CourseDoc } from "../../interfaces/interfaces";
+import Lessons from "../lessons/Lessons";
+import AccessModal from "../../components/AccessModal";
+import Loader from "../../components/Loader";
+import useGetSingle from "../../hooks/api/useGetSingle";
 import { IconEdit } from "@tabler/icons-react";
-import useGetSingle from "../hooks/api/useGetSingle";
-import SingleUpdateModal from "../components/SingleUpdate";
+import SingleUpdateModal from "../../components/SingleUpdate";
 
-const LessonSingle = () => {
-    const { lessonSlug: slug, courseSlug } = useParams();
-    const axiosPrivate = useAxiosPrivate();
+const CourseSingle = () => {
+    const { slug } = useParams();
     const getSingle = useGetSingle();
     const location = useLocation();
     const navigate = useNavigate();
 
-    const [isUpdate, setIsUpdate] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [lesson, setLesson] = useState<LessonDoc | null>(null);
-    const [lessonData, setLessonData] = useState<LessonDoc | null>(null);
-    const [generalErr, setGeneralErr] = useState<string>("");
+    const [isCreateModal, setIsAccessModal] = useState<boolean>(false);
     const [isUpdateModal, setIsUpdateModal] = useState<boolean>(false);
+    const [course, setCourse] = useState<CourseDoc | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [generalErr, setGeneralErr] = useState<string>("");
 
     const titleInputRef = useRef(null);
     const descrInputRef = useRef(null);
 
     useEffect(() => {
         if (slug) {
-            getSingle(slug, "lesson")
-                .then((lesson) => {
-                    setLesson(lesson);
+            getSingle(slug, "course")
+                .then((course) => {
+                    setCourse(course);
                 })
                 .catch((err) => {
                     setGeneralErr(err.message);
@@ -40,30 +38,8 @@ const LessonSingle = () => {
         }
     }, [location?.pathname]);
 
-    useEffect(() => {
-        if (lesson) {
-            setLessonData(lesson);
-            setIsLoading(false);
-        }
-    }, [lesson]);
-
-    const updateLesson = async (content: string) => {
-        try {
-            const resp = await axiosPrivate.put("/lesson/content", {
-                slug,
-                content,
-            });
-            console.log(resp);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setIsUpdate(false);
-        }
-    };
-
-    const updateContent = (content: string) => {
-        setIsUpdate(true);
-        updateLesson(content);
+    const toggleAccessModal = () => {
+        setIsAccessModal((prev) => !prev);
     };
 
     const toggleUpdateModal = (ref: any | null = null) => {
@@ -79,24 +55,25 @@ const LessonSingle = () => {
         }
     };
 
-    const updateCurrentLesson = (lesson: LessonDoc) => {
-        setLesson(lesson);
+    const updateCurrentCourse = (course: CourseDoc) => {
+        setCourse(course);
         setIsUpdateModal(false);
-
-        navigate(`/courses/${courseSlug}/${lesson.slug}`, { replace: true });
+        navigate("/courses/" + course.slug, { replace: true });
     };
 
     return (
-        <section className="pt-32 pb-28">
-            {isLoading ? <Loader /> : ""}
-            <div className="max-w-5xl px-4 m-auto overflow-y-hidden">
-                {lessonData ? (
+        <section className="pt-36 pb-28">
+            <div className="max-w-5xl px-4 m-auto">
+                {isLoading ? <Loader /> : ""}
+                {generalErr ? (
+                    <p className="text-red-400">{generalErr}</p>
+                ) : course ? (
                     <>
-                        <div className="flex items-center justify-between overflow-hidden mb-10">
-                            <div>
+                        <div className="mb-4">
+                            <div className="mb-5">
                                 <div className="flex items-center gap-4 mb-3">
                                     <h1 className="text-3xl font-bold">
-                                        {lesson?.title}
+                                        {course.title}
                                     </h1>
                                     <button
                                         className="cursor-pointer"
@@ -111,7 +88,7 @@ const LessonSingle = () => {
                                     </button>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <p>{lesson?.description}</p>
+                                    <p>{course.description}</p>
                                     <button
                                         className="cursor-pointer"
                                         onClick={() =>
@@ -125,33 +102,37 @@ const LessonSingle = () => {
                                     </button>
                                 </div>
                             </div>
+
+                            <button
+                                onClick={toggleAccessModal}
+                                className="bg-primary inline-block text-white py-2 px-8 rounded-full font-semibold hover:shadow-lg transition-all"
+                            >
+                                Add a student
+                            </button>
                         </div>
-                        <LessonEditor
-                            updateContent={updateContent}
-                            initialContent={lesson?.content}
-                            isTutor={true}
-                            isUpdate={isUpdate}
+                        <Lessons course={course} />
+                        <AccessModal
+                            toggleAccessModal={toggleAccessModal}
+                            isAccessModal={isCreateModal}
+                            courseId={course?._id}
+                        />
+                        <SingleUpdateModal
+                            singleType="course"
+                            toggleUpdateModal={toggleUpdateModal}
+                            isUpdateModal={isUpdateModal}
+                            single={course}
+                            titleInputRef={titleInputRef}
+                            descrInputRef={descrInputRef}
+                            updateCurrentSingle={updateCurrentCourse}
+                            slug={slug}
                         />
                     </>
                 ) : (
-                    "404"
+                    ""
                 )}
-
-                {generalErr ? <p className="text-red-400">{generalErr}</p> : ""}
-
-                <SingleUpdateModal
-                    singleType="lesson"
-                    toggleUpdateModal={toggleUpdateModal}
-                    isUpdateModal={isUpdateModal}
-                    single={lesson}
-                    titleInputRef={titleInputRef}
-                    descrInputRef={descrInputRef}
-                    updateCurrentSingle={updateCurrentLesson}
-                    slug={slug}
-                />
             </div>
         </section>
     );
 };
 
-export default LessonSingle;
+export default CourseSingle;

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import useGetUser from "../hooks/api/useGetUser";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import Loader from "../components/Loader";
-import useRefreshToken from "../hooks/useRefreshToken";
+import useGetUser from "../../hooks/api/useGetUser";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import Loader from "../../components/Loader";
+import useRefreshToken from "../../hooks/useRefreshToken";
 
 const UserActivate = () => {
     const location = useLocation();

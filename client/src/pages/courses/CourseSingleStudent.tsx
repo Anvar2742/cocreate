@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
-import { CourseDoc } from "../interfaces/interfaces";
-import Loader from "../components/Loader";
-import LessonsStudent from "./LessonsStudent";
+import { CourseDoc } from "../../interfaces/interfaces";
+import Loader from "../../components/Loader";
+import LessonsStudent from "../lessons/LessonsStudent";
 
 const CourseSingleStudent = () => {
     const { slug } = useParams();

@@ -2,9 +2,9 @@ import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { IconLoader } from "@tabler/icons-react";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import useAuth from "../hooks/useAuth";
-import useRefreshToken from "../hooks/useRefreshToken";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAuth from "../../hooks/useAuth";
+import useRefreshToken from "../../hooks/useRefreshToken";
 
 const Onboard = () => {
     const { auth } = useAuth();

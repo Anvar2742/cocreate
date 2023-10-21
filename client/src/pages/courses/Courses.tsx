@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Link, useLocation } from "react-router-dom";
-import { CourseDoc } from "../interfaces/interfaces";
+import { CourseDoc } from "../../interfaces/interfaces";
 import { AxiosError } from "axios";
-import TitleCreateModal from "../components/TitleCreateModal";
-import TitleLoader from "../components/TitleLoader";
-import useAuth from "../hooks/useAuth";
+import TitleCreateModal from "../../components/TitleCreateModal";
+import TitleLoader from "../../components/TitleLoader";
+import useAuth from "../../hooks/useAuth";
 
 const Courses = () => {
     const location = useLocation();

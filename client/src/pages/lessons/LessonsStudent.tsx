@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Link } from "react-router-dom";
-import { CourseDoc, LessonDoc } from "../interfaces/interfaces";
-import TitleLoader from "../components/TitleLoader";
+import { CourseDoc, LessonDoc } from "../../interfaces/interfaces";
+import TitleLoader from "../../components/TitleLoader";
 import { AxiosError } from "axios";
 
 const LessonsStudent = ({ course }: { course: CourseDoc | null }) => {

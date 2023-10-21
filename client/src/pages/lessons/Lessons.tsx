@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Link } from "react-router-dom";
-import { CourseDoc, LessonDoc } from "../interfaces/interfaces";
-import TitleCreateModal from "../components/TitleCreateModal";
-import TitleLoader from "../components/TitleLoader";
+import { CourseDoc, LessonDoc } from "../../interfaces/interfaces";
+import TitleCreateModal from "../../components/TitleCreateModal";
+import TitleLoader from "../../components/TitleLoader";
 import { AxiosError } from "axios";
 
 const Lessons = ({ course }: { course: CourseDoc | null }) => {

@@ -64,7 +64,7 @@ const Navbar = ({
                                 </li>
                                 <li>
                                     <NavLink
-                                        to="/courses"
+                                        to="/studio"
                                         className={({ isActive }) =>
                                             `flex items-center justify-center rounded-full w-12 sm:w-auto h-12 sm:h-auto text-primText ${
                                                 isActive
@@ -79,7 +79,7 @@ const Navbar = ({
                                             className="sm:hidden stroke-white"
                                         />
                                         <span className="hidden sm:block">
-                                            Courses
+                                            Studio
                                         </span>
                                     </NavLink>
                                 </li>

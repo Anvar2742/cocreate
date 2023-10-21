@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Link, useLocation } from "react-router-dom";
-import { CourseDoc } from "../interfaces/interfaces";
+import { CourseDoc } from "../../interfaces/interfaces";
 import { AxiosError } from "axios";
-import TitleLoader from "../components/TitleLoader";
+import TitleLoader from "../../components/TitleLoader";
 
 const CoursesStudents = () => {
     const location = useLocation();

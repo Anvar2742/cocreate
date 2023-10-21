@@ -41,14 +41,20 @@ const PersistLogin = () => {
 
     return (
         <>
-            {!(location?.pathname === "/auth") ? (
+            {!(
+                location?.pathname === "/auth" ||
+                location?.pathname === "/studio"
+            ) ? (
                 <Navbar toggleAuthModal={toggleAuthModal} />
             ) : (
                 ""
             )}
             <Outlet />
 
-            {!(location?.pathname === "/auth") ? (
+            {!(
+                location?.pathname === "/auth" ||
+                location?.pathname === "/studio"
+            ) ? (
                 <>
                     <AuthModal
                         toggleAuthModal={toggleAuthModal}
@@ -59,7 +65,14 @@ const PersistLogin = () => {
             ) : (
                 ""
             )}
-            {!(location?.pathname === "/auth") ? <Footer /> : ""}
+            {!(
+                location?.pathname === "/auth" ||
+                location?.pathname === "/studio"
+            ) ? (
+                <Footer />
+            ) : (
+                ""
+            )}
         </>
     );
 };

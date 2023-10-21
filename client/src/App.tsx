@@ -2,43 +2,29 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import PersistLogin from "./components/PersistLogin";
 import Dashboard from "./pages/Dashboard";
-import Courses from "./pages/Courses";
+import Courses from "./pages/courses/Courses";
 import RequireAuth from "./components/RequireAuth";
-import Auth from "./pages/Auth";
-import CourseSingle from "./pages/CourseSingle";
-import LessonSingle from "./pages/LessonSingle";
-import Onboard from "./pages/Onboard";
+import Auth from "./pages/auth/Auth";
+import CourseSingle from "./pages/courses/CourseSingle";
+import LessonSingle from "./pages/lessons/LessonSingle";
+import Onboard from "./pages/auth/Onboard";
 import RequireOnboard from "./components/RequireOnboard";
 import useAuth from "./hooks/useAuth";
-import CoursesStudents from "./pages/CoursesStudent";
-import CourseSingleStudent from "./pages/CourseSingleStudent";
-import LessonSingleStudent from "./pages/LessonSingleStudent";
+import CoursesStudents from "./pages/courses/CoursesStudent";
+import CourseSingleStudent from "./pages/courses/CourseSingleStudent";
+import LessonSingleStudent from "./pages/lessons/LessonSingleStudent";
 import RequireActivate from "./components/RequireActivate";
-import Activation from "./pages/Activation";
-import UserActivate from "./pages/UserActivate";
+import Activation from "./pages/auth/Activation";
+import UserActivate from "./pages/auth/UserActivate";
+import Studio from "./pages/Studio";
 // import { useState } from "react";
 // import Students from "./pages/Students";
 
 function App() {
     const { auth } = useAuth();
-    // const [msg, setMsg] = useState<string>("");
-
-    // const handleMsg = (msg: string) => {
-    //     setMsg(msg);
-    //     setTimeout(() => {
-    //         setMsg("");
-    //     }, 5000);
-    // };
 
     return (
         <>
-            {/* <p
-                className={`fixed bottom-32 transition-all z-50 ${
-                    msg ? "right-4" : "-right-full opacity-0"
-                } bg-primary shadow-lg text-white text-xl py-1 px-4 min-h-[36px]`}
-            >
-                {msg}
-            </p> */}
             <Routes>
                 <Route element={<PersistLogin />}>
                     <Route path="/auth" element={<Auth />} />
@@ -51,6 +37,16 @@ function App() {
                         <Route element={<RequireOnboard />}>
                             <Route element={<RequireActivate />}>
                                 {/* <Route path="/students" element={<Students />} /> */}
+                                <Route
+                                    path="/studio"
+                                    element={
+                                        auth?.userType === "tutor" ? (
+                                            <Studio />
+                                        ) : (
+                                            <CoursesStudents />
+                                        )
+                                    }
+                                />
                                 <Route
                                     path="/courses"
                                     element={
