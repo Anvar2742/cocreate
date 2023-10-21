@@ -38,38 +38,37 @@ const PersistLogin = () => {
             : verifyRefreshToken();
     }, [location?.pathname]);
 
-    if (isLoading) return <Loader />;
-
-    return (
-        <>
-            {!auth?.accessToken ? (
-                <Navbar toggleAuthModal={toggleAuthModal} />
-            ) : (
-                ""
-            )}
-
+    const LogedIn = () => {
+        return (
             <div className={"flex max-h-screen"}>
                 {auth?.accessToken ? <Sidebar /> : ""}
                 <div className=" overflow-y-auto w-full">
                     <Outlet />
+                    <Footer />
                 </div>
             </div>
+        );
+    };
 
-            {!auth?.accessToken ? (
-                <>
-                    <AuthModal
-                        toggleAuthModal={toggleAuthModal}
-                        isAuthModal={isAuthModal}
-                        isAuthPage={false}
-                    />
-                </>
-            ) : (
-                ""
-            )}
+    const NotLogedIn = () => {
+        return (
+            <div className={"flex max-h-screen"}>
+                <Navbar toggleAuthModal={toggleAuthModal} />
+                <AuthModal
+                    toggleAuthModal={toggleAuthModal}
+                    isAuthModal={isAuthModal}
+                    isAuthPage={false}
+                />
 
-            {!auth?.accessToken ? <Footer /> : ""}
-        </>
-    );
+                <Outlet />
+                <Footer />
+            </div>
+        );
+    };
+
+    if (isLoading) return <Loader />;
+
+    return auth?.accessToken ? <LogedIn /> : <NotLogedIn />;
 };
 
 export default PersistLogin;
