@@ -90,11 +90,13 @@ export const getLessonsStudent = async (req: Request, res: Response) => {
     const user = req.user as UserDoc;
     const { courseId } = req.body;
     try {
+        if (!courseId) return res.sendStatus(400);
         const student = await User.findOne({ _id: user._id });
         if (!student) return res.sendStatus(401);
         const courseIds = student.courses;
 
         const hasAccess = courseIds.filter((el) => el === courseId);
+        // console.log(hasAccess);
         if (!hasAccess.length) return res.sendStatus(401);
         const lessons = await Lesson.find({ courseId });
 

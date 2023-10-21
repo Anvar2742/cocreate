@@ -54,7 +54,7 @@ const Onboard = () => {
             if (resp.status === 204) {
                 // Update isOnboard status for user
                 // await refresh();
-                navigate("/verify");
+                navigate("/activation");
             }
         } catch (err: Error | AxiosError | any) {
             if (axios.isAxiosError(err)) {

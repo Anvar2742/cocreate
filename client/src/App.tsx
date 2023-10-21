@@ -44,7 +44,7 @@ function App() {
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/" element={<Home />} />
                     <Route element={<RequireAuth />}>
-                        <Route path="/verify" element={<UserActivate />} />
+                        <Route path="/activate" element={<UserActivate />} />
                         <Route path="/onboarding" element={<Onboard />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/activation" element={<Activation />} />
