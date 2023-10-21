@@ -1,5 +1,7 @@
 # Oxillia - An Assistant for Tutors and Learners
 
+> For now Oxillia is a prototype and there is a list of improvements and features that I'm working on. 
+
 ## Welcome to Oxillia
 Oxillia is a comprehensive platform designed to empower tutors and facilitate the learning process. This platform streamlines the management of courses, lessons, and students, making it easier for tutors to create, organize, and share educational content with their students.
 
