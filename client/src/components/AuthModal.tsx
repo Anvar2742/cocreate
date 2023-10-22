@@ -27,7 +27,7 @@ const AuthModal = ({
     const location = useLocation();
     const { setAuth } = useAuth();
 
-    const [isSignup, setIsSignup] = useState<boolean>(true);
+    const [isSignup, setIsSignup] = useState<boolean>(false);
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [formData, setFormData] = useState<formData>(initialFormData);
     const [formErrors, setFormErrors] = useState<formData>(initialFormData);

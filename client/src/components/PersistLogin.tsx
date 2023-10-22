@@ -11,13 +11,8 @@ import Sidebar from "./Sidebar";
 const PersistLogin = () => {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
-    const [isAuthModal, setIsAuthModal] = useState(false);
     const refresh = useRefreshToken();
     const { auth } = useAuth();
-
-    const toggleAuthModal = () => {
-        setIsAuthModal((prev) => !prev);
-    };
 
     /**
      * Check if user is loged in
@@ -51,6 +46,11 @@ const PersistLogin = () => {
     };
 
     const NotLogedIn = () => {
+        const [isAuthModal, setIsAuthModal] = useState(false);
+
+        const toggleAuthModal = () => {
+            setIsAuthModal((prev) => !prev);
+        };
         return (
             <>
                 {location.pathname === "/auth" ? (
