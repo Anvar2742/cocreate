@@ -5,3 +5,7 @@
 * {
     @apply font-sans;
 }
+
+*:focus {
+    @apply outline-none;
+}

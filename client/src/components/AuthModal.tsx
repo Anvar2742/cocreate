@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { axiosInstance } from "../api/axios";
 import useAuth from "./../hooks/useAuth";
-import { IconLoader, IconX } from "@tabler/icons-react";
+import { IconEye, IconEyeClosed, IconLoader, IconX } from "@tabler/icons-react";
 import axios, { AxiosError } from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -27,11 +27,12 @@ const AuthModal = ({
     const location = useLocation();
     const { setAuth } = useAuth();
 
-    const [isSignup, setIsSignup] = useState<boolean>(false);
+    const [isSignup, setIsSignup] = useState<boolean>(true);
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [formData, setFormData] = useState<formData>(initialFormData);
     const [formErrors, setFormErrors] = useState<formData>(initialFormData);
     const [generalErr, setGeneralErr] = useState<string>("");
+    const [showPass, setShowPass] = useState(false);
 
     const toggleForm = (isSignupClick: boolean) => {
         setIsSignup(isSignupClick);
@@ -132,6 +133,14 @@ const AuthModal = ({
         });
     };
 
+    const handleShowPass = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+
+        setShowPass((prev) => !prev);
+    };
+
     useEffect(() => {
         setFormData(initialFormData);
         setFormErrors(initialFormData);
@@ -188,7 +197,7 @@ const AuthModal = ({
                     onSubmit={(e) => submitForm(e)}
                 >
                     <div
-                        className={`absolute top-0 left-0 w-full h-full flex items-center justify-center ${
+                        className={`absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 ${
                             isSubmit ? "block" : "hidden"
                         }`}
                     >
@@ -204,7 +213,7 @@ const AuthModal = ({
                         <input
                             type="email"
                             id="email"
-                            className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
+                            className="bg-input text-blueGray py-2 px-4 rounded-lg w-full shadow-md"
                             placeholder="Your email"
                             name="email"
                             onChange={handleFormData}
@@ -226,18 +235,30 @@ const AuthModal = ({
                         >
                             Password
                         </label>
-                        <input
-                            type="password"
-                            id="password"
-                            className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
-                            placeholder="Password"
-                            name="password"
-                            onChange={handleFormData}
-                            value={formData.password}
-                            autoComplete={
-                                isAuthPage ? "current-password" : "new-password"
-                            }
-                        />
+                        <div className="flex relative mt-1">
+                            <input
+                                type={showPass ? "text" : "password"}
+                                id="password"
+                                className="bg-input text-blueGray py-2 px-4 rounded-lg w-full shadow-md"
+                                placeholder="Password"
+                                name="password"
+                                onChange={handleFormData}
+                                value={formData.password}
+                                autoComplete={
+                                    isAuthPage
+                                        ? "current-password"
+                                        : "new-password"
+                                }
+                            />
+                            <button
+                                className="bg-input absolute right-0 top-0 h-full"
+                                onClick={(e) => {
+                                    handleShowPass(e);
+                                }}
+                            >
+                                {showPass ? <IconEye /> : <IconEyeClosed />}
+                            </button>
+                        </div>
                         {formErrors?.password ? (
                             <p className="text-red-400 mt-2">
                                 {formErrors?.password}
@@ -270,16 +291,26 @@ const AuthModal = ({
                         >
                             Repeat password
                         </label>
-                        <input
-                            type="password"
-                            id="passwordRep"
-                            className="bg-input text-blueGray py-2 px-4 rounded-lg mt-1 w-full shadow-md"
-                            placeholder="Repeate password"
-                            name="passwordRep"
-                            onChange={handleFormData}
-                            value={formData.passwordRep}
-                            tabIndex={!isSignup ? -1 : 0}
-                        />
+                        <div className="flex relative mt-1">
+                            <input
+                                type={showPass ? "text" : "password"}
+                                id="passwordRep"
+                                className="bg-input text-blueGray py-2 px-4 rounded-lg w-full shadow-md"
+                                placeholder="Repeate password"
+                                name="passwordRep"
+                                onChange={handleFormData}
+                                value={formData.passwordRep}
+                                tabIndex={!isSignup ? -1 : 0}
+                            />
+                            <button
+                                className="bg-input absolute right-0 top-0 h-full"
+                                onClick={(e) => {
+                                    handleShowPass(e);
+                                }}
+                            >
+                                {showPass ? <IconEye /> : <IconEyeClosed />}
+                            </button>
+                        </div>
                         {formErrors?.passwordRep ? (
                             <p className="text-red-400 mt-2">
                                 {formErrors?.passwordRep}

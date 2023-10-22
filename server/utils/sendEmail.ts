@@ -23,7 +23,7 @@ async function sendEmail(activationToken: string, email: string) {
         html: `<div style="font-family: sans-serif;">
                     <p>Hello, thank you for signin up!</p>
                     <p>Please activate your account to start using Oxillia.</p>
-                    <a href="${process.env.HOME_URL}/activate?token=${activationToken}" style="background-color: #6739ff; color: #fff; text-decoration: none; padding: 10px 15px; margin-top: 5px; display: inline-block; border-radius:10px;">Activate</a>
+                    <a href="${process.env.HOME_URL}/verify?token=${activationToken}" style="background-color: #6739ff; color: #fff; text-decoration: none; padding: 10px 15px; margin-top: 5px; display: inline-block; border-radius:10px;">Activate</a>
                 </div>
                 `, // html body
     });
