@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import PersistLogin from "./components/PersistLogin";
 import Dashboard from "./pages/Dashboard";
@@ -17,6 +17,7 @@ import RequireActivate from "./components/RequireActivate";
 import Activation from "./pages/auth/Activation";
 import UserActivate from "./pages/auth/UserActivate";
 import Studio from "./pages/Studio";
+import NotFoundPage from "./pages/NotFoundPage";
 // import { useState } from "react";
 // import Students from "./pages/Students";
 
@@ -28,14 +29,15 @@ function App() {
             <Routes>
                 <Route element={<PersistLogin />}>
                     <Route path="/auth" element={<Auth />} />
+                    <Route path="*" element={<NotFoundPage />} />
                     <Route path="/" element={<Home />} />
                     <Route element={<RequireAuth />}>
                         <Route path="/verify" element={<UserActivate />} />
                         <Route path="/onboarding" element={<Onboard />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/activation" element={<Activation />} />
-                        <Route element={<RequireOnboard />}>
-                            <Route element={<RequireActivate />}>
+                        <Route element={<RequireActivate />}>
+                            <Route element={<RequireOnboard />}>
                                 {/* <Route path="/students" element={<Students />} /> */}
                                 <Route
                                     path="/studio"
@@ -43,7 +45,7 @@ function App() {
                                         auth?.userType === "tutor" ? (
                                             <Studio />
                                         ) : (
-                                            <CoursesStudents />
+                                            <Navigate to={"/courses"} replace />
                                         )
                                     }
                                 />

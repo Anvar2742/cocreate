@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { CourseDoc } from "../../interfaces/interfaces";
 import { AxiosError } from "axios";
 import TitleLoader from "../../components/TitleLoader";
+import NotFound from "../../components/NotFound";
 
 const CoursesStudents = () => {
     const location = useLocation();
@@ -26,12 +27,11 @@ const CoursesStudents = () => {
 
             if (error.response.status === 404) {
                 setCoursesEls(
-                    <div>
-                        <h2 className="font-medium text-xl">
-                            You don't have access to any course
-                        </h2>
-                        <p className="text-md">Please contact your tutor</p>
-                    </div>
+                    <NotFound
+                        title="No courses yet"
+                        subTitle="Contact your tutor for access"
+                        img=""
+                    />
                 );
             }
             setIsLoading(false);

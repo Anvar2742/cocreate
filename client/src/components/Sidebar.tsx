@@ -13,22 +13,27 @@ const Sidebar = () => {
                 <nav>
                     <ul>
                         {menus?.sidebar.map((menuItem) => {
-                            return (
-                                <li key={menuItem.id}>
-                                    <NavLink
-                                        to={menuItem.to}
-                                        className={({ isActive }) =>
-                                            `w-full block py-1 px-4 text-primText hover:bg-gray-300 ${
-                                                isActive
-                                                    ? "font-bold bg-secRed sm:bg-transparent"
-                                                    : "bg-primary sm:bg-transparent"
-                                            }`
-                                        }
-                                    >
-                                        {menuItem.title}
-                                    </NavLink>
-                                </li>
-                            );
+                            if (
+                                menuItem.userType === auth?.userType ||
+                                menuItem.userType === "all"
+                            ) {
+                                return (
+                                    <li key={menuItem.id}>
+                                        <NavLink
+                                            to={menuItem.to}
+                                            className={({ isActive }) =>
+                                                `w-full block py-1 px-4 text-primText hover:bg-gray-300 ${
+                                                    isActive
+                                                        ? "font-bold bg-secRed sm:bg-transparent"
+                                                        : "bg-primary sm:bg-transparent"
+                                                }`
+                                            }
+                                        >
+                                            {menuItem.title}
+                                        </NavLink>
+                                    </li>
+                                );
+                            }
                         })}
                     </ul>
                 </nav>

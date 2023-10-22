@@ -7,6 +7,7 @@ import TitleCreateModal from "../../components/TitleCreateModal";
 import TitleLoader from "../../components/TitleLoader";
 import useAuth from "../../hooks/useAuth";
 import NotFound from "../../components/NotFound";
+import searchSvg from "./../../img/search.svg"
 
 const Courses = () => {
     const location = useLocation();

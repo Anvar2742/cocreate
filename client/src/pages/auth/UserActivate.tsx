@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useGetUser from "../../hooks/api/useGetUser";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Loader from "../../components/Loader";
@@ -8,11 +8,14 @@ import useRefreshToken from "../../hooks/useRefreshToken";
 const UserActivate = () => {
     const location = useLocation();
     const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
     const refresh = useRefreshToken();
     const getUser = useGetUser();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [searchParams, _setSearchParams] = useSearchParams();
-    const [activateToken, setActivateToken] = useState<string | null>(null);
+    const [activateToken, setActivateToken] = useState<string | "none" | null>(
+        ""
+    );
     const [isValidToken, setIsValidToken] = useState<boolean | null>(null);
     const [isActivated, setIsActivated] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
@@ -36,11 +39,19 @@ const UserActivate = () => {
 
     useEffect(() => {
         console.log(searchParams);
-        setActivateToken(searchParams.get("token"));
+        setActivateToken(() => {
+            if (searchParams.get("token")) {
+                return searchParams.get("token");
+            } else {
+                return "none";
+            }
+        });
     }, [location?.pathname]);
 
     useEffect(() => {
-        if (activateToken) {
+        if (activateToken === "none") {
+            navigate("/", { replace: true });
+        } else if (activateToken) {
             getUser()
                 .then((user) => {
                     const userActivateToken = user.activateToken;
@@ -76,7 +87,9 @@ const UserActivate = () => {
                     </>
                 ) : isError ? (
                     <>
-                        <h1 className="font-bold text-5xl">Something went wrong...</h1>
+                        <h1 className="font-bold text-5xl">
+                            Something went wrong...
+                        </h1>
                         {/* <p className="text-2xl mt-4"></p> */}
                     </>
                 ) : (
