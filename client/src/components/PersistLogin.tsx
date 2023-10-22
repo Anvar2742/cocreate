@@ -10,10 +10,8 @@ import Sidebar from "./Sidebar";
 
 const PersistLogin = () => {
     const location = useLocation();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [isAuthModal, setIsAuthModal] = useState(false);
-    const refresh = useRefreshToken();
-    const { auth } = useAuth();
 
     const toggleAuthModal = () => {
         setIsAuthModal((prev) => !prev);
@@ -22,26 +20,25 @@ const PersistLogin = () => {
     /**
      * Check if user is loged in
      */
-    useEffect(() => {
-        const verifyRefreshToken = async () => {
-            try {
-                await refresh();
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     const verifyRefreshToken = async () => {
+    //         try {
+    //             await refresh();
+    //         } catch (err) {
+    //             console.error(err);
+    //         } finally {
+    //             setIsLoading(false);
+    //         }
+    //     };
 
-        auth?.accessToken && auth?.accessToken === false
-            ? setIsLoading(false)
-            : verifyRefreshToken();
-    }, [location?.pathname]);
+    //     auth?.accessToken && auth?.accessToken === false
+    //         ? setIsLoading(false)
+    //         : verifyRefreshToken();
+    // }, [location?.pathname]);
 
     const LogedIn = () => {
         return (
             <div className={"flex max-h-screen"}>
-                {auth?.accessToken ? <Sidebar /> : ""}
                 <div className=" overflow-y-auto w-full">
                     <Outlet />
                     <Footer />
@@ -74,7 +71,7 @@ const PersistLogin = () => {
 
     if (isLoading) return <Loader />;
 
-    return auth?.accessToken ? <LogedIn /> : <NotLogedIn />;
+    return <NotLogedIn />;
 };
 
 export default PersistLogin;

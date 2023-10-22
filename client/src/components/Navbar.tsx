@@ -7,6 +7,7 @@ import {
     IconHome,
     IconUser,
 } from "@tabler/icons-react";
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 
 const Navbar = ({
     toggleAuthModal,
@@ -15,6 +16,7 @@ const Navbar = ({
 }) => {
     const { auth } = useAuth();
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
+    const { login } = useKindeAuth();
 
     const scrollHandle = () => {
         if (window.scrollY > 50) {
@@ -25,6 +27,10 @@ const Navbar = ({
     };
 
     window.addEventListener("scroll", scrollHandle);
+
+    const handleAuthClick = () => {
+        login({});
+    };
 
     return (
         <header
@@ -118,7 +124,7 @@ const Navbar = ({
                         ) : (
                             <button
                                 className="bg-primary text-white py-2 px-8 rounded-full font-semibold hover:shadow-white hover:[text-shadow:_0_2px_3px_rgb(0_0_0_/_40%)] transition-all"
-                                onClick={toggleAuthModal}
+                                onClick={handleAuthClick}
                             >
                                 Sign Up
                             </button>

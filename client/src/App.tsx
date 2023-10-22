@@ -20,70 +20,28 @@ import Studio from "./pages/Studio";
 import NotFoundPage from "./pages/NotFoundPage";
 // import { useState } from "react";
 // import Students from "./pages/Students";
+import { KindeProvider } from "@kinde-oss/kinde-auth-react";
 
 function App() {
-    const { auth } = useAuth();
+    // const { auth } = useAuth();
 
     return (
         <>
-            <Routes>
-                <Route element={<PersistLogin />}>
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                    <Route path="/" element={<Home />} />
-                    <Route element={<RequireAuth />}>
-                        <Route path="/verify" element={<UserActivate />} />
-                        <Route path="/onboarding" element={<Onboard />} />
+            <KindeProvider
+                clientId={import.meta.env.VITE_KINDE_CLIENT_ID}
+                domain={import.meta.env.VITE_KINDE_DOMAIN}
+                logoutUri={window.location.origin}
+                redirectUri={import.meta.env.VITE_KINDE_REDIRECT_URL}
+            >
+                <Routes>
+                    <Route element={<PersistLogin />}>
+                        <Route path="/auth" element={<Auth />} />
+                        <Route path="*" element={<NotFoundPage />} />
+                        <Route path="/" element={<Home />} />
                         <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/activation" element={<Activation />} />
-                        <Route element={<RequireActivate />}>
-                            <Route element={<RequireOnboard />}>
-                                {/* <Route path="/students" element={<Students />} /> */}
-                                <Route
-                                    path="/studio"
-                                    element={
-                                        auth?.userType === "tutor" ? (
-                                            <Studio />
-                                        ) : (
-                                            <Navigate to={"/courses"} replace />
-                                        )
-                                    }
-                                />
-                                <Route
-                                    path="/courses"
-                                    element={
-                                        auth?.userType === "tutor" ? (
-                                            <Courses />
-                                        ) : (
-                                            <CoursesStudents />
-                                        )
-                                    }
-                                />
-                                <Route
-                                    path="/courses/:slug"
-                                    element={
-                                        auth?.userType === "tutor" ? (
-                                            <CourseSingle />
-                                        ) : (
-                                            <CourseSingleStudent />
-                                        )
-                                    }
-                                />
-                                <Route
-                                    path="/courses/:courseSlug/:lessonSlug"
-                                    element={
-                                        auth?.userType === "tutor" ? (
-                                            <LessonSingle />
-                                        ) : (
-                                            <LessonSingleStudent />
-                                        )
-                                    }
-                                />
-                            </Route>
-                        </Route>
                     </Route>
-                </Route>
-            </Routes>
+                </Routes>
+            </KindeProvider>
         </>
     );
 }
