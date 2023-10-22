@@ -10,9 +10,12 @@ import Sidebar from "./Sidebar";
 
 const PersistLogin = () => {
     const location = useLocation();
-    const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
     const { auth } = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
+    const [_isSidebar, setIsSidebar] = useState(true);
+
+    const noSidebarPages = ["/verify"];
 
     /**
      * Check if user is loged in
@@ -31,6 +34,13 @@ const PersistLogin = () => {
         auth?.accessToken && auth?.accessToken === false
             ? setIsLoading(false)
             : verifyRefreshToken();
+
+        setIsSidebar(() => {
+            return noSidebarPages.filter((el) => el === location?.pathname)
+                .length
+                ? true
+                : false;
+        });
     }, [location?.pathname]);
 
     const LogedIn = () => {

@@ -3,13 +3,13 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useGetUser from "../../hooks/api/useGetUser";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Loader from "../../components/Loader";
-import useRefreshToken from "../../hooks/useRefreshToken";
+import useAuth from "../../hooks/useAuth";
 
 const UserActivate = () => {
     const location = useLocation();
     const axiosPrivate = useAxiosPrivate();
+    const { auth } = useAuth();
     const navigate = useNavigate();
-    const refresh = useRefreshToken();
     const getUser = useGetUser();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [searchParams, _setSearchParams] = useSearchParams();
@@ -27,7 +27,6 @@ const UserActivate = () => {
 
             if (resp.status === 204) {
                 setIsActivated(true);
-                await refresh();
             }
         } catch (err) {
             console.log(err);
@@ -38,7 +37,10 @@ const UserActivate = () => {
     };
 
     useEffect(() => {
-        console.log(searchParams);
+        // console.log(auth);
+        if (auth?.isActive) {
+            navigate("/");
+        }
         setActivateToken(() => {
             if (searchParams.get("token")) {
                 return searchParams.get("token");
@@ -50,7 +52,7 @@ const UserActivate = () => {
 
     useEffect(() => {
         if (activateToken === "none") {
-            navigate("/", { replace: true });
+            navigate("/dashboard", { replace: true });
         } else if (activateToken) {
             getUser()
                 .then((user) => {

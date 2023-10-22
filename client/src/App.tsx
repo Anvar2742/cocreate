@@ -33,10 +33,10 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route element={<RequireAuth />}>
                         <Route path="/verify" element={<UserActivate />} />
-                        <Route path="/onboarding" element={<Onboard />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/activation" element={<Activation />} />
                         <Route element={<RequireActivate />}>
+                            <Route path="/onboarding" element={<Onboard />} />
                             <Route element={<RequireOnboard />}>
                                 {/* <Route path="/students" element={<Students />} /> */}
                                 <Route
