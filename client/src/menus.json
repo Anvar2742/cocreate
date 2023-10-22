@@ -6,12 +6,12 @@
             "to": "/studio"
         },
         {
-            "id": 1,
+            "id": 2,
             "title": "Courses",
             "to": "/courses"
         },
         {
-            "id": 1,
+            "id": 3,
             "title": "Dashboard",
             "to": "/dashboard"
         }

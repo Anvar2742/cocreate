@@ -6,9 +6,11 @@ import { AxiosError } from "axios";
 import TitleCreateModal from "../../components/TitleCreateModal";
 import TitleLoader from "../../components/TitleLoader";
 import useAuth from "../../hooks/useAuth";
+import NotFound from "../../components/NotFound";
 
 const Courses = () => {
     const location = useLocation();
+    const axiosPrivate = useAxiosPrivate();
     const { auth } = useAuth();
     const [isCreateModal, setIsCreateModal] = useState<boolean>(false);
     const [coursesArr, setCoursesArr] = useState<CourseDoc[]>([]);
@@ -29,19 +31,15 @@ const Courses = () => {
 
             if (error.response.status === 404) {
                 setCoursesEls(
-                    <div>
-                        <h2 className="font-medium text-xl">
-                            You don't have any courses yet
-                        </h2>
-                        <p className="text-md">Let's create one</p>
-                    </div>
+                    <NotFound
+                        title="You don't have any courses yet"
+                        subTitle="Let's create one"
+                    />
                 );
             }
             setIsLoading(false);
         }
     };
-
-    const axiosPrivate = useAxiosPrivate();
 
     const toggleCreateModal = () => {
         setIsCreateModal((prev) => !prev);

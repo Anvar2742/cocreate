@@ -55,6 +55,7 @@ const CourseSingle = () => {
         }
     };
 
+    console.log(course);
     const updateCurrentCourse = (course: CourseDoc) => {
         setCourse(course);
         setIsUpdateModal(false);
