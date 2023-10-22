@@ -89,7 +89,7 @@ const CourseSingle = () => {
                                     </button>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <p>{course.description}</p>
+                                    {course.description ? <p>{course.description}</p> : <p className="opacity-50">You can add a description here</p>}
                                     <button
                                         className="cursor-pointer"
                                         onClick={() =>

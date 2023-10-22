@@ -5,6 +5,7 @@ import { CourseDoc, LessonDoc } from "../../interfaces/interfaces";
 import TitleCreateModal from "../../components/TitleCreateModal";
 import TitleLoader from "../../components/TitleLoader";
 import { AxiosError } from "axios";
+import NotFound from "../../components/NotFound";
 
 const Lessons = ({ course }: { course: CourseDoc | null }) => {
     const [isCreateModal, setIsCreateModal] = useState<boolean>(false);
@@ -28,12 +29,7 @@ const Lessons = ({ course }: { course: CourseDoc | null }) => {
 
             if (error.response.status === 404) {
                 setLessonsEls(
-                    <div>
-                        <h2 className="font-medium text-xl">
-                            No lesson in this course
-                        </h2>
-                        <p className="text-md">Let's create one</p>
-                    </div>
+                    <NotFound title="No lesson in this course" subTitle="Let's create one" img="" />
                 );
             }
             setIsLoading(false);

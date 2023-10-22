@@ -52,17 +52,23 @@ const PersistLogin = () => {
 
     const NotLogedIn = () => {
         return (
-            <div className={"flex max-h-screen"}>
-                <Navbar toggleAuthModal={toggleAuthModal} />
-                <AuthModal
-                    toggleAuthModal={toggleAuthModal}
-                    isAuthModal={isAuthModal}
-                    isAuthPage={false}
-                />
+            <>
+                {location.pathname === "/auth" ? (
+                    ""
+                ) : (
+                    <>
+                        <Navbar toggleAuthModal={toggleAuthModal} />
+                        <AuthModal
+                            toggleAuthModal={toggleAuthModal}
+                            isAuthModal={isAuthModal}
+                            isAuthPage={false}
+                        />
+                    </>
+                )}
 
                 <Outlet />
-                <Footer />
-            </div>
+                {location.pathname === "/auth" ? "" : <Footer />}
+            </>
         );
     };
 

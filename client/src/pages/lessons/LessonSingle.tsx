@@ -7,6 +7,8 @@ import Loader from "../../components/Loader";
 import { IconEdit } from "@tabler/icons-react";
 import useGetSingle from "../../hooks/api/useGetSingle";
 import SingleUpdateModal from "../../components/SingleUpdate";
+import NotFound from "../../components/NotFound";
+import searchSvg from "./../../img/search.svg";
 
 const LessonSingle = () => {
     const { lessonSlug: slug, courseSlug } = useParams();
@@ -111,7 +113,13 @@ const LessonSingle = () => {
                                     </button>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <p>{lesson?.description}</p>
+                                    {lesson?.description ? (
+                                        <p>{lesson?.description}</p>
+                                    ) : (
+                                        <p className="opacity-50">
+                                            You can add a description here
+                                        </p>
+                                    )}
                                     <button
                                         className="cursor-pointer"
                                         onClick={() =>
@@ -134,7 +142,11 @@ const LessonSingle = () => {
                         />
                     </>
                 ) : (
-                    "404"
+                    <NotFound
+                        title="Lesson not found"
+                        subTitle=""
+                        img={searchSvg}
+                    />
                 )}
 
                 {generalErr ? <p className="text-red-400">{generalErr}</p> : ""}

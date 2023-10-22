@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { LessonDoc } from "../../interfaces/interfaces";
 import LessonEditor from "../../components/LessonEditor";
 import Loader from "../../components/Loader";
+import NotFound from "../../components/NotFound";
+import searchSvg from "./../../img/search.svg";
 
 const LessonSingleStudent = () => {
     const [lesson, setLesson] = useState<LessonDoc | null>(null);
@@ -64,23 +66,19 @@ const LessonSingleStudent = () => {
                             </h1>
                             <p>{lesson?.description}</p>
                         </div>
-                        <div
-                            className={`transition-all duration-500 ${
-                                isLoading
-                                    ? "opacity-0 translate-y-full"
-                                    : "opacity-100 translate-y-0"
-                            }`}
-                        >
-                            <LessonEditor
-                                updateContent={updateContent}
-                                initialContent={lesson?.content}
-                                isTutor={false}
-                                isUpdate={false}
-                            />
-                        </div>
+                        <LessonEditor
+                            updateContent={updateContent}
+                            initialContent={lesson?.content}
+                            isTutor={false}
+                            isUpdate={false}
+                        />
                     </>
                 ) : (
-                    "404"
+                    <NotFound
+                        title="Lesson not found"
+                        subTitle=""
+                        img={searchSvg}
+                    />
                 )}
             </div>
         </section>

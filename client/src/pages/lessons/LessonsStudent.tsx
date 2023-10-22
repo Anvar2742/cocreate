@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { CourseDoc, LessonDoc } from "../../interfaces/interfaces";
 import TitleLoader from "../../components/TitleLoader";
 import { AxiosError } from "axios";
+import NotFound from "../../components/NotFound";
 
 const LessonsStudent = ({ course }: { course: CourseDoc | null }) => {
     const [lessonsArr, setLessonsArr] = useState<LessonDoc[]>([]);
@@ -28,14 +29,11 @@ const LessonsStudent = ({ course }: { course: CourseDoc | null }) => {
 
             if (error.response.status === 404) {
                 setLessonsEls(
-                    <div>
-                        <h2 className="font-medium text-xl">
-                            No lesson in this course
-                        </h2>
-                        <p className="text-md">
-                            Your tutor is creating something great for you
-                        </p>
-                    </div>
+                    <NotFound
+                        title="No lesson in this course"
+                        subTitle="Your tutor is creating something great for you"
+                        img=""
+                    />
                 );
             }
             setIsLoading(false);

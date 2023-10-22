@@ -34,6 +34,7 @@ const Courses = () => {
                     <NotFound
                         title="You don't have any courses yet"
                         subTitle="Let's create one"
+                        img=""
                     />
                 );
             }

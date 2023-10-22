@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { axiosPrivate } from "../api/axios";
 import { IconLoader, IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import useRefreshToken from "../hooks/useRefreshToken";
+// import useRefreshToken from "../hooks/useRefreshToken";
 
 const TitleCreateModal = ({
     toggleCreateModal,
@@ -24,7 +24,7 @@ const TitleCreateModal = ({
         description: "",
     };
 
-    const refresh = useRefreshToken();
+    // const refresh = useRefreshToken();
 
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [formData, setFormData] = useState<formData>(initialFormData);
@@ -103,11 +103,11 @@ const TitleCreateModal = ({
         }
     };
 
-    useEffect(() => {
-        if (isCreateModal) {
-            refresh();
-        }
-    }, [isCreateModal]);
+    // useEffect(() => {
+    //     if (isCreateModal) {
+    //         refresh();
+    //     }
+    // }, [isCreateModal]);
 
     return (
         <>

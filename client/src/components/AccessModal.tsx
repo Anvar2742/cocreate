@@ -1,8 +1,8 @@
 import axios, { AxiosError } from "axios";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { axiosPrivate } from "../api/axios";
 import { IconLoader, IconX } from "@tabler/icons-react";
-import useRefreshToken from "../hooks/useRefreshToken";
+// import useRefreshToken from "../hooks/useRefreshToken";
 
 const AccessModal = ({
     toggleAccessModal,
@@ -22,7 +22,7 @@ const AccessModal = ({
         courseId,
     };
 
-    const refresh = useRefreshToken();
+    // const refresh = useRefreshToken();
 
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -95,11 +95,11 @@ const AccessModal = ({
         }
     };
 
-    useEffect(() => {
-        if (isAccessModal) {
-            refresh();
-        }
-    }, [isAccessModal]);
+    // useEffect(() => {
+    //     if (isAccessModal) {
+    //         refresh();
+    //     }
+    // }, [isAccessModal]);
 
     const handleIsSuccess = () => {
         toggleAccessModal();
