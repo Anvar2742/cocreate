@@ -1,0 +1,19 @@
+{
+    "sidebar": [
+        {
+            "id": 1,
+            "title": "Studio",
+            "to": "/studio"
+        },
+        {
+            "id": 1,
+            "title": "Courses",
+            "to": "/courses"
+        },
+        {
+            "id": 1,
+            "title": "Dashboard",
+            "to": "/dashboard"
+        }
+    ]
+}
